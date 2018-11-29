@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="topBar_padding_left">18dip</dimen>
+    <dimen name="topBar_padding_right">18dip</dimen>
+    <dimen name="topBar_centre_textSize">18sp</dimen>
+    <dimen name="widget_fontSize_12">12sp</dimen>
+    <dimen name="widget_fontSize_13">13sp</dimen>
+    <dimen name="widget_fontSize_15">15sp</dimen>
+
+    <dimen name="media_controller_text_size">14sp</dimen>
+    <dimen name="media_controller_seekBar_width">32dip</dimen>
+    <dimen name="media_controller_seekBar_height">32dip</dimen>
+    <dimen name="media_controller_top_margin">80dip</dimen>
+    <dimen name="media_controller_bottom_margin">12dip</dimen>
+    <dimen name="media_controller_view_height">48dip</dimen>
+    <dimen name="media_controller_button_height">52dip</dimen>
+    <dimen name="media_controller_button_width">71dip</dimen>
+
+    <dimen name="margin_17">17dp</dimen>
+    <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_15">15dp</dimen>
+    <dimen name="margin_14">14dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_3">3dp</dimen>
+    <dimen name="margin_2">2dp</dimen>
+
+    <dimen name="padding_20">20dp</dimen>
+    <dimen name="padding_17">17dp</dimen>
+    <dimen name="padding_16">16dp</dimen>
+    <dimen name="padding_15">15dp</dimen>
+    <dimen name="padding_14">14dp</dimen>
+    <dimen name="padding_11">11dp</dimen>
+    <dimen name="padding_10">10dp</dimen>
+    <dimen name="padding_3">3dp</dimen>
+    <dimen name="padding_2">2dp</dimen>
+</resources>

@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_widget">widget</string>
+    <string name="widget_default_time">00:00</string>
+    <string name="widget_dialog_message_mobile">当前为移动网络，您是否继续观看视频？</string>
+    <string name="widget_dialog_message_non_network">当前网络不可用，请检查网络后观看，记得回来哟……</string>
+    <string name="widget_dialog_message_mediaplayer_rebuild">我好像出了点小问题，需要重新播放，请耐心等待呦……</string>
+    <string name="widget_dialog_ok">确定</string>
+    <string name="widget_dialog_cancel">取消</string>
+    <string name="widget_dialog_goback">不，我走了！</string>
+    <string name="widget_dialog_message_timeout">我没读到数据，再给我一次机会呗……</string>
+    <string name="widget_toast_slow_network_speed">当前网速太慢了，我们正在努力加载，\n请您休息一会儿，稍后观看……</string>
+    <string name="widget_toast_coding_unusable">当前视频不支持，请换一个吧！</string>
+    <string name="widget_toast_coding_unsupported_seeked">不能跳转到指定位置！</string>
+    <string name="widget_toast_coding_unsupported_subtitle">字幕格式不支持！</string>
+    <string name="widget_toast_coding_outtime_read_subtitle">未读取到字幕！</string>
+
+    <string name="dialog_loading">加载中</string>
+    <string name="dialog_controling">处理中</string>
+</resources>

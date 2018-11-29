@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string-array name="video_collect_filter_title">
+        <item>无</item>    <!-- 0-->
+        <!--// 人物-->
+        <item>恋空</item>
+        <item>温暖</item>
+        <item>冷艳</item>
+        <item>清纯</item>
+        <item>甜美</item>
+        <item>初恋</item>
+        <item>少女</item>
+        <item>年华</item>    <!--// 8-->
+        <!--// 风景-->
+        <item>日杂</item>
+        <item>午后</item>
+        <item>海洋</item>
+        <item>樱花</item>
+        <item>度假</item>
+        <item>幽静</item>
+        <item>天空</item>
+        <item>森林</item>
+        <item>氧气</item>
+        <item>晚霞</item>
+        <item>明亮</item> <!--// 19-->
+        <!--// 大片-->
+        <item>复古</item>   <!--// 20-->
+        <!--// 美食-->
+        <item>食物</item>
+        <item>咖啡</item>
+        <item>可可</item>   <!--// 23-->
+        <!--// 艺术-->
+        <item>珊瑚</item>
+        <item>忧郁</item>
+        <item>黑白</item>
+        <item>浪漫</item>
+        <item>冷静</item>
+        <item>回忆</item>
+        <item>光晕</item>
+        <item>微光</item>
+        <item>沁蓝</item>   <!--// 32-->
+        <!--// 日系-->
+        <item>日系</item>
+        <item>清新</item>   <!--// 34-->
+        <!--// 季节-->
+        <item>初雪</item>
+        <item>冬至</item>
+        <item>秋色</item> <!--// 37-->
+    </string-array>
+    <string-array name="video_filter_group">
+        <item>人物</item>
+        <item>风景</item>
+        <item>大片</item>
+        <item>美食</item>
+        <item>艺术</item>
+        <item>日系</item>
+        <item>季节</item>
+    </string-array>
+</resources>

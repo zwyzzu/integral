@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="120dp"
+    android:layout_height="80dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:paddingTop="14dp"
+    android:paddingBottom="24dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:animateLayoutChanges="true"
+    android:clipChildren="false"
+    android:background="@drawable/public_round_corner_dialog_background">
+    <!--<ImageView-->
+        <!--android:id="@+id/pw_spinner"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:src="@drawable/icon_music_loading"-->
+         <!--/>-->
+    <com.yixia.widget.loadview.LoadingView
+        android:id="@+id/material_view"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:loading_renderer="MaterialLoadingRenderer"/>
+    <TextView
+        android:id="@+id/tv_progress"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:textColor="@color/progress_dialog_color1"
+        android:text="@string/dialog_loading"
+         />
+
+</LinearLayout>

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">libcore</string>
+    <string name="permission_to_setting">去授权</string>
+    <string name="permission_tip_message">为了程序能够正常运行，您需要授权以下权限\n%s</string>
+</resources>

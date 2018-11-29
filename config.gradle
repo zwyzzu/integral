@@ -1,0 +1,47 @@
+//加载资源
+Properties properties = new Properties()
+InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream()
+properties.load(inputStream)
+ext {
+    android = [
+            compileSdkVersion : 27,
+            buildToolsVersion : "27.0.3",
+            minSdkVersion     : 16,
+            targetSdkVersion  : 27,
+
+            supportVersion    : "27.1.1",
+            recyclerview      : "27.1.1",
+            versionCode       : 1,
+            versionName       : "0.1",
+
+            applicationId     :"yixia.video.core",
+
+            espressoVersion   : "2.2.2",
+            JUnitRunnerVersion: "0.5",
+            JUnitVersion      : "4.12",
+            ConstraintLayout  : "1.1.3",
+            multidex          : "1.0.2",
+            hamcrestVersion   : "1.3",
+    ]
+
+    thirdParty = [
+            gson              : "2.8.5",
+            replugin          : "2.2.4",
+            fresco            : "1.11.0",
+            okhttp3           : "3.8.1",
+            retrofit2         : "2.0.2",
+            HeaderViewAdapter : "1.2.0",
+            stetho            : "1.3.1",
+            circleprogressbar : "1.2.0",
+            FlycoTabLayout_Lib: "2.1.0@aar",
+            AndResGuard       : "1.2.8",
+            leakcanary        : "1.6.1",
+            room              : "1.6.1",
+            leakcanary        : "1.6.1",
+            arouter           : "1.4.1",
+            butterknife       : "9.0.0-rc2",
+
+    ]
+
+
+}

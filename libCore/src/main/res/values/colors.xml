@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="common_white">#fff</color>
+    <color name="gray">#4dffffff</color>
+    <color name="theme_pink">#FD3855</color>
+    <color name="theme_pink_un_select">#80FD3855</color>
+    <color name="transparent">#00000000</color>
+    <color name="translucent">#80000000</color>
+    <color name="color1">#3395ff</color>
+    <color name="black">#000</color>
+    <color name="theme_red">#FD415F</color>
+    <color name="theme_red_un_select">#80FD415F</color>
+</resources>
