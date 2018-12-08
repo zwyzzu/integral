@@ -1,37 +1,59 @@
 package com.zhangwy.integral.entity;
 
 import android.os.Parcel;
-import android.support.annotation.NonNull;
 
 /**
- * Created by zhangwy on 2018/11/29 下午7:23.
- * Updated by zhangwy on 2018/11/29 下午7:23.
- * Description TODO
+ * Created by zhangwy on 2018/12/8 上午8:22.
+ * Updated by zhangwy on 2018/12/8 上午8:22.
+ * Description
  */
-public class IntegralEntity extends BaseEntity implements Comparable<IntegralEntity> {
+@SuppressWarnings("unused")
+public class IntegralEntity extends BaseEntity {
 
-    private int score;
-    private long date;
-    private String bind;
-    private String scoreBind;
+    private int score;//分数
+    private String name;
+    private String desc;//描述
 
-    private IntegralEntity(Parcel in) {
+    IntegralEntity(Parcel in) {
         super(in);
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     @Override
     void readParcel(Parcel in) {
-
+        this.setScore(in.readInt());
+        this.setName(in.readString());
+        this.setDesc(in.readString());
     }
 
     @Override
     void write2Parcel(Parcel dest, int flags) {
-
-    }
-
-    @Override
-    public int compareTo(@NonNull IntegralEntity o) {
-        return 0;
+        dest.writeInt(this.getScore());
+        dest.writeString(this.getName());
+        dest.writeString(this.getDesc());
     }
 
     public static final Creator<IntegralEntity> CREATOR = new Creator<IntegralEntity>() {

@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">积分</string>
+    <string name="unknown">未知</string>
+    <string name="sex_male">男</string>
+    <string name="sex_girl">女</string>
+    <string name="marital_unmarried">未婚</string>
+    <string name="marital_married">已婚</string>
+    <string name="marital_remarriage">再婚</string>
+    <string name="marital_remarried">复婚</string>
+    <string name="marital_widowed">丧偶</string>
+    <string name="marital_divorce">离异</string>
 </resources>

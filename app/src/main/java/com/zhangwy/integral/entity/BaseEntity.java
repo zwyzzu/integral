@@ -2,6 +2,9 @@ package com.zhangwy.integral.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
+
+import java.util.UUID;
 
 /**
  * Created by zhangwy on 2018/11/29 下午6:33.
@@ -18,6 +21,9 @@ public abstract class BaseEntity implements Parcelable {
     }
 
     public String getId() {
+        if (TextUtils.isEmpty(this.id)) {
+            this.id = UUID.randomUUID().toString();
+        }
         return id;
     }
 

@@ -8,15 +8,70 @@ import android.support.annotation.NonNull;
  * Updated by zhangwy on 2018/11/29 下午7:10.
  * Description 地址信息
  */
+@SuppressWarnings("unused")
 public class AddressEntity extends BaseEntity implements Comparable<AddressEntity> {
 
-    private String address;
-    private String desc;
-    private String bind;
-    private int position;
+    private String tag;//标签
+    private String phone;//电话
+    private String consignee;//收件人
+    private String province;//省
+    private String city;//市
+    private String district;//区
+    private String address;//地址
+    private String desc;//描述
+    private String bind;//绑定人物
+    private int position;//顺序
 
-    private AddressEntity(Parcel in) {
+    AddressEntity(Parcel in) {
         super(in);
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getConsignee() {
+        return consignee;
+    }
+
+    public void setConsignee(String consignee) {
+        this.consignee = consignee;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
     public String getAddress() {
@@ -51,8 +106,23 @@ public class AddressEntity extends BaseEntity implements Comparable<AddressEntit
         this.position = position;
     }
 
+    public String address() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(this.getProvince());
+        buffer.append(this.getCity());
+        buffer.append(this.getDistrict());
+        buffer.append(this.getAddress());
+        return buffer.toString();
+    }
+
     @Override
     void readParcel(Parcel in) {
+        this.setTag(in.readString());
+        this.setPhone(in.readString());
+        this.setConsignee(in.readString());
+        this.setProvince(in.readString());
+        this.setCity(in.readString());
+        this.setDistrict(in.readString());
         this.setAddress(in.readString());
         this.setDesc(in.readString());
         this.setBind(in.readString());
@@ -61,6 +131,12 @@ public class AddressEntity extends BaseEntity implements Comparable<AddressEntit
 
     @Override
     void write2Parcel(Parcel dest, int flags) {
+        dest.writeString(this.getTag());
+        dest.writeString(this.getPhone());
+        dest.writeString(this.getConsignee());
+        dest.writeString(this.getProvince());
+        dest.writeString(this.getCity());
+        dest.writeString(this.getDistrict());
         dest.writeString(this.getAddress());
         dest.writeString(this.getDesc());
         dest.writeString(this.getBind());
@@ -80,7 +156,7 @@ public class AddressEntity extends BaseEntity implements Comparable<AddressEntit
     };
 
     @Override
-    public int compareTo(@NonNull AddressEntity o) {
-        return 0;
+    public int compareTo(@NonNull AddressEntity entity) {
+        return this.getPosition() - entity.getPosition();
     }
 }
