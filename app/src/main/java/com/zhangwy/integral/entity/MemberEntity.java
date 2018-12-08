@@ -22,6 +22,7 @@ public class MemberEntity extends BaseEntity implements Parcelable {
     private String name;
     private String icon;
     private String desc;
+    private String childrenText;
     private int sex;
     private int age;
     private int marital;//婚否
@@ -56,6 +57,14 @@ public class MemberEntity extends BaseEntity implements Parcelable {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public String getChildrenText() {
+        return childrenText;
+    }
+
+    public void setChildrenText(String childrenText) {
+        this.childrenText = childrenText;
     }
 
     public int getSex() {
@@ -165,6 +174,7 @@ public class MemberEntity extends BaseEntity implements Parcelable {
         this.setName(in.readString());
         this.setIcon(in.readString());
         this.setDesc(in.readString());
+        this.setChildrenText(in.readString());
         this.setSex(in.readInt());
         this.setAge(in.readInt());
         this.setMarital(in.readInt());
@@ -179,6 +189,7 @@ public class MemberEntity extends BaseEntity implements Parcelable {
         dest.writeString(this.getName());
         dest.writeString(this.getIcon());
         dest.writeString(this.getDesc());
+        dest.writeString(this.getChildrenText());
         dest.writeInt(this.getSex());
         dest.writeInt(this.getAge());
         dest.writeInt(this.getMarital());
