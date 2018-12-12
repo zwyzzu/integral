@@ -29,4 +29,5 @@ dependencies {
     androidTestImplementation "com.android.support.test:runner:${rootProject.ext.android.JUnitRunnerVersion}"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${rootProject.ext.android.espressoVersion}"
     implementation project(path: ':libCore')
+    implementation project(path: ':widget')
 }

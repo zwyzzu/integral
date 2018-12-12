@@ -3,8 +3,6 @@ package yixia.lib.core.base;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 
-import com.facebook.common.util.ByteConstants;
-
 /**
  * Created by zhaoliangtai on 2018/5/24.
  */
@@ -12,7 +10,6 @@ import com.facebook.common.util.ByteConstants;
 public interface Constant {
 
     int MAX_HEAP_SIZE = (int) Runtime.getRuntime().maxMemory();
-    int MAX_DISK_CACHE_SIZE = 40 * ByteConstants.MB;
     int MAX_MEMORY_CACHE_SIZE = MAX_HEAP_SIZE / 4;
     int CAPTURE_TO_EDIT_REQUEST_CODE = 10089;
     int CAPTURE_TO_IMPORT_REQUEST_CODE = 10088;

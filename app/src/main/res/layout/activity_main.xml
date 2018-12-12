@@ -2,17 +2,75 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/darker_gray"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+    <com.yixia.widget.VSTopBar
+        android:id="@+id/mainTopBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/topBarHeight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/mainBottomBar"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/bottomBarHeight"
+        android:orientation="horizontal"
+        android:background="@color/tabLayout_state_selected_false"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <RadioButton
+            android:id="@+id/mainBottomBarMain"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/icon_widget_back_dmodel"
+            android:button="@drawable/background_main_bottombar"
+            android:gravity="center"
+            android:checked="true"
+            android:textColor="@drawable/textcolor_main_bottombar"
+            android:text="@string/main_bottom_main" />
+
+        <RadioButton
+            android:id="@+id/mainBottomBarAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="@drawable/textcolor_main_bottombar"
+            android:drawableTop="@drawable/icon_widget_back_dmodel"
+            android:button="@drawable/background_main_bottombar"
+            android:gravity="center"
+            android:text="@string/main_bottom_add" />
+
+        <RadioButton
+            android:id="@+id/mainBottomBarMine"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="@drawable/textcolor_main_bottombar"
+            android:drawableTop="@drawable/icon_widget_back_dmodel"
+            android:button="@drawable/background_main_bottombar"
+            android:gravity="center"
+            android:text="@string/main_bottom_mine" />
+    </RadioGroup>
+
+    <FrameLayout
+        android:id="@+id/mainContent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/margin_8"
+        android:layout_marginTop="@dimen/margin_8"
+        app:layout_constraintBottom_toTopOf="@id/mainBottomBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mainTopBar" />
 
 </android.support.constraint.ConstraintLayout>

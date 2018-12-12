@@ -23,6 +23,7 @@ public class MemberEntity extends BaseEntity implements Parcelable {
     private String icon;
     private String desc;
     private String childrenText;
+    private String phone;
     private int sex;
     private int age;
     private int marital;//婚否
@@ -65,6 +66,14 @@ public class MemberEntity extends BaseEntity implements Parcelable {
 
     public void setChildrenText(String childrenText) {
         this.childrenText = childrenText;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public int getSex() {
@@ -129,10 +138,11 @@ public class MemberEntity extends BaseEntity implements Parcelable {
         }
         int sum = 0;
         for (IntegralBindEntity integral : this.getIntegrals()) {
-            if (integral == null) {
+            if (integral == null || !integral.useable()) {
                 continue;
             }
             sum += integral.getScore();
+            sum -= integral.getUsedScore();
         }
         return sum;
     }
@@ -175,6 +185,7 @@ public class MemberEntity extends BaseEntity implements Parcelable {
         this.setIcon(in.readString());
         this.setDesc(in.readString());
         this.setChildrenText(in.readString());
+        this.setPhone(in.readString());
         this.setSex(in.readInt());
         this.setAge(in.readInt());
         this.setMarital(in.readInt());
@@ -190,6 +201,7 @@ public class MemberEntity extends BaseEntity implements Parcelable {
         dest.writeString(this.getIcon());
         dest.writeString(this.getDesc());
         dest.writeString(this.getChildrenText());
+        dest.writeString(this.getPhone());
         dest.writeInt(this.getSex());
         dest.writeInt(this.getAge());
         dest.writeInt(this.getMarital());

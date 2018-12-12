@@ -9,4 +9,7 @@
     <string name="marital_remarried">复婚</string>
     <string name="marital_widowed">丧偶</string>
     <string name="marital_divorce">离异</string>
+    <string name="main_bottom_main">首页</string>
+    <string name="main_bottom_add">添加</string>
+    <string name="main_bottom_mine">我的</string>
 </resources>

@@ -11,8 +11,10 @@ import android.support.annotation.NonNull;
 @SuppressWarnings("unused")
 public class IntegralBindEntity extends BaseEntity implements Comparable<IntegralBindEntity> {
 
-    private int score;//分数
-    private long date;//日期
+    private int score = 0;//分数
+    private int usedScore = 0;//分数
+    private long createDate;//积分日期
+    private long usedDate;//使用日期
     private String desc;//描述
     private String bind;//绑定人物ID
     private String scoreBind;//绑定积分ID
@@ -25,12 +27,28 @@ public class IntegralBindEntity extends BaseEntity implements Comparable<Integra
         this.score = score;
     }
 
-    public long getDate() {
-        return date;
+    public int getUsedScore() {
+        return usedScore;
     }
 
-    public void setDate(long date) {
-        this.date = date;
+    public void setUsedScore(int usedScore) {
+        this.usedScore = usedScore;
+    }
+
+    public long getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(long createDate) {
+        this.createDate = createDate;
+    }
+
+    public long getUsedDate() {
+        return usedDate;
+    }
+
+    public void setUsedDate(long usedDate) {
+        this.usedDate = usedDate;
     }
 
     public String getDesc() {
@@ -57,6 +75,10 @@ public class IntegralBindEntity extends BaseEntity implements Comparable<Integra
         this.scoreBind = scoreBind;
     }
 
+    public boolean useable() {
+        return this.getScore() - this.getUsedScore() > 0;
+    }
+
     IntegralBindEntity(Parcel in) {
         super(in);
     }
@@ -64,7 +86,9 @@ public class IntegralBindEntity extends BaseEntity implements Comparable<Integra
     @Override
     void readParcel(Parcel in) {
         this.setScore(in.readInt());
-        this.setDate(in.readLong());
+        this.setUsedScore(in.readInt());
+        this.setCreateDate(in.readLong());
+        this.setUsedDate(in.readLong());
         this.setDesc(in.readString());
         this.setBind(in.readString());
         this.setScoreBind(in.readString());
@@ -73,7 +97,9 @@ public class IntegralBindEntity extends BaseEntity implements Comparable<Integra
     @Override
     void write2Parcel(Parcel dest, int flags) {
         dest.writeInt(this.getScore());
-        dest.writeLong(this.getDate());
+        dest.writeInt(this.getUsedScore());
+        dest.writeLong(this.getCreateDate());
+        dest.writeLong(this.getUsedDate());
         dest.writeString(this.getDesc());
         dest.writeString(this.getBind());
         dest.writeString(this.getScoreBind());

@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.squareup.leakcanary.RefWatcher;
 import yixia.lib.core.BuildConfig;
 import yixia.lib.core.util.Logger;
 
@@ -39,13 +38,13 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        mRootView = inflater.inflate(getLayoutId(), container, false);
-        return mRootView;
+        return inflater.inflate(getLayoutId(), container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        this.mRootView = view;
         init(view, savedInstanceState);
     }
 
@@ -86,19 +85,5 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (false && BuildConfig.DEBUG && isUseLeakCanary()) {
-            RefWatcher refWatcher = BaseApplication.getRefWatcher(getActivity());
-            if (refWatcher != null) {
-                refWatcher.watch(this);
-            }
-        }
-    }
-
-    /**
-     * 是否使用leakcanary 检测Fragment
-     * @return 默认为true;
-     */
-    public boolean isUseLeakCanary() {
-        return true;
     }
 }

@@ -31,94 +31,6 @@ public class AppUtils {
 
     private static final String TAG_FAKE_STATUS_BAR_VIEW = "tag_fake_status_bar_view";
     private static final String TAG_MARGIN_ADDED = "tag_margin_added";
-    private static String sVersionName = "";
-    private static int sVersionCode = -1;
-    private static String sPackageName = "";
-    private static Context mGlobalContext;
-
-    /**
-     * @return 获取设备型号
-     */
-    public static String getDeviceModel() {
-        try {
-            return URLEncoder.encode(Build.MODEL, "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            return "";
-        }
-    }
-
-    /**
-     * @return 获取app版本号
-     */
-    public static int getAppVersionCode() {
-        if (-1 == sVersionCode) {
-            try {
-                PackageManager packageManager = Utils.getApp().getPackageManager();
-                PackageInfo packageInfo = packageManager.getPackageInfo(
-                        Utils.getApp().getPackageName(),
-                        0);
-                sVersionCode = packageInfo.versionCode;
-                return sVersionCode;
-            } catch (Exception e) {
-                return sVersionCode;
-            }
-        } else {
-            return sVersionCode;
-        }
-    }
-
-    /**
-     * @return 获取app版本名称
-     */
-    public static String getAppVersionName() {
-        if (TextUtils.isEmpty(sVersionName)) {
-            try {
-                PackageManager packageManager = Utils.getApp().getPackageManager();
-                PackageInfo packageInfo = packageManager.getPackageInfo(
-                        Utils.getApp().getPackageName(),
-                        0);
-                sVersionName = packageInfo.versionName;
-                return sVersionName;
-            } catch (Exception e) {
-                return sVersionName;
-            }
-        } else {
-            return sVersionName;
-        }
-    }
-
-    /**
-     * @return 获取app包名
-     */
-    public static String getAppPackageName() {
-        if (TextUtils.isEmpty(sPackageName)) {
-            try {
-                PackageManager packageManager = Utils.getApp().getPackageManager();
-                PackageInfo packageInfo = packageManager.getPackageInfo(
-                        Utils.getApp().getPackageName(),
-                        0);
-                sPackageName = packageInfo.packageName;
-                return sPackageName;
-            } catch (Exception e) {
-                return sPackageName;
-            }
-        } else {
-            return sPackageName;
-        }
-    }
-
-    /**
-     * @return 系统语言代码 (使用ISO-639标准)
-     */
-    public static String getLanguageCode() {
-        try {
-            return Locale.getDefault().getLanguage()
-                    + "_"
-                    + Locale.getDefault().getCountry();
-        } catch (Exception e) {
-            return "unknown";
-        }
-    }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void setStatusBarColorAndroidL(Activity activity, int statusColor) {
@@ -221,17 +133,4 @@ public class AppUtils {
         mContentView.setPadding(0, padding, 0, 0);
     }
 
-    public static Context getGlobalContext() {
-        if (mGlobalContext == null) {
-            try {
-                final Class<?> activityThread = Class.forName("android.app.ActivityThread");
-                final Method currentApplicationMethod //
-                        = activityThread.getDeclaredMethod("currentApplication");
-                mGlobalContext = (Context) currentApplicationMethod.invoke(null);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return mGlobalContext;
-    }
 }
