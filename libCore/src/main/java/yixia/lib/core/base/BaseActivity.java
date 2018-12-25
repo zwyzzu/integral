@@ -2,19 +2,16 @@ package yixia.lib.core.base;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
@@ -24,13 +21,14 @@ import java.util.ArrayList;
 
 import yixia.lib.core.BuildConfig;
 import yixia.lib.core.util.AppUtils;
+import yixia.lib.core.util.Device;
 import yixia.lib.core.util.Logger;
 import yixia.lib.core.util.Util;
 
 /**
  */
 @SuppressWarnings("unused")
-public class BaseActivity extends FragmentActivity {
+public class BaseActivity extends AppCompatActivity {
     private static ArrayList<Activity> activityArray = new ArrayList<>();
     private View mDecorView;
     private static Handler handler = new Handler();
@@ -39,20 +37,8 @@ public class BaseActivity extends FragmentActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        updateFontScale();
         mDecorView = getWindow().getDecorView();
         this.pushActivity();
-    }
-
-    private void updateFontScale() {
-        Resources res = getResources();
-        Configuration configuration = new Configuration();
-        if (res.getConfiguration().fontScale != configuration.fontScale) { //非默认值
-            configuration.fontScale = res.getDisplayMetrics() != null
-                    && res.getDisplayMetrics().densityDpi > DisplayMetrics.DENSITY_XXHIGH
-                    ? 1.1f : 1.0f;
-            res.updateConfiguration(configuration, res.getDisplayMetrics());
-        }
     }
 
     @Override
@@ -62,22 +48,22 @@ public class BaseActivity extends FragmentActivity {
         this.popActivity();
     }
 
-    public void addFragment(@NonNull FragmentManager fragmentManager,
-                            @NonNull Fragment fragment, int frameId) {
+    public void addFragment(@NonNull Fragment fragment, int frameId) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(frameId, fragment);
         transaction.commitAllowingStateLoss();
     }
 
-    public void removeFragment(@NonNull FragmentManager fragmentManager,
-                               @NonNull Fragment fragment) {
+    public void removeFragment(@NonNull Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.remove(fragment);
         transaction.commitAllowingStateLoss();
     }
 
-    public void addFragment(@NonNull FragmentManager fragmentManager, @NonNull Fragment fragment,
-                            int frameId, String tag) {
+    public void addFragment(@NonNull Fragment fragment, int frameId, String tag) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(frameId, fragment, tag);
         transaction.commitAllowingStateLoss();
@@ -99,8 +85,7 @@ public class BaseActivity extends FragmentActivity {
         // Set the IMMERSIVE flag.
         // Set the content to appear under the system bars so that the content
         // doesn't resize when the system bars hide and show.
-        mDecorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
@@ -109,10 +94,10 @@ public class BaseActivity extends FragmentActivity {
     }
 
     public void setStatusBarColor(int color) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
-                && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+        int version = Device.OS.getAndroidOSVersion();
+        if (version >= Build.VERSION_CODES.KITKAT && version < Build.VERSION_CODES.LOLLIPOP) {
             AppUtils.setStatusBarColor(this, color);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        } else if (version >= Build.VERSION_CODES.LOLLIPOP) {
             AppUtils.setStatusBarColorAndroidL(this, color);
         }
     }
@@ -215,7 +200,7 @@ public class BaseActivity extends FragmentActivity {
     }
 
     public boolean isDestroyed() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        if (Device.OS.getAndroidOSVersion() >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             return super.isDestroyed();
         }
         return this.destroyed;

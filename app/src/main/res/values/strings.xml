@@ -12,4 +12,30 @@
     <string name="main_bottom_main">首页</string>
     <string name="main_bottom_add">添加</string>
     <string name="main_bottom_mine">我的</string>
+    <string name="add_hint_name">请输入姓名</string>
+    <string name="add_hint_phone">请输入电话号码</string>
+    <string name="add_hint_age">请输入年龄</string>
+    <string name="add_hint_birthday">请点击选择生日</string>
+    <string name="add_hint_message">请输入描述个人信息</string>
+    <string name="add_sex_header">性别:</string>
+    <string name="add_age_header">年龄:</string>
+    <string name="add_birthday_header">生日:</string>
+    <string name="add_marital_header">婚姻:</string>
+    <string name="add_children_header">子女:</string>
+    <string name="add_button_clear">清空</string>
+    <string name="add_button_save">保存</string>
+    <string-array name="sex_array">
+        <item>@string/unknown</item>
+        <item>@string/sex_male</item>
+        <item>@string/sex_girl</item>
+    </string-array>
+    <string-array name="marita_array">
+        <item>@string/unknown</item>
+        <item>@string/marital_unmarried</item>
+        <item>@string/marital_married</item>
+        <item>@string/marital_remarriage</item>
+        <item>@string/marital_remarried</item>
+        <item>@string/marital_widowed</item>
+        <item>@string/marital_divorce</item>
+    </string-array>
 </resources>

@@ -1,7 +1,339 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/addToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/background_bar"
+        android:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/main_bottom_add" />
+    </android.support.v7.widget.Toolbar>
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/addIcon"
+        android:layout_width="@dimen/round_icon_small"
+        android:layout_height="@dimen/round_icon_small"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_16"
+        app:fadeDuration="0"
+        app:failureImageScaleType="centerInside"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addToolbar"
+        app:placeholderImage="@mipmap/icon_avatar"
+        app:placeholderImageScaleType="centerCrop"
+        app:roundAsCircle="true" />
+
+    <com.yixia.widget.VSVerificationLayout
+        android:id="@+id/addName"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/add_line_height"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        android:layout_marginStart="@dimen/margin_16"
+        app:inputId="@+id/addNameInput"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/addIcon"
+        app:layout_constraintTop_toTopOf="@+id/addIcon">
+
+        <EditText
+            android:id="@+id/addNameInput"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/add_line_height"
+            android:background="@drawable/background_input_line"
+            android:hint="@string/add_hint_name"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            tools:ignore="LabelFor,TextFields" />
+    </com.yixia.widget.VSVerificationLayout>
+
+    <com.yixia.widget.VSVerificationLayout
+        android:id="@+id/addPhone"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/add_line_height"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        android:layout_marginStart="@dimen/margin_16"
+        app:inputId="@+id/addPhoneInput"
+        app:layout_constraintBottom_toBottomOf="@+id/addIcon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/addIcon">
+
+        <EditText
+            android:id="@+id/addPhoneInput"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_input_line"
+            android:hint="@string/add_hint_phone"
+            android:inputType="phone"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            tools:ignore="LabelFor" />
+    </com.yixia.widget.VSVerificationLayout>
+
+    <TextView
+        android:id="@+id/addSexHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/add_line_height"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_16"
+        android:text="@string/add_sex_header"
+        android:textSize="@dimen/widget_fontSize_18"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addIcon" />
+
+    <Spinner
+        android:id="@+id/addSexSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/sex_array"
+        app:layout_constraintLeft_toRightOf="@id/addSexHeader"
+        app:layout_constraintStart_toEndOf="@id/addSexHeader"
+        app:layout_constraintTop_toTopOf="@id/addSexHeader" />
+
+    <TextView
+        android:id="@+id/addAgeHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/add_line_height"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_16"
+        android:text="@string/add_age_header"
+        android:textSize="@dimen/widget_fontSize_18"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addSexHeader" />
+
+    <com.yixia.widget.VSVerificationLayout
+        android:id="@+id/addAge"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/add_line_height"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_8"
+        android:layout_marginRight="@dimen/margin_16"
+        android:layout_marginStart="@dimen/margin_8"
+        app:layout_constraintBottom_toBottomOf="@+id/addAgeHeader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/addAgeHeader"
+        app:layout_constraintTop_toTopOf="@+id/addAgeHeader">
+
+        <EditText
+            android:id="@+id/addAgeInput"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_input_line"
+            android:hint="@string/add_hint_age"
+            android:inputType="number"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            tools:ignore="LabelFor" />
+    </com.yixia.widget.VSVerificationLayout>
+
+    <TextView
+        android:id="@+id/addBirthdayHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/add_line_height"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_16"
+        android:text="@string/add_birthday_header"
+        android:textSize="@dimen/widget_fontSize_18"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addAgeHeader" />
+
+    <com.yixia.widget.VSVerificationLayout
+        android:id="@+id/addBirthday"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/add_line_height"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_8"
+        android:layout_marginRight="@dimen/margin_16"
+        android:layout_marginStart="@dimen/margin_8"
+        app:layout_constraintBottom_toBottomOf="@+id/addBirthdayHeader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/addBirthdayHeader"
+        app:layout_constraintTop_toTopOf="@+id/addBirthdayHeader">
+
+        <TextView
+            android:id="@+id/addBirthdayInput"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_input_line"
+            android:hint="@string/add_hint_birthday"
+            android:lines="1"
+            android:textSize="@dimen/widget_fontSize_18"
+            android:maxLines="1"
+            android:singleLine="true"
+            tools:ignore="LabelFor" />
+    </com.yixia.widget.VSVerificationLayout>
+
+    <TextView
+        android:id="@+id/addMaritalHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/add_line_height"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_16"
+        android:text="@string/add_marital_header"
+        android:textSize="@dimen/widget_fontSize_18"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addBirthdayHeader" />
+
+    <Spinner
+        android:id="@+id/addMaritalSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/marita_array"
+        app:layout_constraintLeft_toRightOf="@id/addMaritalHeader"
+        app:layout_constraintStart_toEndOf="@id/addMaritalHeader"
+        app:layout_constraintTop_toTopOf="@id/addMaritalHeader" />
+
+    <TextView
+        android:id="@+id/addChildrenHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/add_line_height"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_16"
+        android:text="@string/add_children_header"
+        android:textSize="@dimen/widget_fontSize_18"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addMaritalHeader" />
+
+    <EditText
+        android:id="@+id/addChildrenSonCount"
+        android:layout_width="@dimen/add_line_height"
+        android:layout_height="@dimen/add_line_height"
+        android:layout_marginLeft="@dimen/margin_8"
+        android:layout_marginStart="@dimen/margin_8"
+        android:background="@drawable/background_input_rectangle"
+        android:gravity="center"
+        android:inputType="number"
+        android:lines="1"
+        android:maxLines="1"
+        android:singleLine="true"
+        app:layout_constraintStart_toEndOf="@+id/addChildrenHeader"
+        app:layout_constraintTop_toTopOf="@+id/addChildrenHeader"
+        tools:ignore="LabelFor" />
+
+    <TextView
+        android:id="@+id/addChildrenSon"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/add_line_height"
+        android:layout_marginLeft="@dimen/margin_4"
+        android:layout_marginStart="@dimen/margin_4"
+        android:text="@string/sex_male"
+        android:textSize="@dimen/widget_fontSize_18"
+        app:layout_constraintLeft_toRightOf="@id/addChildrenSonCount"
+        app:layout_constraintStart_toEndOf="@+id/addChildrenSonCount"
+        app:layout_constraintTop_toTopOf="@+id/addChildrenSonCount" />
+
+    <EditText
+        android:id="@+id/addChildrenDaughterCount"
+        android:layout_width="@dimen/add_line_height"
+        android:layout_height="@dimen/add_line_height"
+        android:layout_marginLeft="@dimen/margin_4"
+        android:layout_marginStart="@dimen/margin_4"
+        android:background="@drawable/background_input_rectangle"
+        android:gravity="center"
+        android:inputType="number"
+        android:lines="1"
+        android:maxLines="1"
+        android:singleLine="true"
+        app:layout_constraintLeft_toRightOf="@id/addChildrenSon"
+        app:layout_constraintStart_toEndOf="@+id/addChildrenSon"
+        app:layout_constraintTop_toTopOf="@+id/addChildrenSon"
+        tools:ignore="LabelFor" />
+
+    <TextView
+        android:id="@+id/addChildrenDaughter"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/add_line_height"
+        android:layout_marginLeft="@dimen/margin_4"
+        android:layout_marginStart="@dimen/margin_4"
+        android:text="@string/sex_girl"
+        android:textSize="@dimen/widget_fontSize_18"
+        app:layout_constraintLeft_toRightOf="@id/addChildrenDaughterCount"
+        app:layout_constraintStart_toEndOf="@+id/addChildrenDaughterCount"
+        app:layout_constraintTop_toTopOf="@+id/addChildrenDaughterCount" />
+
+    <EditText
+        android:id="@+id/addMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_16"
+        android:background="@drawable/background_input_rectangle"
+        android:gravity="start"
+        android:hint="@string/add_hint_message"
+        android:maxLines="5"
+        android:minLines="3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addChildrenHeader" />
+
+    <Button
+        android:id="@+id/addButtonClear"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginEnd="@dimen/margin_8"
+        android:layout_marginRight="@dimen/margin_8"
+        android:layout_marginTop="@dimen/margin_16"
+        android:minWidth="@dimen/button_min_width"
+        android:text="@string/add_button_clear"
+        android:background="@drawable/background_button_red"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/addButtonSave"
+        app:layout_constraintRight_toLeftOf="@+id/addButtonSave"
+        app:layout_constraintTop_toBottomOf="@+id/addMessage" />
+
+    <Button
+        android:id="@+id/addButtonSave"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginLeft="@dimen/margin_8"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        android:minWidth="@dimen/button_min_width"
+        android:text="@string/add_button_save"
+        android:background="@drawable/background_button_blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/addButtonClear"
+        app:layout_constraintStart_toEndOf="@id/addButtonClear"
+        app:layout_constraintTop_toTopOf="@id/addButtonClear"
+        app:layout_constraintBottom_toBottomOf="@id/addButtonClear"/>
 </android.support.constraint.ConstraintLayout>

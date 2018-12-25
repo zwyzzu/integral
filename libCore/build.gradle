@@ -42,6 +42,5 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${rootProject.ext.android.supportVersion}"
     implementation "com.android.support:recyclerview-v7:${rootProject.ext.android.supportVersion}"
     implementation "com.android.support.constraint:constraint-layout:${rootProject.ext.android.ConstraintLayout}"
-
     implementation "com.android.support:multidex:${rootProject.ext.android.multidex}"
 }

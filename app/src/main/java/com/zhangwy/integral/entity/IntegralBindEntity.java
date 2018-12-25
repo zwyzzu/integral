@@ -76,7 +76,15 @@ public class IntegralBindEntity extends BaseEntity implements Comparable<Integra
     }
 
     public boolean useable() {
-        return this.getScore() - this.getUsedScore() > 0;
+        return this.useableScore() > 0;
+    }
+
+    public int useableScore() {
+        return this.getScore() - this.getUsedScore();
+    }
+
+    public IntegralBindEntity() {
+        super();
     }
 
     IntegralBindEntity(Parcel in) {
@@ -107,7 +115,8 @@ public class IntegralBindEntity extends BaseEntity implements Comparable<Integra
 
     @Override
     public int compareTo(@NonNull IntegralBindEntity entity) {
-        return 0;
+        long poor = this.getCreateDate() - entity.getCreateDate();
+        return (int) poor;
     }
 
     public static final Creator<IntegralBindEntity> CREATOR = new Creator<IntegralBindEntity>() {

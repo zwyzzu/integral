@@ -15,6 +15,9 @@ import java.util.UUID;
 public abstract class BaseEntity implements Parcelable {
     private String id;
 
+    BaseEntity() {
+    }
+
     BaseEntity(Parcel in) {
         this.setId(in.readString());
         this.readParcel(in);

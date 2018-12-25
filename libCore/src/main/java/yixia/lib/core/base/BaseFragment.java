@@ -3,8 +3,12 @@ package yixia.lib.core.base;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,10 +18,6 @@ import android.widget.Toast;
 
 import yixia.lib.core.BuildConfig;
 import yixia.lib.core.util.Logger;
-
-/**
- * Created by zhaoliangtai on 2018/4/28.
- */
 
 public abstract class BaseFragment extends Fragment {
 
@@ -51,6 +51,31 @@ public abstract class BaseFragment extends Fragment {
     protected abstract int getLayoutId();
 
     protected abstract void init(View view, Bundle saveInstanceState);
+
+    protected final void addToolbar(@IdRes int toolbarId) {
+        AppCompatActivity activity = getAppCompatActivity();
+        if (activity == null) {
+            return;
+        }
+        Toolbar toolbar = this.mRootView.findViewById(toolbarId);
+        activity.setSupportActionBar(toolbar);
+    }
+
+    protected final ActionBar getSupportActionBar() {
+        AppCompatActivity activity = getAppCompatActivity();
+        if (activity == null) {
+            return null;
+        }
+        return activity.getSupportActionBar();
+    }
+
+    protected final AppCompatActivity getAppCompatActivity() {
+        Activity activity = getActivity();
+        if (activity == null || !(activity instanceof AppCompatActivity)) {
+            return null;
+        }
+        return (AppCompatActivity) activity;
+    }
 
     protected void showMessage(boolean always, int resId) {
         this.showMessage(always, false, resId);

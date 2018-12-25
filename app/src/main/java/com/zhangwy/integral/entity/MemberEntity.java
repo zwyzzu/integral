@@ -27,10 +27,16 @@ public class MemberEntity extends BaseEntity implements Parcelable {
     private int sex;
     private int age;
     private int marital;//婚否
+    private long created;//创建时间
+    private long modified;//最后修改时间
     private List<AddressEntity> address = new ArrayList<>();
     private List<IntegralBindEntity> integrals = new ArrayList<>();
     private List<MemberEntity> children = new ArrayList<>();
     private List<MemberEntity> parents = new ArrayList<>();
+
+    public MemberEntity() {
+        super();
+    }
 
     private MemberEntity(Parcel in) {
         super(in);
@@ -116,6 +122,22 @@ public class MemberEntity extends BaseEntity implements Parcelable {
         this.setMarital(marital.code);
     }
 
+    public long getCreated() {
+        return created;
+    }
+
+    public void setCreated(long created) {
+        this.created = created;
+    }
+
+    public long getModified() {
+        return modified;
+    }
+
+    public void setModified(long modified) {
+        this.modified = modified;
+    }
+
     public List<AddressEntity> getAddress() {
         return address;
     }
@@ -189,6 +211,8 @@ public class MemberEntity extends BaseEntity implements Parcelable {
         this.setSex(in.readInt());
         this.setAge(in.readInt());
         this.setMarital(in.readInt());
+        this.setCreated(in.readLong());
+        this.setModified(in.readLong());
         this.setAddress(in.createTypedArrayList(AddressEntity.CREATOR));
         this.setIntegrals(in.createTypedArrayList(IntegralBindEntity.CREATOR));
         this.setChildren(in.createTypedArrayList(MemberEntity.CREATOR));
@@ -205,6 +229,8 @@ public class MemberEntity extends BaseEntity implements Parcelable {
         dest.writeInt(this.getSex());
         dest.writeInt(this.getAge());
         dest.writeInt(this.getMarital());
+        dest.writeLong(this.getCreated());
+        dest.writeLong(this.getModified());
         dest.writeTypedList(this.getAddress());
         dest.writeTypedList(this.getIntegrals());
         dest.writeTypedList(this.getChildren());

@@ -8,6 +8,8 @@
     <color name="translucent">#80000000</color>
     <color name="color1">#3395ff</color>
     <color name="black">#000</color>
-    <color name="theme_red">#FD415F</color>
-    <color name="theme_red_un_select">#80FD415F</color>
+    <color name="theme_red">#ff4444</color>
+    <color name="theme_red_un_select">#cc0000</color>
+    <color name="theme_blue">#33b5e5</color>
+    <color name="theme_blue_un_select">#0099cc</color>
 </resources>

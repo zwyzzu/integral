@@ -2,4 +2,9 @@
 <resources>
     <dimen name="topBarHeight">48dip</dimen>
     <dimen name="bottomBarHeight">45dip</dimen>
+    <dimen name="round_icon_small">72dip</dimen>
+    <dimen name="round_icon_big">108dip</dimen>
+    <dimen name="add_line_height">28dip</dimen>
+    <dimen name="button_height">48dip</dimen>
+    <dimen name="button_min_width">108dip</dimen>
 </resources>

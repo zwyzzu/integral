@@ -14,6 +14,10 @@ public class IntegralEntity extends BaseEntity {
     private String name;
     private String desc;//描述
 
+    public IntegralEntity() {
+        super();
+    }
+
     IntegralEntity(Parcel in) {
         super(in);
     }
