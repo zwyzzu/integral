@@ -5,7 +5,7 @@ properties.load(inputStream)
 ext {
     android = [
             compileSdkVersion : 27,
-            buildToolsVersion : "27.0.3",
+            buildToolsVersion : "28.0.3",
             minSdkVersion     : 16,
             targetSdkVersion  : 27,
 
@@ -35,13 +35,10 @@ ext {
             circleprogressbar : "1.2.0",
             FlycoTabLayout_Lib: "2.1.0@aar",
             AndResGuard       : "1.2.8",
-            leakcanary        : "1.6.1",
             room              : "1.6.1",
             leakcanary        : "1.6.1",
             arouter           : "1.4.1",
             butterknife       : "9.0.0-rc2",
 
     ]
-
-
 }
