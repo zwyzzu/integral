@@ -29,8 +29,9 @@ public class DatePickDialog extends Dialog implements OnChangeListener {
 
     //开始时间
     private Date startDate = new Date();
-    //年分限制，默认上下5年
-    private int yearLimt = 5;
+    //年份限制，上下5年
+    private int yearPast = 5;
+    private int yearFuture = 5;
 
     private OnChangeListener onChangeListener;
 
@@ -59,8 +60,14 @@ public class DatePickDialog extends Dialog implements OnChangeListener {
     }
 
     //设置年份限制，上下年份
-    public void setYearLimt(int yearLimt) {
-        this.yearLimt = yearLimt;
+    public void setYearLimit(int yearLimit) {
+        this.yearPast = yearLimit;
+        this.yearFuture = yearLimit;
+    }
+
+    public void setYearLimit(int yearPast, int yearFuture) {
+        this.yearPast = yearPast;
+        this.yearFuture = yearFuture;
     }
 
     //设置选择回调
@@ -89,7 +96,7 @@ public class DatePickDialog extends Dialog implements OnChangeListener {
     private DatePicker getDatePicker() {
         DatePicker picker = new DatePicker(getContext(), type);
         picker.setStartDate(startDate);
-        picker.setYearLimt(yearLimt);
+        picker.setYearLimit(this.yearPast, this.yearFuture);
         picker.setOnChangeListener(this);
         picker.init();
         return picker;

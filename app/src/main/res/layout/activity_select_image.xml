@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SelectImageActivity">
+
+    <TextView
+        android:id="@+id/selectImageTakePhoto"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/background"
+        android:gravity="center_vertical"
+        android:padding="@dimen/margin_8"
+        android:textColor="@color/font_color_A2A3A5"
+        android:text="@string/select_image_take_photo"
+        android:textSize="@dimen/widget_fontSize_18"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <View
+        android:id="@+id/selectImageDivision"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectImageTakePhoto"
+        android:background="@color/font_color_A2A3A5"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/selectImageSelectImage"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/background"
+        android:gravity="center_vertical"
+        android:padding="@dimen/margin_8"
+        android:textColor="@color/font_color_A2A3A5"
+        android:text="@string/select_image_select_image"
+        android:textSize="@dimen/widget_fontSize_18"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectImageDivision"
+        tools:ignore="MissingConstraints" />
+</android.support.constraint.ConstraintLayout>

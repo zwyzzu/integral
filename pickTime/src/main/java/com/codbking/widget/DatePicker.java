@@ -1,5 +1,6 @@
 package com.codbking.widget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.TextView;
 
@@ -11,6 +12,8 @@ import java.util.Date;
 
 import yixia.lib.core.util.TimeUtil;
 
+@SuppressLint("ViewConstructor")
+@SuppressWarnings("unused")
 class DatePicker extends BaseWheelPick {
 
     private WheelView yearView;
@@ -27,8 +30,9 @@ class DatePicker extends BaseWheelPick {
 
     //开始时间
     private Date startDate = new Date();
-    //年分限制，默认上下5年
-    private int yearLimt = 5;
+    //年份限制，上下5年
+    private int yearPast = 5;
+    private int yearFuture = 5;
 
     private OnChangeListener onChangeListener;
     private int selectDay;
@@ -49,8 +53,14 @@ class DatePicker extends BaseWheelPick {
         this.startDate = startDate;
     }
 
-    public void setYearLimt(int yearLimt) {
-        this.yearLimt = yearLimt;
+    public void setYearLimit(int yearLimit) {
+        this.yearPast = yearLimit;
+        this.yearFuture = yearLimit;
+    }
+
+    public void setYearLimit(int yearPast, int yearFuture) {
+        this.yearPast = yearPast;
+        this.yearFuture = yearFuture;
     }
 
     //初始化值
@@ -107,13 +117,13 @@ class DatePicker extends BaseWheelPick {
         }
 
         datePicker = new DatePickerHelper();
-        datePicker.setStartDate(startDate, yearLimt);
+        datePicker.setStartDate(startDate, this.yearPast, this.yearFuture);
 
         dayArr = datePicker.genDay();
         yearArr = datePicker.genYear();
         mothArr = datePicker.genMonth();
         hourArr = datePicker.genHour();
-        minutArr = datePicker.genMinut();
+        minutArr = datePicker.genMinute();
 
         weekView.setText(datePicker.getDisplayStartWeek());
 
@@ -123,19 +133,12 @@ class DatePicker extends BaseWheelPick {
         setWheelListener(hourView, hourArr, true);
         setWheelListener(minuteView, minutArr, true);
 
-        yearView.setCurrentItem(datePicker.findIndextByValue(datePicker.getToady(DatePickerHelper
-                .Type.YEAR), yearArr));
-        monthView.setCurrentItem(datePicker.findIndextByValue(datePicker.getToady
-                (DatePickerHelper.Type.MOTH), mothArr));
-        dayView.setCurrentItem(datePicker.findIndextByValue(datePicker.getToady(DatePickerHelper
-                .Type.DAY), dayArr));
-        hourView.setCurrentItem(datePicker.findIndextByValue(datePicker.getToady(DatePickerHelper
-                .Type.HOUR), hourArr));
-        minuteView.setCurrentItem(datePicker.findIndextByValue(datePicker.getToady
-                (DatePickerHelper.Type.MINUTE), minutArr));
-
+        yearView.setCurrentItem(datePicker.findIndexByValue(datePicker.getToady(DatePickerHelper.Type.YEAR), yearArr));
+        monthView.setCurrentItem(datePicker.findIndexByValue(datePicker.getToady(DatePickerHelper.Type.MOTH), mothArr));
+        dayView.setCurrentItem(datePicker.findIndexByValue(datePicker.getToady(DatePickerHelper.Type.DAY), dayArr));
+        hourView.setCurrentItem(datePicker.findIndexByValue(datePicker.getToady(DatePickerHelper.Type.HOUR), hourArr));
+        minuteView.setCurrentItem(datePicker.findIndexByValue(datePicker.getToady(DatePickerHelper.Type.MINUTE), minutArr));
     }
-
 
     protected String[] convertData(WheelView wheelView, Integer[] data) {
         if (wheelView == yearView) {
@@ -162,9 +165,8 @@ class DatePicker extends BaseWheelPick {
         return dayView.getItemHeight();
     }
 
-
     @Override
-    protected void setData(Object[] datas) {
+    protected void setData(Object[] data) {
     }
 
     private void setChangeDaySelect(int year, int moth) {
@@ -172,22 +174,21 @@ class DatePicker extends BaseWheelPick {
         WheelGeneralAdapter adapter = (WheelGeneralAdapter) dayView.getViewAdapter();
         adapter.setData(convertData(dayView, dayArr));
 
-        int indxt = datePicker.findIndextByValue(selectDay, dayArr);
-        if (indxt == -1) {
+        int index = datePicker.findIndexByValue(selectDay, dayArr);
+        if (index == -1) {
             dayView.setCurrentItem(0);
         } else {
-            dayView.setCurrentItem(indxt);
+            dayView.setCurrentItem(index);
         }
     }
 
     @Override
     public void onChanged(WheelView wheel, int oldValue, int newValue) {
-
         int year = yearArr[yearView.getCurrentItem()];
         int moth = mothArr[monthView.getCurrentItem()];
         int day = dayArr[dayView.getCurrentItem()];
         int hour = hourArr[hourView.getCurrentItem()];
-        int minut = minutArr[minuteView.getCurrentItem()];
+        int minute = minutArr[minuteView.getCurrentItem()];
 
         if (wheel == yearView || wheel == monthView) {
             setChangeDaySelect(year, moth);
@@ -200,7 +201,7 @@ class DatePicker extends BaseWheelPick {
         }
 
         if (onChangeListener != null) {
-            onChangeListener.onChanged(TimeUtil.getDate(year, moth, day, hour, minut));
+            onChangeListener.onChanged(TimeUtil.getDate(year, moth, day, hour, minute));
         }
 
     }
@@ -219,8 +220,8 @@ class DatePicker extends BaseWheelPick {
         int moth = mothArr[monthView.getCurrentItem()];
         int day = dayArr[dayView.getCurrentItem()];
         int hour = hourArr[hourView.getCurrentItem()];
-        int minut = minutArr[minuteView.getCurrentItem()];
-        return TimeUtil.getDate(year, moth, day, hour, minut);
+        int minute = minutArr[minuteView.getCurrentItem()];
+        return TimeUtil.getDate(year, moth, day, hour, minute);
     }
 
 }

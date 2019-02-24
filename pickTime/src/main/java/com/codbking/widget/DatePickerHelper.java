@@ -1,5 +1,7 @@
 package com.codbking.widget;
 
+import android.annotation.SuppressLint;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,10 +27,11 @@ class DatePickerHelper {
     //开始时间
     private Date startDate = new Date();
     //年份限制，上下5年
-    private int yearLimt = 5;
+    private int yearPast = 5;
+    private int yearFuture = 5;
 
     private ArrayList<Integer> tem = new ArrayList<>();
-    private ArrayList<String> dispalyTem = new ArrayList<>();
+    private ArrayList<String> displayTime = new ArrayList<>();
     private String[] weeks = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
 
     public enum Type {
@@ -56,10 +59,15 @@ class DatePickerHelper {
     }
 
     //设置初始化时间
-    public void setStartDate(Date date, int yearLimt) {
+    public void setStartDate(Date date, int yearLimit) {
+        this.setStartDate(date, yearLimit, yearLimit);
+    }
 
+    //设置初始化时间
+    public void setStartDate(Date date, int yearPast, int yearFuture) {
         this.startDate = date;
-        this.yearLimt = yearLimt;
+        this.yearPast = yearPast;
+        this.yearFuture = yearFuture;
 
         if (this.startDate == null) {
             this.startDate = new Date();
@@ -86,12 +94,12 @@ class DatePickerHelper {
     }
 
     public String[] getDisplayValue(Integer[] arr, String per) {
-        dispalyTem.clear();
+        displayTime.clear();
         for (Integer i : arr) {
             String value = i < 10 ? ("0" + i) : "" + i;
-            dispalyTem.add(value + per);
+            displayTime.add(value + per);
         }
-        return dispalyTem.toArray(new String[0]);
+        return displayTime.toArray(new String[0]);
     }
 
     public Integer[] genMonth() {
@@ -102,7 +110,7 @@ class DatePickerHelper {
         return genArr(24, true);
     }
 
-    public Integer[] genMinut() {
+    public Integer[] genMinute() {
         return genArr(60, true);
     }
 
@@ -117,12 +125,12 @@ class DatePickerHelper {
     //生成年
     public Integer[] genYear() {
         tem.clear();
-        for (int i = YEAR_START - yearLimt; i < YEAR_START; i++) {
+        for (int i = YEAR_START - this.yearPast; i < YEAR_START; i++) {
             tem.add(i);
         }
         tem.add(YEAR_START);
 
-        for (int i = YEAR_START + 1; i < YEAR_START + yearLimt; i++) {
+        for (int i = YEAR_START + 1; i < YEAR_START + this.yearFuture; i++) {
             tem.add(i);
         }
         return tem.toArray(new Integer[0]);
@@ -133,6 +141,7 @@ class DatePickerHelper {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, moth, 1);
         calendar.add(Calendar.DATE, -1);
+        @SuppressLint("SimpleDateFormat")
         int day = Integer.parseInt(new SimpleDateFormat("d").format(calendar.getTime()));
         return genArr(day, false);
     }
@@ -142,7 +151,7 @@ class DatePickerHelper {
     }
 
 
-    public int findIndextByValue(int value, Integer[] arr) {
+    public int findIndexByValue(int value, Integer[] arr) {
         for (int i = 0; i < arr.length; i++) {
             if (value == arr[i]) {
                 return i;

@@ -6,6 +6,8 @@ import android.support.multidex.MultiDex;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 
+import yixia.lib.core.util.DirMgmt;
+
 /**
  * Created by zhangwy on 2018/12/22 上午1:40.
  * Updated by zhangwy on 2018/12/22 上午1:40.
@@ -24,5 +26,6 @@ public class IApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Fresco.initialize(getApplicationContext());
+        DirMgmt.getInstance().init(this);
     }
 }

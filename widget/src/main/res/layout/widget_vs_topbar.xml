@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
@@ -20,17 +19,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/app_widget"
-            android:src="@drawable/icon_widget_back_dmodel"
-            skin:enable="true" />
+            android:src="@drawable/icon_widget_back_dmodel" />
 
         <TextView
             android:id="@+id/topBar_left_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/topbar_textColor_dmodel"
+            android:textColor="@color/topbar_textColor"
             android:textSize="13sp"
-            android:visibility="gone"
-            skin:enable="true" />
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout
@@ -46,28 +43,25 @@
             android:id="@+id/topBar_right_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/topbar_textColor_dmodel"
+            android:textColor="@color/topbar_textColor"
             android:textSize="13sp"
-            android:visibility="gone"
-            skin:enable="true" />
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/topBar_right_Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/app_widget"
-            skin:enable="true" />
+            android:contentDescription="@string/app_widget" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/topBar_centre"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:orientation="horizontal"
-        skin:enable="true">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/topBar_centre_text"
@@ -75,8 +69,7 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:singleLine="true"
-            android:textColor="@color/albums_folder_item_name_dmodel"
-            android:textSize="@dimen/topBar_centre_textSize"
-            skin:enable="true" />
+            android:textColor="@color/albums_folder_item_name"
+            android:textSize="@dimen/topBar_centre_textSize" />
     </LinearLayout>
 </RelativeLayout>

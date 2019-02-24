@@ -38,4 +38,7 @@
         <item>@string/marital_widowed</item>
         <item>@string/marital_divorce</item>
     </string-array>
+    <string name="select_image_label">选择头像</string>
+    <string name="select_image_take_photo">拍照</string>
+    <string name="select_image_select_image">选照片</string>
 </resources>

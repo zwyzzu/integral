@@ -4,10 +4,10 @@
     <color name="widget_progress_first">#ffffff</color>
     <color name="widget_progress_second">#6b6666</color>
     <color name="widget_translucence">#66000000</color>
-    <color name="albums_folder_item_name_dmodel">#8ffa0c</color>
+    <color name="albums_folder_item_name">#8ffa0c</color>
     <color name="progress_dialog_color1">#ffffff</color>
-    <color name="topbar_textColor_dmodel">#3B424C</color>
+    <color name="topbar_textColor">#3B424C</color>
     <color name="tabLayout_state_selected_true">#ff384b</color>
     <color name="tabLayout_state_selected_false">#A2A3A5</color>
-    <color name="font_color_A2A3A5_dmodel">#A2A3A5</color>
+    <color name="font_color_A2A3A5">#A2A3A5</color>
 </resources>
