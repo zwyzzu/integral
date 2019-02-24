@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yixia.widget.VSTabLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:id="@+id/importAlbumTopBarCentreTabLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:overScrollMode="never"
+    app:tabDividerColor="#00000000"
+    app:tabEndPadding="0dp"
+    app:tabIndicatorColor="@color/tab_color"
+    app:tabIndicatorHeight="@dimen/margin_2"
+    app:tabItemTextColor="@drawable/import_album_tab_selector_dmodel"
+    app:tabScrollToCenter="true"
+    app:tabItemPaddingLeftRight="20dp"
+    app:tabUnderlineHeight="0px"
+    skin:enable="true" />

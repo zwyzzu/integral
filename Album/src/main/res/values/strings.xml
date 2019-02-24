@@ -1,0 +1,30 @@
+<resources>
+    <string name="album">Album</string>
+    <string name="title_activity_vs_import_album">VSImportAlbumActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+    <string name="importAlbumLoading">正在加载，请稍候\.\.\.</string>
+    <string name="importAlbumAllMedia">全部视频</string>
+    <string name="importAlbumAllImage">全部图片</string>
+    <string name="permission_read_external_storage">SD卡读写权限</string>
+    <string name="no_data">无数据</string>
+    <string name="album_no_video_data">相册里没有视频文件</string>
+    <string name="album_no_image_data">相册里没有图片</string>
+    <string name="importAlbumLessThan3s">视频时长不得小于3秒</string>
+    <string name="importAlbumFormatUnsupport">视频格式不支持</string>
+    <string name="importAlbumImageNoUI">数据异常，请退出重新进入</string>
+    <string name="importAlbumImageCheckedCountMax">最多选择10张照片</string>
+    <string name="importAlbumImageCheckedCountMin">请选择照片</string>
+    <string name="importAlbumImage">照片</string>
+    <string name="importAlbumVideo">视频</string>
+    <string name="importAlbumImageHint">照片快速变影集</string>
+    <string name="importProcessImage">正在处理第%1$d/%2$d</string>
+    <string name="importProcessImageSuccess">处理第%1$d/%2$d成功</string>
+    <string name="importProcessImageFailed">处理第%1$d/%2$d失败</string>
+    <string name="importProcessImageAllFailed">图片处理失败，请重新选择图片</string>
+    <string name="importAlbumImageDrag">长按照片拖动可进行排序</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

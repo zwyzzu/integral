@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/checkLayoutText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="@color/font_color_topbar_centre_dmodel"
+        android:textSize="@dimen/font_size_18sp"
+        skin:enable="true" />
+
+    <View
+        android:id="@+id/checkLayoutIndicator"
+        android:layout_width="20dp"
+        android:layout_height="3dp"
+        android:background="#FD415F" />
+</LinearLayout>

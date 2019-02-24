@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:background="@color/albums_bg_color_dmodel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    skin:enable="true" >
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/itemImportFolderCover"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/albums_item_placeholder_color_dmodel"
+        app:actualImageScaleType="centerCrop"
+        app:failureImageScaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:placeholderImageScaleType="centerCrop"
+        skin:enable="true" />
+
+    <TextView
+        android:id="@+id/itemImportFolderName"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:text="@string/app_name"
+        android:textColor="@color/albums_folder_item_name_dmodel"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/itemImportFolderCover"
+        app:layout_constraintTop_toTopOf="parent"
+        skin:enable="true" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:background="@drawable/albums_folder_item_divide_dmodel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/itemImportFolderCover"
+        skin:enable="true" />
+</android.support.constraint.ConstraintLayout>

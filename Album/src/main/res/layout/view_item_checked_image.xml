@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/import_image_checked_length"
+    android:layout_height="@dimen/import_image_checked_length">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/itemCheckedImageCover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/albums_item_placeholder_color_dmodel"
+        app:actualImageScaleType="centerCrop"
+        app:failureImage="@mipmap/icon_image_load_failed"
+        app:failureImageScaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:placeholderImageScaleType="centerCrop"
+        skin:enable="true" />
+
+    <View
+        android:id="@+id/itemCheckedImageShade"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/album_translucent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/itemCheckedImageCover"
+        app:layout_constraintEnd_toEndOf="@+id/itemCheckedImageCover"
+        app:layout_constraintStart_toStartOf="@+id/itemCheckedImageCover"
+        app:layout_constraintTop_toTopOf="@+id/itemCheckedImageCover" />
+
+    <ImageView
+        android:id="@+id/itemCheckedDelete"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_margin="10dp"
+        android:src="@mipmap/icon_album_delete"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/itemCheckedPosition"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:background="@color/album_translucent"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</android.support.constraint.ConstraintLayout>

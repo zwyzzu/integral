@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_item_import_album">#50000000</color>
+    <drawable name="icon_album_cover_default_dmodel">#EDEDED</drawable>
+    <color name="album_translucent">#80000000</color>
+    <color name="font_color_topbar_centre_dmodel">#3B424C</color>
+    <color name="albums_bg_color_dmodel">#ffffff</color>
+    <color name="albums_folder_item_name_dmodel">#3B424C</color>
+    <drawable name="albums_item_placeholder_color_dmodel">#E5E5E5</drawable>
+    <drawable name="albums_folder_item_divide_dmodel">#EDEDED</drawable>
+    <color name="color_F8F8F8_dmodel">#F8F8F8</color>
+</resources>

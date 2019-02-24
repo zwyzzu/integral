@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yixia.widget.VSSquareConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/itemImportImageCover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/albums_item_placeholder_color_dmodel"
+        app:actualImageScaleType="centerCrop"
+        app:failureImageScaleType="centerCrop"
+        app:failureImage="@mipmap/icon_image_load_failed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:placeholderImageScaleType="centerCrop"
+        skin:enable="true" />
+
+    <CheckBox
+        android:foregroundGravity="right"
+        android:id="@+id/itemImportImageStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableRight="@drawable/icon_album_checked"
+        android:drawableEnd="@drawable/icon_album_checked"
+        android:button="@null"
+        android:checked="false"
+        android:paddingLeft="10dp"
+        android:paddingStart="10dp"
+        android:paddingRight="0dp"
+        android:paddingEnd="0dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintEnd_toEndOf="@id/itemImportImageCover"
+        app:layout_constraintRight_toRightOf="@id/itemImportImageCover"
+        app:layout_constraintTop_toTopOf="@id/itemImportImageCover" />
+</com.yixia.widget.VSSquareConstraintLayout>

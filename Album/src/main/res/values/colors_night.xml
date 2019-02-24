@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="icon_album_cover_default_night">#919191</drawable>
+
+    <color name="albums_bg_color_night">#FF252428</color>
+    <color name="albums_folder_item_name_night">#909090</color>
+    <drawable name="albums_item_placeholder_color_night">#919191</drawable>
+    <color name="font_color_topbar_centre_night">#909090</color>
+    <drawable name="albums_folder_item_divide_night">#252428</drawable>
+
+</resources>

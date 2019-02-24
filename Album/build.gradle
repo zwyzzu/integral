@@ -1,0 +1,37 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.android.supportVersion}"
+    implementation "com.android.support:design:${rootProject.ext.android.supportVersion}"
+    implementation "com.android.support.constraint:constraint-layout:${rootProject.ext.android.ConstraintLayout}"
+    implementation "com.android.support:support-v4:${rootProject.ext.android.supportVersion}"
+    testImplementation "junit:junit:${rootProject.ext.android.JUnitVersion}"
+    androidTestImplementation "com.android.support.test:runner:${rootProject.ext.android.JUnitRunnerVersion}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:${rootProject.ext.android.espressoVersion}"
+    implementation "com.facebook.fresco:fresco:${rootProject.ext.thirdParty.fresco}"
+    implementation "com.google.code.gson:gson:${rootProject.ext.thirdParty.gson}"
+    implementation project(':libCore')
+    implementation project(':widget')
+}

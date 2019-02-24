@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    skin:enable="true"
+    tools:context=".VSImportImageFragment">
+
+    <TextView
+        android:id="@+id/importAlbumImageHint"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@color/color_F8F8F8_dmodel"
+        android:drawableEnd="@mipmap/icon_album_image_hint_close"
+        android:drawableRight="@mipmap/icon_album_image_hint_close"
+        android:gravity="center"
+        android:paddingEnd="@dimen/margin_10"
+        android:paddingLeft="@dimen/margin_10"
+        android:paddingRight="@dimen/margin_10"
+        android:paddingStart="@dimen/margin_10"
+        android:text="@string/importAlbumImageHint"
+        android:textColor="@color/font_color_publish_hint_dmodel"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        skin:enable="true" />
+
+    <com.yixia.widget.recycler.VSRecyclerView
+        android:id="@+id/importAlbumImages"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/albums_bg_color_dmodel"
+        app:layout_constraintBottom_toTopOf="@+id/importAlbumImageBottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/importAlbumImageHint"
+        skin:enable="true" />
+
+    <LinearLayout
+        android:id="@+id/importAlbumImageBottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/import_image_checked_length_drag"
+        android:background="@color/albums_bg_color_dmodel"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        skin:enable="true">
+
+        <com.yixia.widget.recycler.VSRecyclerView
+            android:id="@+id/importAlbumCheckedImages"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/import_image_checked_length"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            android:background="@color/albums_bg_color_dmodel"
+            skin:enable="true" />
+
+        <Button
+            android:id="@+id/importAlbumImageNext"
+            android:layout_width="58dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/default_button_selector"
+            android:text="@string/video_editor_next_step"
+            android:textColor="@color/common_white" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/importAlbumTipAnchor"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        app:layout_constraintStart_toStartOf="@id/importAlbumImageBottom"
+        app:layout_constraintTop_toTopOf="@id/importAlbumImageBottom" />
+
+    <LinearLayout
+        android:id="@+id/importAlbumImagesTip"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/albums_bg_color_dmodel"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/album"
+            android:src="@mipmap/icon_album_no_data" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/album_no_image_data"
+            android:textColor="#A2A3A5"
+            android:textSize="@dimen/font_size_15sp" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
