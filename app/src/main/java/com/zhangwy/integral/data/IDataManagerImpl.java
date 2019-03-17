@@ -50,11 +50,13 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 .put("name", SQLCreator.Format.TEXT, false)
                 .put("icon", SQLCreator.Format.TEXT, false)
                 .put("desc", SQLCreator.Format.TEXT, true)
-                .put("childrenText", SQLCreator.Format.TEXT, true)
                 .put("phone", SQLCreator.Format.TEXT, false)
+                .put("birthday", SQLCreator.Format.TEXT, false)
                 .put("sex", SQLCreator.Format.INTEGER, true)
                 .put("age", SQLCreator.Format.INTEGER, true)
                 .put("marital", SQLCreator.Format.INTEGER, true)
+                .put("sonCount", SQLCreator.Format.INTEGER, true)
+                .put("daughterCount", SQLCreator.Format.INTEGER, true)
                 .put("created", SQLCreator.Format.LONG, false)
                 .put("modified", SQLCreator.Format.LONG, false)
                 .build();
@@ -216,11 +218,13 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         member.setName(cursor.getString(columnIndex++));
         member.setIcon(cursor.getString(columnIndex++));
         member.setDesc(cursor.getString(columnIndex++));
-        member.setChildrenText(cursor.getString(columnIndex++));
         member.setPhone(cursor.getString(columnIndex++));
+        member.setBirthday(cursor.getString(columnIndex++));
         member.setSex(cursor.getInt(columnIndex++));
         member.setAge(cursor.getInt(columnIndex++));
         member.setMarital(cursor.getInt(columnIndex++));
+        member.setSonCount(cursor.getInt(columnIndex++));
+        member.setDaughterCount(cursor.getInt(columnIndex++));
         member.setCreated(cursor.getLong(columnIndex++));
         member.setModified(cursor.getLong(columnIndex++));
         Logger.d(String.format("the table's column count is %s", columnIndex + ""));
@@ -316,11 +320,13 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             values.put("name", member.getName());
             values.put("icon", member.getIcon());
             values.put("desc", member.getDesc());
-            values.put("childrenText", member.getChildrenText());
             values.put("phone", member.getPhone());
+            values.put("birthday", member.getBirthday());
             values.put("sex", member.getSex());
             values.put("age", member.getAge());
             values.put("marital", member.getMarital());
+            values.put("sonCount", member.getSonCount());
+            values.put("daughterCount", member.getDaughterCount());
             values.put("created", member.getCreated());
             values.put("modified", System.currentTimeMillis());
             long raw = database.insertWithOnConflict(TABLE_NAME_MEMBER, null, values,
@@ -359,11 +365,13 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             values.put("name", member.getName());
             values.put("icon", member.getIcon());
             values.put("desc", member.getDesc());
-            values.put("childrenText", member.getChildrenText());
             values.put("phone", member.getPhone());
+            values.put("birthday", member.getBirthday());
             values.put("sex", member.getSex());
             values.put("age", member.getAge());
             values.put("marital", member.getMarital());
+            values.put("sonCount", member.getSonCount());
+            values.put("daughterCount", member.getDaughterCount());
             values.put("modified", System.currentTimeMillis());
             long raw = database.update(TABLE_NAME_MEMBER, values, SQL_WHERECLAUSE_ID, new
                     String[]{member.getId()});

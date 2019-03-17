@@ -104,7 +104,6 @@ public class VSImportImageFragment extends BaseFragment implements
         this.albumPresenter = new VSImportImagePresenter(getContext(), this);
         this.albumPresenter.requestAlbums(getContext());
         this.loading();
-        StaticsUtil.shootPageShow(2, StaticsUtil.PAGE_ID_ALBUM_PHOTO);
     }
 
     private void initBottom(View view) {

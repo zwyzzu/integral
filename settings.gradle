@@ -1,1 +1,1 @@
-include ':app', ':widget', 'libCore', 'pickTime', 'Album'
+include ':app', ':widget', 'libCore', 'pickTime'

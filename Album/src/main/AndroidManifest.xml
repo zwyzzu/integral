@@ -3,7 +3,6 @@
     package="com.yixia.album">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!--android:name=".AlbumApplication"-->
     <uses-permission android:name="android.permission.VIBRATE"/>
     <application>
         <activity

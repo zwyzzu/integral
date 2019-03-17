@@ -16,7 +16,7 @@ public class IntegralBindEntity extends BaseEntity implements Comparable<Integra
     private long createDate;//积分日期
     private long usedDate;//使用日期
     private String desc;//描述
-    private String bind;//绑定人物ID
+    private String bind;//绑定ID
     private String scoreBind;//绑定积分ID
 
     public int getScore() {

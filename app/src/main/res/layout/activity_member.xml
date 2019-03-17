@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MemberActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/memberToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/background_bar"
+        android:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/icon_widget_back">
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/page_title_member" />
+    </android.support.v7.widget.Toolbar>
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/memberIcon"
+        android:layout_width="104dp"
+        android:layout_height="104dp"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_16"
+        app:fadeDuration="0"
+        app:failureImageScaleType="centerInside"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/memberToolbar"
+        app:placeholderImage="@mipmap/icon_avatar"
+        app:placeholderImageScaleType="centerCrop"
+        app:roundAsCircle="true" />
+
+    <TextView
+        android:id="@+id/memberTitle"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_marginLeft="@dimen/margin_8"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/memberIcon"
+        app:layout_constraintTop_toTopOf="@+id/memberIcon"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/memberAge"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_marginLeft="@dimen/margin_8"
+        android:layout_marginTop="@dimen/margin_10"
+        android:text="@string/member_age"
+        app:layout_constraintStart_toEndOf="@id/memberIcon"
+        app:layout_constraintTop_toBottomOf="@id/memberTitle"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/memberSex"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:text="@string/member_sex"
+        app:layout_constraintStart_toEndOf="@id/memberAge"
+        app:layout_constraintTop_toTopOf="@id/memberAge"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/memberIntegral"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:text="@string/member_integral"
+        app:layout_constraintStart_toEndOf="@id/memberSex"
+        app:layout_constraintTop_toTopOf="@id/memberAge"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/memberMarital"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_marginLeft="@dimen/margin_8"
+        android:layout_marginTop="@dimen/margin_10"
+        android:text="@string/member_marital"
+        app:layout_constraintStart_toEndOf="@id/memberIcon"
+        app:layout_constraintTop_toBottomOf="@id/memberAge"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/memberChildren"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:text="@string/member_children"
+        app:layout_constraintStart_toEndOf="@id/memberMarital"
+        app:layout_constraintTop_toTopOf="@id/memberMarital"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/memberMessageIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        android:src="@mipmap/icon_arrow_down"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/memberChildren"
+        tools:ignore="ContentDescription,MissingConstraints" />
+
+    <TextView
+        android:id="@+id/memberMessage"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_marginLeft="@dimen/margin_8"
+        android:layout_marginEnd="@dimen/margin_4"
+        android:layout_marginRight="@dimen/margin_4"
+        android:text="@string/member_message"
+        app:layout_constraintEnd_toStartOf="@id/memberMessageIcon"
+        app:layout_constraintStart_toEndOf="@id/memberIcon"
+        app:layout_constraintTop_toTopOf="@id/memberMessageIcon" />
+
+    <View
+        android:id="@+id/memberBasicInfo"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/margin_16"
+        android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/memberIcon"
+        tools:ignore="MissingConstraints" />
+
+    <com.yixia.widget.recycler.VSRecyclerView
+        android:id="@+id/memberList"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        android:background="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/memberBasicInfo" />
+</android.support.constraint.ConstraintLayout>

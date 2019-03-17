@@ -37,6 +37,8 @@ public class DatePickDialog extends Dialog implements OnChangeListener {
 
     private OnSureListener onSureListener;
 
+    private OnCancelListener onCancelListener;
+
     private DatePicker mDatePicker;
 
     //设置标题
@@ -80,6 +82,12 @@ public class DatePickDialog extends Dialog implements OnChangeListener {
         this.onSureListener = onSureListener;
     }
 
+    @Override
+    public void setOnCancelListener(OnCancelListener onCancelListener) {
+        super.setOnCancelListener(onCancelListener);
+        this.onCancelListener = onCancelListener;
+    }
+
     public DatePickDialog(Context context) {
         super(context, R.style.dialog_style);
     }
@@ -115,7 +123,12 @@ public class DatePickDialog extends Dialog implements OnChangeListener {
         //setValue
         titleTv.setText(title);
 
-        cancel.setOnClickListener(v -> dismiss());
+        cancel.setOnClickListener(v -> {
+            dismiss();
+            if (this.onCancelListener != null) {
+                this.onCancelListener.onCancel(this);
+            }
+        });
 
         sure.setOnClickListener(v -> {
             dismiss();

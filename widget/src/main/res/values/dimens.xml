@@ -7,6 +7,7 @@
     <dimen name="widget_fontSize_13">13sp</dimen>
     <dimen name="widget_fontSize_15">15sp</dimen>
     <dimen name="widget_fontSize_18">18sp</dimen>
+    <dimen name="widget_fontSize_26">26sp</dimen>
 
     <dimen name="media_controller_text_size">14sp</dimen>
     <dimen name="media_controller_seekBar_width">32dip</dimen>
@@ -38,4 +39,7 @@
     <dimen name="padding_4">4dp</dimen>
     <dimen name="padding_3">3dp</dimen>
     <dimen name="padding_2">2dp</dimen>
+
+    <dimen name="verification_hint_height">20dip</dimen>
+    <dimen name="verification_hint_radius">10dip</dimen>
 </resources>

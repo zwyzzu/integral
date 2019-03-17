@@ -30,7 +30,7 @@ public class RecyclerDivider extends RecyclerView.ItemDecoration {
      * RecyclerView的布局方向，默认先赋值为纵向布局
      * 横向和纵向对应的分割想画法不一样
      */
-    private int mOrientation = LinearLayoutManager.VERTICAL;
+    private final int mOrientation;
 
     /**
      * item之间分割线的size，默认为1
@@ -52,19 +52,16 @@ public class RecyclerDivider extends RecyclerView.ItemDecoration {
     public RecyclerDivider(Context context, int orientation, int size, int color) {
         this(context, orientation);
         this.setColor(color);
-        this.mItemSize = (int) TypedValue.applyDimension(size, TypedValue.COMPLEX_UNIT_DIP,
-                context.getResources().getDisplayMetrics());
+        this.mItemSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, context.getResources().getDisplayMetrics());
     }
 
     public RecyclerDivider(Context context, int orientation) {
         super();
         this.mOrientation = orientation;
-        if (orientation != LinearLayoutManager.VERTICAL && orientation != LinearLayoutManager
-                .HORIZONTAL) {
+        if (orientation != LinearLayoutManager.VERTICAL && orientation != LinearLayoutManager.HORIZONTAL) {
             throw new IllegalArgumentException("请传入正确的参数");
         }
-        mItemSize = (int) TypedValue.applyDimension(mItemSize, TypedValue.COMPLEX_UNIT_DIP,
-                context.getResources().getDisplayMetrics());
+        mItemSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mItemSize, context.getResources().getDisplayMetrics());
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(Color.BLUE);
         mPaint.setStyle(Paint.Style.FILL);
@@ -141,12 +138,15 @@ public class RecyclerDivider extends RecyclerView.ItemDecoration {
      * 设置item分割线的size
      */
     @Override
-    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State
-            state) {
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         if (mOrientation == LinearLayoutManager.VERTICAL) {
             outRect.set(0, 0, 0, mItemSize);
         } else {
             outRect.set(0, 0, mItemSize, 0);
         }
+    }
+
+    public int getSize() {
+        return this.mItemSize;
     }
 }

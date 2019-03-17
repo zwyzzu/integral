@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        sign {
+            keyAlias 'zhangwy'
+            keyPassword 'zhangwy15010114402'
+            storeFile file('/Users/zhangwy/work/sign')
+            storePassword 'zhangwy15010114402'
+        }
+    }
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     buildToolsVersion rootProject.ext.android.buildToolsVersion
-
     defaultConfig {
         applicationId "com.zhangwy.integral"
         minSdkVersion rootProject.ext.android.minSdkVersion
@@ -17,6 +24,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.sign
+        }
+        debug {
+            signingConfig signingConfigs.sign
         }
     }
     compileOptions {
@@ -26,7 +37,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:${rootProject.ext.android.supportVersion}"
     implementation "com.android.support:recyclerview-v7:${rootProject.ext.android.supportVersion}"
     implementation "com.android.support.constraint:constraint-layout:${rootProject.ext.android.ConstraintLayout}"
@@ -38,6 +49,5 @@ dependencies {
     implementation "com.android.support:multidex:${rootProject.ext.android.multidex}"
     implementation project(path: ':libCore')
     implementation project(path: ':widget')
-
     implementation project(path: ':pickTime')
 }

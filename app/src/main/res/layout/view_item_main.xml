@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_8"
+    android:paddingBottom="@dimen/padding_4"
+    android:background="@color/common_white">
+
+    <com.yixia.widget.VSSquareConstraintLayout
+        android:id="@+id/mainItemIconHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/mainItemIcon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.yixia.widget.VSSquareConstraintLayout>
+
+    <TextView
+        android:id="@+id/mainItemName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_4"
+        android:layout_marginLeft="@dimen/margin_4"
+        android:layout_marginTop="@dimen/margin_4"
+        android:lines="1"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textSize="@dimen/widget_fontSize_13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mainItemIconHome"
+        tools:ignore="MissingConstraints" />
+
+
+    <TextView
+        android:id="@+id/mainItemIntegralHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_4"
+        android:layout_marginLeft="@dimen/margin_4"
+        android:layout_marginTop="@dimen/margin_4"
+        android:gravity="center_vertical"
+        android:lines="1"
+        android:singleLine="true"
+        android:text="@string/main_integral_total"
+        android:textColor="@color/black"
+        android:textSize="@dimen/widget_fontSize_13"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mainItemName"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/mainItemIntegral"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:lines="1"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textSize="@dimen/widget_fontSize_13"
+        app:layout_constraintBottom_toBottomOf="@id/mainItemIntegralHeader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/mainItemIntegralHeader"
+        app:layout_constraintTop_toTopOf="@id/mainItemIntegralHeader"
+        tools:ignore="MissingConstraints" />
+</android.support.constraint.ConstraintLayout>

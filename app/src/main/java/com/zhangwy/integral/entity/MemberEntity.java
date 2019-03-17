@@ -22,11 +22,13 @@ public class MemberEntity extends BaseEntity implements Parcelable {
     private String name;
     private String icon;
     private String desc;
-    private String childrenText;
     private String phone;
+    private String birthday;
     private int sex;
     private int age;
     private int marital;//婚否
+    private int sonCount;
+    private int daughterCount;
     private long created;//创建时间
     private long modified;//最后修改时间
     private List<AddressEntity> address = new ArrayList<>();
@@ -66,20 +68,20 @@ public class MemberEntity extends BaseEntity implements Parcelable {
         this.desc = desc;
     }
 
-    public String getChildrenText() {
-        return childrenText;
-    }
-
-    public void setChildrenText(String childrenText) {
-        this.childrenText = childrenText;
-    }
-
     public String getPhone() {
         return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 
     public int getSex() {
@@ -120,6 +122,22 @@ public class MemberEntity extends BaseEntity implements Parcelable {
 
     public void setMarital(Marital marital) {
         this.setMarital(marital.code);
+    }
+
+    public int getSonCount() {
+        return sonCount;
+    }
+
+    public void setSonCount(int sonCount) {
+        this.sonCount = sonCount;
+    }
+
+    public int getDaughterCount() {
+        return daughterCount;
+    }
+
+    public void setDaughterCount(int daughterCount) {
+        this.daughterCount = daughterCount;
     }
 
     public long getCreated() {
@@ -206,11 +224,13 @@ public class MemberEntity extends BaseEntity implements Parcelable {
         this.setName(in.readString());
         this.setIcon(in.readString());
         this.setDesc(in.readString());
-        this.setChildrenText(in.readString());
         this.setPhone(in.readString());
+        this.setBirthday(in.readString());
         this.setSex(in.readInt());
         this.setAge(in.readInt());
         this.setMarital(in.readInt());
+        this.setSonCount(in.readInt());
+        this.setDaughterCount(in.readInt());
         this.setCreated(in.readLong());
         this.setModified(in.readLong());
         this.setAddress(in.createTypedArrayList(AddressEntity.CREATOR));
@@ -224,11 +244,13 @@ public class MemberEntity extends BaseEntity implements Parcelable {
         dest.writeString(this.getName());
         dest.writeString(this.getIcon());
         dest.writeString(this.getDesc());
-        dest.writeString(this.getChildrenText());
         dest.writeString(this.getPhone());
+        dest.writeString(this.getBirthday());
         dest.writeInt(this.getSex());
         dest.writeInt(this.getAge());
         dest.writeInt(this.getMarital());
+        dest.writeInt(this.getSonCount());
+        dest.writeInt(this.getDaughterCount());
         dest.writeLong(this.getCreated());
         dest.writeLong(this.getModified());
         dest.writeTypedList(this.getAddress());

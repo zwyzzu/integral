@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+import yixia.lib.core.base.BaseActivity;
 import yixia.lib.core.base.Constant;
 import yixia.lib.core.base.Constant.AlbumModel;
 import yixia.lib.core.util.ExportConstants;
@@ -54,7 +55,7 @@ import yixia.lib.core.util.Screen;
 import yixia.lib.core.util.VSPermission;
 import yixia.lib.core.util.WindowUtil;
 
-public class VSImportAlbumActivity extends SkinBaseActivity implements OnImportListener,
+public class VSImportAlbumActivity extends BaseActivity implements OnImportListener,
         AbnormalDataHelper.AbnormalCallBack {
 
     public static final int SPC_BTN_VIDEO = 1;
@@ -93,25 +94,14 @@ public class VSImportAlbumActivity extends SkinBaseActivity implements OnImportL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vs_import_album);
-        ExportConstants.loadData(this.getIntent());
         this.albumModel = AlbumModel.find(getIntent().getStringExtra(Constant.EXTRA_IMPORT_ALBUM_MODEL));
-        this.initReportData();
         this.initView();
-        QSkinLoaderManager.setSkinMode(getIntent());
-        UserInfoManager.setUserToken(getIntent());
         HashMap<String, String> permissions = new HashMap<>();
         permissions.put(Manifest.permission.READ_EXTERNAL_STORAGE, getString(R.string.permission_read_external_storage));
         if (VSPermission.applyPermission(this, REQUEST_CODE_PERMISSION, permissions)) {
             return;
         }
         this.loadData();
-        DraftCleaner.getInstance(getApplicationContext()).startClean();
-    }
-
-    private void initReportData() {
-        CaptureClient.getInstance().setRecordID(shootId);
-        CaptureClient.getInstance().setSource(this.getIntent().getStringExtra("source"));
-        MusicReportUtils.from = "2";
     }
 
     private void initView() {
@@ -150,12 +140,10 @@ public class VSImportAlbumActivity extends SkinBaseActivity implements OnImportL
                 .importAlbumLoading), false, true);
         switch (this.albumModel) {
             case VIDEO:
-                this.page = StaticsUtil.PAGE_ID_ALBUM_VIDEO;
                 this.topBar.setCentreText(R.string.importAlbumVideo);
                 this.switchFragment(0);
                 break;
             case PHOTO:
-                this.page = StaticsUtil.PAGE_ID_ALBUM_PHOTO;
                 this.topBar.setCentreText(R.string.importAlbumImage);
                 this.switchFragment(1);
                 break;
@@ -181,7 +169,6 @@ public class VSImportAlbumActivity extends SkinBaseActivity implements OnImportL
     private void switchFragment(int position) {
         switch (position) {
             case 0:
-                this.page = StaticsUtil.PAGE_ID_ALBUM_VIDEO;
                 if (this.fragmentVideo == null) {
                     this.fragmentVideo = VSImportVideoFragment.newInstance();
                     this.addFragment(getSupportFragmentManager(), this.fragmentVideo, R.id
@@ -189,10 +176,8 @@ public class VSImportAlbumActivity extends SkinBaseActivity implements OnImportL
                 }
                 albumMedia.setVisibility(View.VISIBLE);
                 albumImage.setVisibility(View.GONE);
-                StaticsUtil.shootPageClick(2, this.page, SPC_BTN_VIDEO);
                 break;
             case 1:
-                this.page = StaticsUtil.PAGE_ID_ALBUM_PHOTO;
                 if (this.fragmentImage == null) {
                     this.fragmentImage = VSImportImageFragment.newInstance();
                     this.addFragment(getSupportFragmentManager(), this.fragmentImage, R.id
@@ -200,7 +185,6 @@ public class VSImportAlbumActivity extends SkinBaseActivity implements OnImportL
                 }
                 albumMedia.setVisibility(View.GONE);
                 albumImage.setVisibility(View.VISIBLE);
-                StaticsUtil.shootPageClick(2, this.page, SPC_BTN_IMAGE);
                 break;
         }
     }
@@ -214,7 +198,6 @@ public class VSImportAlbumActivity extends SkinBaseActivity implements OnImportL
         super.onBackPressed();
         setResult(Activity.RESULT_OK);
         finish();
-        StaticsUtil.shootPageClick(2, this.page, SPC_BTN_CANCEL);
     }
 
     @Override

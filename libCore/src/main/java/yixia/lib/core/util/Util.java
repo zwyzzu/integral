@@ -25,6 +25,8 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Author: zhangwy(张维亚)
@@ -373,6 +375,28 @@ public class Util {
         } catch (Exception e) {
             return 0;
         }
+    }
 
+    public static boolean isMobile(String str) {
+        Pattern p = Pattern.compile("^[1][3,4,5,6,7,8][0-9]{9}$"); // 验证手机号
+        Matcher m = p.matcher(str);
+        return m.matches();
+    }
+
+    public static boolean isPhone(String str) {
+        String regex="0\\d{2,3}[-]?\\d{7,8}|0\\d{2,3}\\s?\\d{7,8}|13[0-9]\\d{8}|15[1089]\\d{8}";
+        if (Pattern.compile(regex).matcher(str).matches()) {
+            return true;
+        }
+
+        Pattern p1 = Pattern.compile("^[0][1-9]{2,3}[-]{0,1}[0-9]{5,10}$");  // 验证带区号的
+        Pattern p2 = Pattern.compile("^[1-9]{1}[0-9]{5,8}$");         // 验证没有区号的
+        if (str.length() > 9) {
+            Matcher m = p1.matcher(str);
+            return m.matches();
+        } else {
+            Matcher m = p2.matcher(str);
+            return m.matches();
+        }
     }
 }

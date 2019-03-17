@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -14,7 +15,6 @@ import java.util.UUID;
 
 import yixia.lib.core.base.BaseActivity;
 import yixia.lib.core.util.DirMgmt;
-import yixia.lib.core.util.FileUtil;
 import yixia.lib.core.util.Logger;
 
 public class SelectImageActivity extends BaseActivity implements View.OnClickListener {
@@ -27,12 +27,19 @@ public class SelectImageActivity extends BaseActivity implements View.OnClickLis
         activity.startActivityForResult(intent, requestCode);
     }
 
+    public static void start(Fragment fragment, boolean cut, int requestCode) {
+        Intent intent = new Intent(fragment.getActivity(), SelectImageActivity.class);
+        intent.putExtra(EXTRA_CUT, cut);
+        fragment.startActivityForResult(intent, requestCode);
+    }
+
     private final int REQUEST_CODE_TAKE_PHOTO = 100;
     private final int REQUEST_CODE_SELECT_IMAGE = 101;
     private final int REQUEST_CODE_CUT_IMAGE = 102;
 
     private boolean cut = false;
     private Uri takePhotoUri;
+    private Uri outPutUri;
     private String filePath = DirMgmt.getInstance().getPath(DirMgmt.WorkDir.OTHER);
     private String fileName = UUID.randomUUID().toString() + ".jpg";
 
@@ -60,11 +67,10 @@ public class SelectImageActivity extends BaseActivity implements View.OnClickLis
 
     private void takePhoto() {
         Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File file = new File(filePath, this.fileName);
-        takePhotoUri = Uri.fromFile(file);
-        Logger.d(takePhotoUri.toString());
+        File file = new File(this.filePath, this.fileName);
+        this.takePhotoUri = Uri.fromFile(file);
         // 指定照片保存路径（SD卡），image.jpg为一个临时文件，每次拍照后这个图片都会被替换
-        openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, takePhotoUri);
+        openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, this.takePhotoUri);
         startActivityForResult(openCameraIntent, REQUEST_CODE_TAKE_PHOTO);
     }
 
@@ -82,25 +88,25 @@ public class SelectImageActivity extends BaseActivity implements View.OnClickLis
                 if (cut) {
                     this.zoomPhoto(this.takePhotoUri);
                 } else {
-                    this.close(this.takePhotoUri.getPath());
+                    this.close(this.takePhotoUri);
                 }
                 break;
             }
             case REQUEST_CODE_SELECT_IMAGE: {
-                if (cut) {
-                    this.zoomPhoto(data.getData());
+                Uri uri = data.getData();
+                if (uri != null) {
+                    if (cut) {
+                        this.zoomPhoto(uri);
+                    } else {
+                        this.close(uri);
+                    }
                 } else {
-                    this.close(data.getData().getPath());
+                    this.showMessage(true, R.string.select_image_select_failed);
                 }
                 break;
             }
             case REQUEST_CODE_CUT_IMAGE: {
-                Bundle extras = data.getExtras();
-                if (extras != null) {
-                    Bitmap bitmap = extras.getParcelable("data");
-                    String file = FileUtil.saveBitmap(this.filePath, this.fileName, bitmap);
-                    this.close(file);
-                }
+                this.close(this.outPutUri);
                 break;
             }
         }
@@ -110,7 +116,6 @@ public class SelectImageActivity extends BaseActivity implements View.OnClickLis
         if (uri == null) {
             Logger.i("The uri is not exist.");
         }
-        takePhotoUri = uri;
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/*");
         // 设置裁剪
@@ -121,13 +126,16 @@ public class SelectImageActivity extends BaseActivity implements View.OnClickLis
         // outputX outputY 是裁剪图片宽高
         intent.putExtra("outputX", 150);
         intent.putExtra("outputY", 150);
-        intent.putExtra("return-data", true);
+
+        this.outPutUri = Uri.fromFile(new File(filePath, this.fileName));
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, this.outPutUri);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         startActivityForResult(intent, REQUEST_CODE_CUT_IMAGE);
     }
 
-    private void close(String file) {
+    private void close(Uri uri) {
         Intent intent = new Intent();
-        intent.putExtra("data", file);
+        intent.setData(uri);
         setResult(RESULT_OK, intent);
         this.finish();
     }

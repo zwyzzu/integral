@@ -16,4 +16,5 @@
 
     <string name="dialog_loading">加载中</string>
     <string name="dialog_controling">处理中</string>
+    <string name="hint_empty">不能为空</string>
 </resources>
