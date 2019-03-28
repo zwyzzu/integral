@@ -64,7 +64,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         SQL_CREATOR_INTEGRAL.setPrimaryKey("id", SQLCreator.Format.TEXT)
                 .put("name", SQLCreator.Format.TEXT, false)
                 .put("desc", SQLCreator.Format.TEXT, false)
-                .put("score", SQLCreator.Format.INTEGER, false)
+                .put("score", SQLCreator.Format.FLOAT, false)
                 .build();
 
         SQL_CREATOR_ADDRESS.setPrimaryKey("id", SQLCreator.Format.TEXT)
@@ -85,8 +85,8 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 .put("bind", SQLCreator.Format.TEXT, false)
                 .put("desc", SQLCreator.Format.TEXT, true)
                 .put("scoreBind", SQLCreator.Format.TEXT, true)
-                .put("score", SQLCreator.Format.INTEGER, false)
-                .put("usedScore", SQLCreator.Format.INTEGER, true)
+                .put("score", SQLCreator.Format.FLOAT, false)
+                .put("usedScore", SQLCreator.Format.FLOAT, true)
                 .put("createDate", SQLCreator.Format.LONG, false)
                 .put("usedDate", SQLCreator.Format.LONG, true)
                 .build();
@@ -289,8 +289,8 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         integral.setBind(cursor.getString(columnIndex++));
         integral.setDesc(cursor.getString(columnIndex++));
         integral.setScoreBind(cursor.getString(columnIndex++));
-        integral.setScore(cursor.getInt(columnIndex++));
-        integral.setUsedScore(cursor.getInt(columnIndex++));
+        integral.setScore(cursor.getFloat(columnIndex++));
+        integral.setUsedScore(cursor.getFloat(columnIndex++));
         integral.setCreateDate(cursor.getLong(columnIndex++));
         integral.setUsedDate(cursor.getLong(columnIndex++));
         Logger.d(String.format("the table's column count is %s", columnIndex + ""));
@@ -547,7 +547,15 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
      */
     @Override
     public void dldAddress(String id) {
-        //TODO
+        if (TextUtils.isEmpty(id) || this.emptyHelper()) {
+            return;
+        }
+        try {
+            SQLiteDatabase database = this.helper.open();
+            database.delete(TABLE_NAME_ADDRESS, SQL_WHERECLAUSE_ID, new String[]{id});
+        } catch (Exception e) {
+            Logger.d("clearAddress", e);
+        }
     }
 
     /**
@@ -573,6 +581,24 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         } finally {
             this.endTransaction(database);
         }
+    }
+
+    @Override
+    public List<AddressEntity> getAddresses(String memberId) {
+        if (this.emptyHelper() || TextUtils.isEmpty(memberId)) {
+            return new ArrayList<>();
+        }
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            database.beginTransaction();
+            return this.queryAddress(database, memberId);
+        } catch (Exception e) {
+            Logger.d("getMember", e);
+        } finally {
+            this.endTransaction(database);
+        }
+        return new ArrayList<>();
     }
 
     @Override
@@ -610,7 +636,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         entity.setId(cursor.getString(columnIndex++));
         entity.setName(cursor.getString(columnIndex++));
         entity.setDesc(cursor.getString(columnIndex++));
-        entity.setScore(cursor.getInt(columnIndex++));
+        entity.setScore(cursor.getFloat(columnIndex++));
         Logger.d(String.format("the table's column count is %s", columnIndex + ""));
         return entity;
     }
@@ -771,6 +797,24 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         this.updateMemberIntegral(true, true, integral);
     }
 
+    @Override
+    public List<IntegralBindEntity> getMemberIntegrals(String memberId) {
+        if (this.emptyHelper() || TextUtils.isEmpty(memberId)) {
+            return new ArrayList<>();
+        }
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            database.beginTransaction();
+            return this.queryMemberIntegral(database, memberId);
+        } catch (Exception e) {
+            Logger.d("getMember", e);
+        } finally {
+            this.endTransaction(database);
+        }
+        return new ArrayList<>();
+    }
+
     private void updateMemberIntegral(boolean beginTransaction, boolean modifiedMember, IntegralBindEntity integral) {
         SQLiteDatabase database = null;
         try {
@@ -838,7 +882,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 }
                 IntegralBindEntity entity = array.get(i);
                 if (entity != null && entity.useable()) {
-                    int useable = entity.useableScore();
+                    float useable = entity.useableScore();
                     if (useable <= useScore) {
                         entity.setUsedScore(entity.getScore());
                         entity.setUsedDate(System.currentTimeMillis());

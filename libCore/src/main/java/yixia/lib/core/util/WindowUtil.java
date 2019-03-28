@@ -104,14 +104,19 @@ public class WindowUtil {
                                            OnClickListener onOKClick, int okText,
                                            OnClickListener onCancelClick, int cancelText) {
         try {
-            AlertDialog.Builder builder = createAlertDialogBuilder(ctx, ctx.getString(title));
+            String titleString = title == 0 ? "" : ctx.getString(title);
+            AlertDialog.Builder builder = createAlertDialogBuilder(ctx, titleString);
             if (builder == null) {
                 return null;
             }
-            return builder.setView(view)
-                    .setPositiveButton(okText == 0 ? android.R.string.ok : okText, onOKClick)
-                    .setNegativeButton(cancelText == 0 ? android.R.string.cancel : cancelText, onCancelClick)
-                    .create();
+            builder.setView(view);
+            if (onOKClick != null) {
+                builder.setPositiveButton(okText == 0 ? android.R.string.ok : okText, onOKClick);
+            }
+            if (onCancelClick != null) {
+                builder.setNegativeButton(cancelText == 0 ? android.R.string.cancel : cancelText, onCancelClick);
+            }
+            return builder.create();
         } catch (Exception e) {
             return null;
         }

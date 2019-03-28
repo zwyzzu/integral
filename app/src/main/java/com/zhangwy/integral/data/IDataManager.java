@@ -105,6 +105,14 @@ public abstract class IDataManager {
     public abstract void clearAddress(String memberId);
 
     /**
+     * 获取用户地址列表
+     *
+     * @param memberId 成员ID
+     * @return 成员地址列表
+     */
+    public abstract List<AddressEntity> getAddresses(String memberId);
+
+    /**
      * 获取积分项
      *
      * @return 积分项列表
@@ -145,6 +153,14 @@ public abstract class IDataManager {
      * @param integralBind 用户积分
      */
     public abstract void updateMemberIntegral(IntegralBindEntity integralBind);
+
+    /**
+     * 获取用户积分列表
+     *
+     * @param memberId 用户ID
+     * @return 返回用户积分列表
+     */
+    public abstract List<IntegralBindEntity> getMemberIntegrals(String memberId);
 
     /**
      * 使用积分

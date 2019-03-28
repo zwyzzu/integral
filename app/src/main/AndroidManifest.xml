@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".IntegralsActivity"></activity>
+        <activity android:name=".IntegralAddActivity" />
+        <activity android:name=".IntegralElementActivity" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">

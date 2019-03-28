@@ -5,6 +5,7 @@
     <dimen name="topBar_centre_textSize">18sp</dimen>
     <dimen name="widget_fontSize_12">12sp</dimen>
     <dimen name="widget_fontSize_13">13sp</dimen>
+    <dimen name="widget_fontSize_14">14sp</dimen>
     <dimen name="widget_fontSize_15">15sp</dimen>
     <dimen name="widget_fontSize_18">18sp</dimen>
     <dimen name="widget_fontSize_26">26sp</dimen>
@@ -22,6 +23,7 @@
     <dimen name="margin_16">16dp</dimen>
     <dimen name="margin_15">15dp</dimen>
     <dimen name="margin_14">14dp</dimen>
+    <dimen name="margin_12">12dp</dimen>
     <dimen name="margin_10">10dp</dimen>
     <dimen name="margin_8">8dp</dimen>
     <dimen name="margin_4">4dp</dimen>

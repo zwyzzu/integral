@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -27,12 +26,16 @@ import com.zhangwy.integral.entity.MemberItemEntity;
 import java.io.File;
 import java.util.List;
 
+import yixia.lib.core.base.BaseActivity;
 import yixia.lib.core.util.TimeUtil;
 import yixia.lib.core.util.Util;
 
 @SuppressWarnings("unused")
-public class MemberActivity extends AppCompatActivity {
+public class MemberActivity extends BaseActivity {
 
+    private static final int REQUEST_CODE_ADD = 100;
+    private static final int REQUEST_CODE_INTEGRAL_LIST = 101;
+    private static final int REQUEST_CODE_ADDRESS_LIST = 102;
     private static final String EXTRA_MEMBERID = "extraMemberId";
 
     public static void start(Activity activity, String memberId, int requestCode) {
@@ -57,6 +60,7 @@ public class MemberActivity extends AppCompatActivity {
     private ImageView msgIcon;
     private TextView message;
     private VSRecyclerView<MemberItemEntity> recyclerView;
+    private String mmbId;
     private MemberEntity member;
 
     @Override
@@ -74,6 +78,8 @@ public class MemberActivity extends AppCompatActivity {
         this.msgIcon = this.findViewById(R.id.memberMessageIcon);
         this.message = this.findViewById(R.id.memberMessage);
         this.recyclerView = this.findViewById(R.id.memberList);
+        this.recyclerView.setLinearLayoutManager(VSRecyclerView.VERTICAL, false);
+        this.mmbId = this.getIntent().getStringExtra(EXTRA_MEMBERID);
         this.refreshData();
         this.refreshRecycler();
         this.setToolbar();
@@ -100,7 +106,6 @@ public class MemberActivity extends AppCompatActivity {
     }
 
     private void refreshData() {
-        String mmbId = this.getIntent().getStringExtra(EXTRA_MEMBERID);
         this.member = IDataManager.getInstance().getMember(mmbId);
         this.icon.setImageURI(Uri.fromFile(new File(member.getIcon())));
         this.title.setText(member.getName());
@@ -115,7 +120,7 @@ public class MemberActivity extends AppCompatActivity {
     }
 
     private void refreshRecycler() {
-        this.recyclerView.setLinearLayoutManager(VSRecyclerView.VERTICAL, false);
+        this.member = IDataManager.getInstance().getMember(mmbId);
         List<MemberItemEntity> entities = MemberItemEntity.createMembers(this.member);
         if (Util.isEmpty(entities)) {
             return;
@@ -189,7 +194,7 @@ public class MemberActivity extends AppCompatActivity {
         }
         add.setOnClickListener(v -> {
             if (integral) {
-                //TODO
+                IntegralAddActivity.start(MemberActivity.this, mmbId, REQUEST_CODE_ADD);
             } else {
                 //TODO
             }
@@ -201,11 +206,11 @@ public class MemberActivity extends AppCompatActivity {
         TextView used = root.findViewById(R.id.memberIntegralUsed);
         TextView desc = root.findViewById(R.id.memberIntegralDesc);
         String create = TimeUtil.dateMilliSecond2String(entity.getCreateDate(), TimeUtil.PATTERN_DAY4Y);
-        total.setText(getString(R.string.member_integral_total, entity.getScore(), create));
+        total.setText(getString(R.string.member_integral_total, Util.float2String(entity.getScore(), 2), create));
         if (entity.getUsedDate() > entity.getCreateDate()) {
             used.setVisibility(View.VISIBLE);
             String usedTime = TimeUtil.dateMilliSecond2String(entity.getUsedDate(), TimeUtil.PATTERN_DAY4Y);
-            used.setText(getString(R.string.member_integral_used, entity.getUsedScore(), usedTime));
+            used.setText(getString(R.string.member_integral_used, Util.float2String(entity.getUsedScore(), 2), usedTime));
         } else {
             used.setVisibility(View.GONE);
         }
@@ -223,10 +228,18 @@ public class MemberActivity extends AppCompatActivity {
     private void refreshMore(View root, boolean integral) {
         root.setOnClickListener(v -> {
             if (integral) {
-                //TODO
+                IntegralsActivity.start(this, this.mmbId, REQUEST_CODE_INTEGRAL_LIST);
             } else {
                 //TODO
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            this.refreshRecycler();
+        }
     }
 }

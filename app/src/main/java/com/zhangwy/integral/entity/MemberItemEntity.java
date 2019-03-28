@@ -3,12 +3,10 @@ package com.zhangwy.integral.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import yixia.lib.core.util.Util;
-
 /**
  * Created by zhangwy on 2019/3/17.
  * Updated by zhangwy on 2019/3/17.
- * Description TODO
+ * Description
  */
 public class MemberItemEntity {
     public int viewType;
@@ -38,35 +36,31 @@ public class MemberItemEntity {
         MemberItemEntity entity = new MemberItemEntity(TYPE_INTEGRAL_HEAD);
         array.add(entity);
         List<IntegralBindEntity> integrals = member.getIntegrals();
-        if (!Util.isEmpty(integrals)) {
-            IntegralBindEntity bindEntity = integrals.get(0);
+        int start = array.size();
+        for (int i = integrals.size() - 1; i >= integrals.size() - 2 & i > 0; i--) {
+            IntegralBindEntity bindEntity = integrals.get(i);
             if (bindEntity != null) {
                 MemberItemEntity integral = new MemberItemEntity(TYPE_INTEGRAL, bindEntity);
                 array.add(integral);
             }
-            bindEntity = integrals.get(1);
-            if (bindEntity != null) {
-                MemberItemEntity integral = new MemberItemEntity(TYPE_INTEGRAL, bindEntity);
-                array.add(integral);
-            }
+        }
+        if ((array.size() - start) > 0 && integrals.size() > 0) {
             entity = new MemberItemEntity(TYPE_INTEGRAL_MORE);
             array.add(entity);
         }
 
         entity = new MemberItemEntity(TYPE_ADDRESS_HEAD);
         array.add(entity);
+        start = array.size();
         List<AddressEntity> addresses = member.getAddress();
-        if (!Util.isEmpty(addresses)) {
-            AddressEntity addressEntity = addresses.get(0);
+        for (int i = addresses.size() - 1; i >= addresses.size() - 2 & i > 0; i--) {
+            AddressEntity addressEntity = addresses.get(i);
             if (addressEntity != null) {
                 MemberItemEntity address = new MemberItemEntity(TYPE_ADDRESS, addressEntity);
                 array.add(address);
             }
-            addressEntity = addresses.get(1);
-            if (addressEntity != null) {
-                MemberItemEntity address = new MemberItemEntity(TYPE_ADDRESS, addressEntity);
-                array.add(address);
-            }
+        }
+        if ((array.size() - start) >=1 && addresses.size() > 0) {
             entity = new MemberItemEntity(TYPE_ADDRESS_MORE);
             array.add(entity);
         }

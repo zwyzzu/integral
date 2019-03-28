@@ -1,5 +1,6 @@
 package yixia.lib.core.util;
 
+import android.annotation.SuppressLint;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -226,6 +228,14 @@ public class Util {
         }
     }
 
+    public static String float2String(float number, int decimal) {
+        if (decimal < 0) {
+            decimal = 0;
+        }
+        String format = "%1." + decimal + "f";
+        return String.format(Locale.getDefault(), format, number);
+    }
+
     public static String byte2hex(byte[] bytes) {
         return byte2hex(bytes, null);
     }
@@ -347,8 +357,8 @@ public class Util {
     public static PowerManager.WakeLock screenOn(Context context) {
         try {
             PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-            PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK
-                    | PowerManager.ON_AFTER_RELEASE, "==KeepScreenOn==");
+            @SuppressLint("InvalidWakeLockTag")
+            PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "==KeepScreenOn==");
             wakeLock.acquire();
             return wakeLock;
         } catch (Throwable e) {

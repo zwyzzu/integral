@@ -11,27 +11,27 @@ import android.support.annotation.NonNull;
 @SuppressWarnings("unused")
 public class IntegralBindEntity extends BaseEntity implements Comparable<IntegralBindEntity> {
 
-    private int score = 0;//分数
-    private int usedScore = 0;//分数
+    private float score = 0;//分数
+    private float usedScore = 0;//分数
     private long createDate;//积分日期
     private long usedDate;//使用日期
     private String desc;//描述
     private String bind;//绑定ID
     private String scoreBind;//绑定积分ID
 
-    public int getScore() {
+    public float getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(float score) {
         this.score = score;
     }
 
-    public int getUsedScore() {
+    public float getUsedScore() {
         return usedScore;
     }
 
-    public void setUsedScore(int usedScore) {
+    public void setUsedScore(float usedScore) {
         this.usedScore = usedScore;
     }
 
@@ -79,7 +79,7 @@ public class IntegralBindEntity extends BaseEntity implements Comparable<Integra
         return this.useableScore() > 0;
     }
 
-    public int useableScore() {
+    public float useableScore() {
         return this.getScore() - this.getUsedScore();
     }
 
@@ -93,8 +93,8 @@ public class IntegralBindEntity extends BaseEntity implements Comparable<Integra
 
     @Override
     void readParcel(Parcel in) {
-        this.setScore(in.readInt());
-        this.setUsedScore(in.readInt());
+        this.setScore(in.readFloat());
+        this.setUsedScore(in.readFloat());
         this.setCreateDate(in.readLong());
         this.setUsedDate(in.readLong());
         this.setDesc(in.readString());
@@ -104,8 +104,8 @@ public class IntegralBindEntity extends BaseEntity implements Comparable<Integra
 
     @Override
     void write2Parcel(Parcel dest, int flags) {
-        dest.writeInt(this.getScore());
-        dest.writeInt(this.getUsedScore());
+        dest.writeFloat(this.getScore());
+        dest.writeFloat(this.getUsedScore());
         dest.writeLong(this.getCreateDate());
         dest.writeLong(this.getUsedDate());
         dest.writeString(this.getDesc());

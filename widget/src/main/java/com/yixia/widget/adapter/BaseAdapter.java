@@ -136,7 +136,7 @@ public class BaseAdapter<T> extends android.widget.BaseAdapter implements Refres
 
     @Override
     public final View getView(int position, View convertView, ViewGroup parent) {
-        return this.mLoadingItemView.getView(convertView, getItem(position));
+        return this.mLoadingItemView.getView(parent, convertView, getItem(position));
     }
 
     private void setItem(T entity) {
@@ -194,6 +194,6 @@ public class BaseAdapter<T> extends android.widget.BaseAdapter implements Refres
     }
 
     public interface OnItemLoading<T> {
-        View getView(View convertView, T item);
+        View getView(ViewGroup parent, View convertView, T item);
     }
 }

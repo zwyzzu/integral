@@ -7,4 +7,5 @@
     <color name="background">#ebebeb</color>
     <color name="textColor_main_bottom_checked_true">#d81e06</color>
     <color name="textColor_main_bottom_checked_false">#333333</color>
+    <color name="lighter_gray">#ddd</color>
 </resources>

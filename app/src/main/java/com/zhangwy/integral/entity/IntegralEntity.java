@@ -10,7 +10,7 @@ import android.os.Parcel;
 @SuppressWarnings("unused")
 public class IntegralEntity extends BaseEntity {
 
-    private int score;//分数
+    private float score;//分数
     private String name;
     private String desc;//描述
 
@@ -22,11 +22,11 @@ public class IntegralEntity extends BaseEntity {
         super(in);
     }
 
-    public int getScore() {
+    public float getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(float score) {
         this.score = score;
     }
 
@@ -48,14 +48,14 @@ public class IntegralEntity extends BaseEntity {
 
     @Override
     void readParcel(Parcel in) {
-        this.setScore(in.readInt());
+        this.setScore(in.readFloat());
         this.setName(in.readString());
         this.setDesc(in.readString());
     }
 
     @Override
     void write2Parcel(Parcel dest, int flags) {
-        dest.writeInt(this.getScore());
+        dest.writeFloat(this.getScore());
         dest.writeString(this.getName());
         dest.writeString(this.getDesc());
     }
