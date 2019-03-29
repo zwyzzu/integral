@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.yixia.widget.recycler.RecyclerAdapter;
 import com.yixia.widget.recycler.VSRecyclerView;
+import com.zhangwy.address.AddressActivity;
 import com.zhangwy.integral.data.IDataManager;
 import com.zhangwy.integral.entity.AddressEntity;
 import com.zhangwy.integral.entity.IntegralBindEntity;
@@ -196,7 +197,7 @@ public class MemberActivity extends BaseActivity {
             if (integral) {
                 IntegralAddActivity.start(MemberActivity.this, mmbId, REQUEST_CODE_ADD);
             } else {
-                //TODO
+                AddressActivity addressActivity = new AddressActivity(this);
             }
         });
     }
