@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/addressRoot"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="640dp"
     android:background="@color/common_white">
 
     <TextView
@@ -51,7 +51,6 @@
         app:tabIndicatorColor="#65C15C"
         app:tabIndicatorHeight="1dp"
         app:tabMode="scrollable"
-        app:tabRippleColor="@null"
         app:tabSelectedTextColor="#65C15C"
         app:tabTextAppearance="@style/TabLayoutTextStyle"
         app:tabTextColor="#444444" />

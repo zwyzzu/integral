@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import yixia.lib.core.util.Logger;
+import yixia.lib.core.util.Util;
 
 public class AreaPickerView extends Dialog {
 
@@ -81,8 +82,8 @@ public class AreaPickerView extends Dialog {
 
     public AreaPickerView(@NonNull Context context, int themeResId, List<AddressBean> addressBeans) {
         super(context, themeResId);
-        this.addressBeans = addressBeans;
         this.context = context;
+        this.addressBeans = addressBeans;
     }
 
     @Override
@@ -176,10 +177,10 @@ public class AreaPickerView extends Dialog {
             }
         });
         this.provinceRecycler.setOnItemClickListener((view, viewType, entity, position) -> {
-            Logger.d(oldProvinceSelected + "~~~" + oldCitySelected + "~~~" + oldAreaSelected);
             cityBeans.clear();
             areaBeans.clear();
-            addressBeans.get(position).setStatus(true);
+            AddressBean current = addressBeans.get(position);
+            current.setStatus(true);
             provinceSelected = position;
             if (oldProvinceSelected != -1 && oldProvinceSelected != provinceSelected) {
                 addressBeans.get(oldProvinceSelected).setStatus(false);
@@ -195,11 +196,11 @@ public class AreaPickerView extends Dialog {
                 oldCitySelected = -1;
                 oldAreaSelected = -1;
             }
-            cityBeans.addAll(addressBeans.get(position).getChildren());
+            cityBeans.addAll(current.getChildren());
             provinceRecycler.notifyDataSetChanged();
-            cityRecycler.notifyDataSetChanged();
-            areaRecycler.notifyDataSetChanged();
-            strings.set(0, addressBeans.get(position).getLabel());
+            cityRecycler.reload(cityBeans);
+            areaRecycler.reload(areaBeans);
+            strings.set(0, current.getLabel());
             if (strings.size() == 1) {
                 strings.add("请选择");
             } else if (strings.size() > 1) {
@@ -250,7 +251,7 @@ public class AreaPickerView extends Dialog {
             if (cityBeans.get(position).getChildren() != null) {
                 areaBeans.addAll(cityBeans.get(position).getChildren());
                 cityRecycler.notifyDataSetChanged();
-                areaRecycler.notifyDataSetChanged();
+                areaRecycler.reload(areaBeans);
                 strings.set(1, cityBeans.get(position).getLabel());
                 if (strings.size() == 2) {
                     strings.add("请选择");
@@ -263,7 +264,7 @@ public class AreaPickerView extends Dialog {
             } else {
                 oldAreaSelected = -1;
                 cityRecycler.notifyDataSetChanged();
-                areaRecycler.notifyDataSetChanged();
+                areaRecycler.reload(areaBeans);
                 strings.set(1, cityBeans.get(position).getLabel());
                 tabLayout.setupWithViewPager(viewPager);
                 viewPagerAdapter.notifyDataSetChanged();
@@ -327,14 +328,12 @@ public class AreaPickerView extends Dialog {
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             container.addView(views.get(position));
-            Logger.e("------------instantiateItem");
             return views.get(position);
         }
 
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
             container.removeView(views.get(position));
-            Logger.e("------------destroyItem");
         }
 
     }
@@ -349,7 +348,7 @@ public class AreaPickerView extends Dialog {
 
     public void setSelect(int... value) {
         strings = new ArrayList<>();
-        if (value == null) {
+        if (value == null || value.length <= 0) {
             strings.add("请选择");
             if (isCreate) {
                 tabLayout.setupWithViewPager(viewPager);

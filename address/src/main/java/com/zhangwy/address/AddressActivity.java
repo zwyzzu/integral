@@ -26,6 +26,7 @@ public class AddressActivity {
                 Logger.d(addressBeans.get(value[0]).getLabel() + "-" + addressBeans.get(value[0]).getChildren().get(value[1]).getLabel());
             }
         });
+        areaPickerView.setSelect();
         areaPickerView.show();
     }
 
