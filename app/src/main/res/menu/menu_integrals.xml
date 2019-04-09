@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/integralsUse"
+        android:icon="@mipmap/icon_use"
+        android:title="@string/use"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/integralsAdd"
         android:icon="@mipmap/icon_add"
         android:title="@string/add"

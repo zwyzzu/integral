@@ -21,6 +21,8 @@ import com.zhangwy.integral.entity.MemberEntity;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import yixia.lib.core.base.BaseFragment;
@@ -76,6 +78,7 @@ public class FragmentMain extends BaseFragment {
 
     private void reloadData() {
         List<MemberEntity> members = IDataManager.getInstance().getMembers();
+        Collections.sort(members, (o1, o2) -> o2.getIntegral() - o1.getIntegral());
         this.recyclerView.reload(members);
     }
 

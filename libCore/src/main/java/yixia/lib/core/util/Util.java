@@ -2,6 +2,7 @@ package yixia.lib.core.util;
 
 import android.annotation.SuppressLint;
 import android.app.KeyguardManager;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -408,5 +409,16 @@ public class Util {
             Matcher m = p2.matcher(str);
             return m.matches();
         }
+    }
+
+    public static void copy2Clipboard(Context context, String content) {
+        if (context == null) {
+            return;
+        }
+        ClipboardManager cmb = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        if (cmb == null) {
+            return;
+        }
+        cmb.setText(content.trim());
     }
 }

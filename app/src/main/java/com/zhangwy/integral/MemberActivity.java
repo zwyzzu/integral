@@ -1,23 +1,26 @@
 package com.zhangwy.integral;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.yixia.widget.recycler.RecyclerAdapter;
 import com.yixia.widget.recycler.VSRecyclerView;
-import com.zhangwy.address.AddressActivity;
 import com.zhangwy.integral.data.IDataManager;
 import com.zhangwy.integral.entity.AddressEntity;
 import com.zhangwy.integral.entity.IntegralBindEntity;
@@ -30,6 +33,7 @@ import java.util.List;
 import yixia.lib.core.base.BaseActivity;
 import yixia.lib.core.util.TimeUtil;
 import yixia.lib.core.util.Util;
+import yixia.lib.core.util.WindowUtil;
 
 @SuppressWarnings("unused")
 public class MemberActivity extends BaseActivity {
@@ -84,6 +88,7 @@ public class MemberActivity extends BaseActivity {
         this.refreshData();
         this.refreshRecycler();
         this.setToolbar();
+        this.setMsgClick();
     }
 
     private void setToolbar() {
@@ -188,17 +193,23 @@ public class MemberActivity extends BaseActivity {
     private void refreshHead(View root, boolean integral) {
         TextView title = root.findViewById(R.id.memberTitleText);
         ImageView add = root.findViewById(R.id.memberTitleAdd);
+        ImageView use = root.findViewById(R.id.memberTitleUse);
         if (integral) {
+            use.setVisibility(View.VISIBLE);
             title.setText(R.string.member_list_integral);
         } else {
+            use.setVisibility(View.GONE);
             title.setText(R.string.member_list_address);
         }
         add.setOnClickListener(v -> {
             if (integral) {
-                IntegralAddActivity.start(MemberActivity.this, mmbId, REQUEST_CODE_ADD);
+                IntegralAddActivity.start(this, mmbId, REQUEST_CODE_ADD);
             } else {
-                AddressActivity addressActivity = new AddressActivity(this);
+                AddressActivity.start(this, mmbId, REQUEST_CODE_ADD);
             }
+        });
+        use.setOnClickListener(v -> {
+            IntegralUseActivity.start(this, this.mmbId, REQUEST_CODE_INTEGRAL_LIST);
         });
     }
 
@@ -211,7 +222,12 @@ public class MemberActivity extends BaseActivity {
         if (entity.getUsedDate() > entity.getCreateDate()) {
             used.setVisibility(View.VISIBLE);
             String usedTime = TimeUtil.dateMilliSecond2String(entity.getUsedDate(), TimeUtil.PATTERN_DAY4Y);
-            used.setText(getString(R.string.member_integral_used, Util.float2String(entity.getUsedScore(), 2), usedTime));
+            String text = getString(R.string.member_integral_used, Util.float2String(entity.getUsedScore(), 2), usedTime);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                used.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                used.setText(Html.fromHtml(text));
+            }
         } else {
             used.setVisibility(View.GONE);
         }
@@ -221,9 +237,14 @@ public class MemberActivity extends BaseActivity {
     private void refreshAddress(View root, AddressEntity address) {
         TextView namePhone = root.findViewById(R.id.memberAddressNamePhone);
         TextView info = root.findViewById(R.id.memberAddressInfo);
-        namePhone.setText(getString(R.string.member_address_name_phone, address.getConsignee(), address.getPhone()));
+        namePhone.setText(getString(R.string.member_address_name_phone,
+                address.getConsignee(), address.getPhone(), address.getTag()));
         info.setText(getString(R.string.member_address_info, address.getProvince(),
-                address.getCity(), address.getCounty(), address.getDistrict(), address.getAddress()));
+                address.getCity(), address.getArea(), address.getTown(), address.getAddress()));
+        root.findViewById(R.id.memberAddressExport).setOnClickListener(v -> {
+            Util.copy2Clipboard(this, address.address() + "，" + address.getConsignee() + "，" + address.getPhone());
+            showMessage(true, R.string.member_address_export_over);
+        });
     }
 
     private void refreshMore(View root, boolean integral) {
@@ -231,7 +252,7 @@ public class MemberActivity extends BaseActivity {
             if (integral) {
                 IntegralsActivity.start(this, this.mmbId, REQUEST_CODE_INTEGRAL_LIST);
             } else {
-                //TODO
+                AddressesActivity.start(this, this.mmbId, REQUEST_CODE_INTEGRAL_LIST);
             }
         });
     }
@@ -242,5 +263,30 @@ public class MemberActivity extends BaseActivity {
         if (resultCode == RESULT_OK) {
             this.refreshRecycler();
         }
+    }
+
+    private void setMsgClick() {
+        this.msgIcon.setOnClickListener(v -> this.updateMessage());
+    }
+
+    private void updateMessage() {
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_update_member_message, null);
+        EditText input = view.findViewById(R.id.updateMemberMessage);
+        input.setText(this.member.getDesc());
+        input.setSelection(input.getText().length());
+        Dialog dialog = WindowUtil.createAlertDialog(this, 0, view, (dialog1, which) -> {
+            String message = input.getText().toString();
+            IDataManager.getInstance().updateMessage(mmbId, message);
+            this.msgIcon.setImageResource(R.mipmap.icon_arrow_down);
+            this.message.setText(message);
+            this.member.setDesc(message);
+        }, R.string.ok, (dialog12, which) -> msgIcon.setImageResource(R.mipmap.icon_arrow_down), R.string.cancel);
+        if (dialog == null) {
+            return;
+        }
+        this.msgIcon.setImageResource(R.mipmap.icon_arrow_up);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.show();
     }
 }

@@ -9,6 +9,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:overScrollMode="never"
+        android:layout_marginBottom="@dimen/margin_8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

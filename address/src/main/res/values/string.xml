@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="address_label">选择地址</string>
+    <string name="dialog_address_label">选择地址</string>
+    <string name="unCheckedLabel">请选择</string>
 </resources>

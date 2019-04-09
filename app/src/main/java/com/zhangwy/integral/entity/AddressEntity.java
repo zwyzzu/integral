@@ -16,8 +16,8 @@ public class AddressEntity extends BaseEntity implements Comparable<AddressEntit
     private String consignee;//收件人
     private String province;//省
     private String city;//市
-    private String county;//县
-    private String district;//区
+    private String area;//县/区
+    private String town;//街道
     private String address;//地址
     private String desc;//描述
     private String bind;//绑定人物
@@ -71,20 +71,20 @@ public class AddressEntity extends BaseEntity implements Comparable<AddressEntit
         this.city = city;
     }
 
-    public String getCounty() {
-        return county;
+    public String getArea() {
+        return area;
     }
 
-    public void setCounty(String county) {
-        this.county = county;
+    public void setArea(String area) {
+        this.area = area;
     }
 
-    public String getDistrict() {
-        return district;
+    public String getTown() {
+        return town;
     }
 
-    public void setDistrict(String district) {
-        this.district = district;
+    public void setTown(String town) {
+        this.town = town;
     }
 
     public String getAddress() {
@@ -123,8 +123,8 @@ public class AddressEntity extends BaseEntity implements Comparable<AddressEntit
         StringBuffer buffer = new StringBuffer();
         buffer.append(this.getProvince());
         buffer.append(this.getCity());
-        buffer.append(this.getCounty());
-        buffer.append(this.getDistrict());
+        buffer.append(this.getArea());
+        buffer.append(this.getTown());
         buffer.append(this.getAddress());
         return buffer.toString();
     }
@@ -136,8 +136,8 @@ public class AddressEntity extends BaseEntity implements Comparable<AddressEntit
         this.setConsignee(in.readString());
         this.setProvince(in.readString());
         this.setCity(in.readString());
-        this.setCounty(in.readString());
-        this.setDistrict(in.readString());
+        this.setArea(in.readString());
+        this.setTown(in.readString());
         this.setAddress(in.readString());
         this.setDesc(in.readString());
         this.setBind(in.readString());
@@ -151,8 +151,8 @@ public class AddressEntity extends BaseEntity implements Comparable<AddressEntit
         dest.writeString(this.getConsignee());
         dest.writeString(this.getProvince());
         dest.writeString(this.getCity());
-        dest.writeString(this.getCounty());
-        dest.writeString(this.getDistrict());
+        dest.writeString(this.getArea());
+        dest.writeString(this.getTown());
         dest.writeString(this.getAddress());
         dest.writeString(this.getDesc());
         dest.writeString(this.getBind());

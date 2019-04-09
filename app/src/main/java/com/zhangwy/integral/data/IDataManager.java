@@ -77,6 +77,14 @@ public abstract class IDataManager {
     public abstract void dldMember(String id);
 
     /**
+     * 修改成员描述信息
+     *
+     * @param mmId    成员ID
+     * @param message 成员描述信息
+     */
+    public abstract void updateMessage(String mmId, String message);
+
+    /**
      * 添加成员地址
      *
      * @param address 地址
@@ -168,5 +176,5 @@ public abstract class IDataManager {
      * @param memberId 成员ID
      * @param useScore 使用积分数
      */
-    public abstract void useIntegral(String memberId, int useScore) throws CodeException;
+    public abstract void useIntegral(String memberId, float useScore) throws CodeException;
 }

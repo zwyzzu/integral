@@ -85,10 +85,17 @@ public class VSVerificationLayout extends FrameLayout implements View.OnFocusCha
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
-            this.hintView.setVisibility(GONE);
+            this.hideHint();
         } else {
             this.empty();
         }
+    }
+
+    public void hideHint() {
+        if (this.hintView == null) {
+            return;
+        }
+        this.hintView.setVisibility(GONE);
     }
 
     public void empty() {
@@ -112,7 +119,7 @@ public class VSVerificationLayout extends FrameLayout implements View.OnFocusCha
         View view = LayoutInflater.from(getContext()).inflate(R.layout.widget_hint_view, this, false);
         this.hintView = (TextView) view;
         this.addView(this.hintView);
-        this.hintView.setVisibility(GONE);
+        this.hideHint();
     }
 
     public void verify(Command... commands) {
@@ -132,7 +139,7 @@ public class VSVerificationLayout extends FrameLayout implements View.OnFocusCha
                 if (this.hintView == null) {
                     return;
                 }
-                this.hintView.setVisibility(GONE);
+                this.hideHint();
             }
         }
     }

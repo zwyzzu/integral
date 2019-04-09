@@ -37,14 +37,14 @@ public class MemberItemEntity {
         array.add(entity);
         List<IntegralBindEntity> integrals = member.getIntegrals();
         int start = array.size();
-        for (int i = integrals.size() - 1; i >= integrals.size() - 2 & i > 0; i--) {
+        for (int i = integrals.size() - 1; i >= integrals.size() - 2 & i >= 0; i--) {
             IntegralBindEntity bindEntity = integrals.get(i);
             if (bindEntity != null) {
                 MemberItemEntity integral = new MemberItemEntity(TYPE_INTEGRAL, bindEntity);
                 array.add(integral);
             }
         }
-        if ((array.size() - start) > 0 && integrals.size() > 0) {
+        if ((array.size() - start) == 2 && integrals.size() > 2) {
             entity = new MemberItemEntity(TYPE_INTEGRAL_MORE);
             array.add(entity);
         }
@@ -53,14 +53,14 @@ public class MemberItemEntity {
         array.add(entity);
         start = array.size();
         List<AddressEntity> addresses = member.getAddress();
-        for (int i = addresses.size() - 1; i >= addresses.size() - 2 & i > 0; i--) {
+        for (int i = addresses.size() - 1; i >= addresses.size() - 2 & i >= 0; i--) {
             AddressEntity addressEntity = addresses.get(i);
             if (addressEntity != null) {
                 MemberItemEntity address = new MemberItemEntity(TYPE_ADDRESS, addressEntity);
                 array.add(address);
             }
         }
-        if ((array.size() - start) >=1 && addresses.size() > 0) {
+        if ((array.size() - start) == 2 && addresses.size() > 2) {
             entity = new MemberItemEntity(TYPE_ADDRESS_MORE);
             array.add(entity);
         }

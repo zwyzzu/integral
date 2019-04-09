@@ -28,6 +28,20 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
+    <ImageView
+        android:id="@+id/memberTitleUse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/icon_use"
+        android:layout_marginRight="@dimen/margin_8"
+        android:layout_marginEnd="@dimen/margin_8"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/memberTitleAdd"
+        app:layout_constraintRight_toLeftOf="@id/memberTitleAdd"
+        app:layout_constraintTop_toTopOf="@id/memberTitleAdd"
+        app:layout_constraintBottom_toBottomOf="@id/memberTitleAdd"
+        tools:ignore="ContentDescription" />
+
     <View
         android:id="@+id/memberTitleSigLine"
         android:layout_width="0dp"

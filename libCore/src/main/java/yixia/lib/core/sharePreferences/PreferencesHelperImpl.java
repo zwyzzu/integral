@@ -41,6 +41,11 @@ class PreferencesHelperImpl extends PreferencesHelper {
     }
 
     @Override
+    public boolean contains(String key) {
+        return this.hasInitialized() && preferences.contains(key);
+    }
+
+    @Override
     public boolean commitString(String key, String value) {
         return this.hasInitialized() && preferences.edit().putString(key, value).commit();
     }

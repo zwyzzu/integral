@@ -4,9 +4,7 @@
     xmlns:skin="http://schemas.android.com/android/skin"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    skin:enable="true"
-    tools:context=".VSImportImageFragment">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/importAlbumImageHint"

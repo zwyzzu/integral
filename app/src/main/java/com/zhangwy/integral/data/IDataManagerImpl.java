@@ -73,8 +73,8 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 .put("consignee", SQLCreator.Format.TEXT, false)
                 .put("province", SQLCreator.Format.TEXT, true)
                 .put("city", SQLCreator.Format.TEXT, false)
-                .put("county", SQLCreator.Format.TEXT, true)
-                .put("district", SQLCreator.Format.TEXT, true)
+                .put("area", SQLCreator.Format.TEXT, true)
+                .put("town", SQLCreator.Format.TEXT, true)
                 .put("address", SQLCreator.Format.TEXT, true)
                 .put("desc", SQLCreator.Format.TEXT, true)
                 .put("bind", SQLCreator.Format.TEXT, false)
@@ -257,8 +257,8 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         address.setConsignee(cursor.getString(columnIndex++));
         address.setProvince(cursor.getString(columnIndex++));
         address.setCity(cursor.getString(columnIndex++));
-        address.setCounty(cursor.getString(columnIndex++));
-        address.setDistrict(cursor.getString(columnIndex++));
+        address.setArea(cursor.getString(columnIndex++));
+        address.setTown(cursor.getString(columnIndex++));
         address.setAddress(cursor.getString(columnIndex++));
         address.setDesc(cursor.getString(columnIndex++));
         address.setBind(cursor.getString(columnIndex++));
@@ -440,6 +440,31 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         }
     }
 
+    @Override
+    public void updateMessage(String mmId, String message) {
+        if (TextUtils.isEmpty(mmId) || this.emptyHelper()) {
+            return;
+        }
+
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            database.beginTransaction();
+            if (this.hasMember(database, mmId)) {
+                String[] whereArgs = new String[]{mmId};
+                ContentValues values = new ContentValues();
+                values.put("desc", message);
+                values.put("modified", System.currentTimeMillis());
+                database.update(TABLE_NAME_MEMBER, values, SQL_WHERECLAUSE_ID, whereArgs);
+            }
+            database.setTransactionSuccessful();
+        } catch (Exception e) {
+            Logger.d("dldMember", e);
+        } finally {
+            this.endTransaction(database);
+        }
+    }
+
     /**
      * 添加成员地址
      *
@@ -470,8 +495,8 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             values.put("consignee", address.getConsignee());
             values.put("province", address.getProvince());
             values.put("city", address.getCity());
-            values.put("county", address.getCounty());
-            values.put("district", address.getDistrict());
+            values.put("area", address.getArea());
+            values.put("town", address.getTown());
             values.put("address", address.getAddress());
             values.put("desc", address.getDesc());
             values.put("bind", address.getBind());
@@ -521,8 +546,8 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             values.put("consignee", address.getConsignee());
             values.put("province", address.getProvince());
             values.put("city", address.getCity());
-            values.put("county", address.getCounty());
-            values.put("district", address.getDistrict());
+            values.put("area", address.getArea());
+            values.put("town", address.getTown());
             values.put("address", address.getAddress());
             values.put("desc", address.getDesc());
             values.put("bind", address.getBind());
@@ -857,7 +882,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
      * @param useScore 使用积分数
      */
     @Override
-    public void useIntegral(String memberId, int useScore) throws CodeException {
+    public void useIntegral(String memberId, float useScore) throws CodeException {
         if (TextUtils.isEmpty(memberId) || useScore <= 0) {
             throw new CodeException(IDataCode.PARAMETER_UNUSABLE);
         }

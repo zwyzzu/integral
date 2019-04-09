@@ -150,7 +150,7 @@
     <com.yixia.widget.recycler.VSRecyclerView
         android:id="@+id/memberList"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="@dimen/margin_16"
         android:layout_marginLeft="@dimen/margin_16"
         android:layout_marginEnd="@dimen/margin_16"
@@ -159,5 +159,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/memberBasicInfo" />
 </android.support.constraint.ConstraintLayout>

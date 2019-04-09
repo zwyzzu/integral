@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".AddressActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/addressToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/background_bar"
+        android:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/icon_widget_back"
+        tools:ignore="UnusedAttribute">
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/address_label" />
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/addressConsigneeHead"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:background="@color/common_white"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/padding_16"
+        android:paddingLeft="@dimen/padding_16"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:text="@string/address_consignee"
+        android:textColor="@color/black"
+        android:textSize="@dimen/widget_fontSize_15"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addressToolbar" />
+
+    <TextView
+        android:id="@+id/addressPhoneHead"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:background="@color/common_white"
+        android:gravity="center"
+        android:paddingStart="@dimen/padding_16"
+        android:paddingLeft="@dimen/padding_16"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:text="@string/address_phone"
+        android:textColor="@color/black"
+        android:textSize="@dimen/widget_fontSize_16"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addressConsigneeHead" />
+
+    <com.yixia.widget.VSVerificationLayout
+        android:id="@+id/addressPhoneHome"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/common_white"
+        android:paddingStart="0dp"
+        android:paddingLeft="0dp"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        app:inputId="@+id/addressPhone"
+        app:layout_constraintBottom_toBottomOf="@id/addressPhoneHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/addressPhoneHead"
+        app:layout_constraintTop_toTopOf="@id/addressPhoneHead">
+
+        <EditText
+            android:id="@+id/addressPhone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"
+            android:hint="@string/address_phone_hint"
+            android:inputType="phone"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/widget_fontSize_16"
+            tools:ignore="Autofill,LabelFor" />
+    </com.yixia.widget.VSVerificationLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:background="@color/background"
+        app:layout_constraintBottom_toBottomOf="@id/addressPhoneHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.yixia.widget.VSVerificationLayout
+        android:id="@+id/addressConsigneeHome"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/common_white"
+        android:paddingStart="0dp"
+        android:paddingLeft="0dp"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        app:inputId="@+id/addressConsignee"
+        app:layout_constraintBottom_toBottomOf="@id/addressConsigneeHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/addressPhoneHome"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@id/addressPhoneHome"
+        app:layout_constraintTop_toTopOf="@id/addressConsigneeHead">
+
+        <EditText
+            android:id="@+id/addressConsignee"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"
+            android:hint="@string/address_consignee_hint"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/widget_fontSize_16"
+            tools:ignore="Autofill,LabelFor,TextFields" />
+    </com.yixia.widget.VSVerificationLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:background="@color/background"
+        app:layout_constraintBottom_toBottomOf="@id/addressConsigneeHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/addressAreaHead"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:background="@color/common_white"
+        android:gravity="center"
+        android:paddingStart="@dimen/padding_16"
+        android:paddingLeft="@dimen/padding_16"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:text="@string/address_area"
+        android:textColor="@color/black"
+        android:textSize="@dimen/widget_fontSize_16"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addressPhoneHead" />
+
+    <com.yixia.widget.VSVerificationLayout
+        android:id="@+id/addressAreaHome"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/common_white"
+        android:paddingStart="0dp"
+        android:paddingLeft="0dp"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        app:inputId="@+id/addressArea"
+        app:layout_constraintBottom_toBottomOf="@id/addressAreaHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/addressPhoneHome"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@id/addressPhoneHome"
+        app:layout_constraintTop_toTopOf="@id/addressAreaHead">
+
+        <TextView
+            android:id="@+id/addressArea"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:ellipsize="marquee"
+            android:gravity="center_vertical"
+            android:hint="@string/address_area_hint"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/widget_fontSize_16"
+            tools:ignore="Autofill,LabelFor,TextFields" />
+    </com.yixia.widget.VSVerificationLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:background="@color/background"
+        app:layout_constraintBottom_toBottomOf="@id/addressAreaHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/addressDetailedHead"
+        android:layout_width="wrap_content"
+        android:layout_height="84dp"
+        android:background="@color/common_white"
+        android:paddingStart="@dimen/padding_16"
+        android:paddingLeft="@dimen/padding_16"
+        android:paddingTop="@dimen/padding_14"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:text="@string/address_detailed"
+        android:textColor="@color/black"
+        android:textSize="@dimen/widget_fontSize_16"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addressAreaHead" />
+
+    <com.yixia.widget.VSVerificationLayout
+        android:id="@+id/addressDetailedHome"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/common_white"
+        android:paddingStart="0dp"
+        android:paddingLeft="0dp"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        app:inputId="@+id/addressDetailed"
+        app:layout_constraintBottom_toBottomOf="@id/addressDetailedHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/addressPhoneHome"
+        app:layout_constraintStart_toStartOf="@id/addressPhoneHome"
+        app:layout_constraintTop_toTopOf="@id/addressDetailedHead">
+
+        <EditText
+            android:id="@+id/addressDetailed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:gravity="start"
+            android:hint="@string/address_detailed_hint"
+            android:inputType="text"
+            android:lines="3"
+            android:paddingTop="@dimen/padding_14"
+            android:paddingBottom="@dimen/padding_14"
+            android:textColor="@color/black"
+            android:textSize="@dimen/widget_fontSize_16"
+            tools:ignore="Autofill,LabelFor" />
+    </com.yixia.widget.VSVerificationLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:background="@color/background"
+        app:layout_constraintBottom_toBottomOf="@id/addressDetailedHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.yixia.widget.flowlayout.FlowLayout
+        android:id="@+id/addressTags"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/common_white"
+        android:paddingStart="0dp"
+        android:paddingLeft="0dp"
+        android:paddingTop="@dimen/padding_14"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:paddingBottom="@dimen/padding_14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/addressPhoneHome"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@id/addressPhoneHome"
+        app:layout_constraintTop_toBottomOf="@id/addressDetailedHead" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/addressTagAddHome"
+        android:layout_width="0dp"
+        android:layout_height="38dp"
+        android:background="@color/common_white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/addressTags"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@id/addressTags"
+        app:layout_constraintTop_toBottomOf="@id/addressTags">
+
+        <TextView
+            android:id="@+id/addressTagAddTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:background="@drawable/background_address_tags"
+            android:gravity="center_horizontal"
+            android:minWidth="54dp"
+            android:padding="0dp"
+            android:text="+"
+            android:textColor="@color/black"
+            android:textSize="@dimen/widget_fontSize_16"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/addressTagAddLayout"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="@dimen/margin_16"
+            android:layout_marginRight="@dimen/margin_16"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:background="@drawable/background_address_tags_add"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/addressTagAddInput"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:hint="@string/address_tag_add_hint"
+                android:textSize="@dimen/widget_fontSize_15"
+                tools:ignore="Autofill,TextFields" />
+
+            <TextView
+                android:id="@+id/addressTagAddOk"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_address_tags_add_save_unclick"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/padding_6"
+                android:paddingLeft="@dimen/padding_6"
+                android:paddingEnd="@dimen/padding_6"
+                android:paddingRight="@dimen/padding_6"
+                android:text="@string/ok"
+                android:textColor="@color/common_white"
+                android:textSize="@dimen/widget_fontSize_15" />
+        </LinearLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/addressTagHead"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/common_white"
+        android:paddingStart="@dimen/padding_16"
+        android:paddingLeft="@dimen/padding_16"
+        android:paddingTop="@dimen/padding_14"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:paddingBottom="@dimen/padding_14"
+        android:text="@string/address_tag"
+        android:textColor="@color/black"
+        android:textSize="@dimen/widget_fontSize_16"
+        app:layout_constraintBottom_toBottomOf="@id/addressTagAddHome"
+        app:layout_constraintEnd_toStartOf="@id/addressTags"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/addressTags"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/addressTags" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:background="@color/background"
+        app:layout_constraintBottom_toBottomOf="@id/addressTagHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/addressDescHead"
+        android:layout_width="wrap_content"
+        android:layout_height="84dp"
+        android:background="@color/common_white"
+        android:gravity="start"
+        android:paddingStart="@dimen/padding_16"
+        android:paddingLeft="@dimen/padding_16"
+        android:paddingTop="@dimen/padding_14"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:paddingBottom="@dimen/padding_14"
+        android:text="@string/address_desc"
+        android:textColor="@color/black"
+        android:textSize="@dimen/widget_fontSize_16"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addressTagHead" />
+
+    <EditText
+        android:id="@+id/addressDesc"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/common_white"
+        android:gravity="start"
+        android:hint="@string/address_desc_hint"
+        android:lines="3"
+        android:paddingStart="0dp"
+        android:paddingLeft="0dp"
+        android:paddingTop="@dimen/padding_14"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:paddingBottom="@dimen/padding_14"
+        android:textSize="@dimen/widget_fontSize_16"
+        app:layout_constraintBottom_toBottomOf="@id/addressDescHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/addressPhoneHome"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@id/addressPhoneHome"
+        app:layout_constraintTop_toTopOf="@id/addressDescHead" />
+</android.support.constraint.ConstraintLayout>

@@ -24,7 +24,7 @@ public class FlowLayout<E> extends RelativeLayout {
     private int verticalSpacing;// 垂直间距，单位为dp
     private List<Line> lines = new ArrayList<>();// 行的集合
     private Line line;// 当前的行
-    private int maxLines = -1;
+    private int maxLines;
     private List<E> data = new ArrayList<>();
     private OnItemClickListener<E> listener;
     private OnItemLoading<E> loading;
@@ -154,6 +154,10 @@ public class FlowLayout<E> extends RelativeLayout {
         this.reload(items);
     }
 
+    public void refresh() {
+        this.loadingData();
+    }
+
     public int getCount() {
         return this.data.size();
     }
@@ -271,7 +275,7 @@ public class FlowLayout<E> extends RelativeLayout {
             if (e == null) {
                 continue;
             }
-            View view = this.loading.onCreateView(this);
+            View view = this.loading.onCreateView(this, e);
             this.loading.onLoadView(view, e);
             addView(view, this.childLayoutParams());
             view.setOnClickListener(this.createClickListener(e));
@@ -283,14 +287,11 @@ public class FlowLayout<E> extends RelativeLayout {
     }
 
     private OnClickListener createClickListener(final E entity) {
-        return new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener == null) {
-                    return;
-                }
-                listener.onItemClick(v, entity, data.indexOf(entity));
+        return v -> {
+            if (listener == null) {
+                return;
             }
+            listener.onItemClick(v, entity, data.indexOf(entity));
         };
     }
 
@@ -401,7 +402,7 @@ public class FlowLayout<E> extends RelativeLayout {
 
     public interface OnItemLoading<E> {
 
-        View onCreateView(ViewGroup parent);
+        View onCreateView(ViewGroup parent, E entity);
 
         void onLoadView(View root, E entity);
     }

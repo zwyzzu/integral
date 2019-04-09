@@ -90,11 +90,9 @@ public class WindowUtil {
     }
 
     public static Dialog createAlertDialog(Context ctx, int titleId, View view,
-                                           OnClickListener onOKClick, OnClickListener
-                                                   onCancelClick) {
+                                           OnClickListener onOKClick, OnClickListener onCancelClick) {
         try {
-            return createAlertDialog(ctx, titleId, view, onOKClick, android.R.string.ok, onCancelClick,
-                    android.R.string.cancel);
+            return createAlertDialog(ctx, titleId, view, onOKClick, android.R.string.ok, onCancelClick, android.R.string.cancel);
         } catch (Exception e) {
             return null;
         }

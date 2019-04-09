@@ -4,31 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/addressRoot"
     android:layout_width="match_parent"
-    android:layout_height="640dp"
+    android:layout_height="480dp"
     android:background="@color/common_white">
 
     <TextView
         android:id="@+id/addressLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_marginStart="@dimen/margin_16"
-        android:layout_marginLeft="@dimen/margin_16"
-        android:layout_marginTop="@dimen/margin_16"
-        android:gravity="center_vertical"
-        android:text="@string/address_label"
-        android:textColor="@color/black"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="@dimen/margin_12"
+        android:gravity="center"
+        android:text="@string/dialog_address_label"
+        android:textColor="@android:color/darker_gray"
         android:textSize="@dimen/widget_fontSize_15"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/addressClose"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginEnd="@dimen/margin_16"
-        android:layout_marginRight="@dimen/margin_16"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="@dimen/margin_12"
+        android:layout_marginRight="@dimen/margin_12"
         android:scaleType="fitXY"
         android:src="@mipmap/icon_close"
         app:layout_constraintBottom_toBottomOf="@id/addressLabel"
@@ -37,17 +37,27 @@
         app:layout_constraintTop_toTopOf="@id/addressLabel"
         tools:ignore="ContentDescription" />
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/addressTabLayout"
+    <View
+        android:id="@+id/addressTopDivision"
         android:layout_width="0dp"
-        android:layout_height="54dp"
-        android:layout_marginTop="@dimen/margin_16"
-        android:background="@color/common_white"
+        android:layout_height="1dp"
+        android:background="#d2d2d2"
+        android:layout_marginTop="@dimen/margin_12"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addressLabel"
+        app:layout_constraintTop_toBottomOf="@id/addressLabel" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/addressTabLayout"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addressTopDivision"
         app:tabIndicatorColor="#65C15C"
         app:tabIndicatorHeight="1dp"
         app:tabMode="scrollable"
@@ -58,7 +68,7 @@
     <View
         android:id="@+id/addressDivision"
         android:layout_width="0dp"
-        android:layout_height="1dp"
+        android:layout_height="1px"
         android:background="#d2d2d2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

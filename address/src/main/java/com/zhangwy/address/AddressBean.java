@@ -1,12 +1,17 @@
 package com.zhangwy.address;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class AddressBean {
 
+    @SerializedName("name")
     private String label;
+    @SerializedName("code")
     private String value;
     private boolean status;
+    @SerializedName("city")
     private List<CityBean> children;
 
     public String getLabel() {
@@ -42,9 +47,12 @@ public class AddressBean {
     }
 
     public class CityBean {
+        @SerializedName("name")
         private String label;
+        @SerializedName("code")
         private String value;
         private boolean status;
+        @SerializedName("area")
         private List<AreaBean> children;
 
         public String getLabel() {
@@ -82,7 +90,9 @@ public class AddressBean {
     }
 
     public class AreaBean {
+        @SerializedName("name")
         private String label;
+        @SerializedName("code")
         private String value;
         private boolean status;
 

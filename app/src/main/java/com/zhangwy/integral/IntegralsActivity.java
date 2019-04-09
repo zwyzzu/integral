@@ -2,11 +2,12 @@ package com.zhangwy.integral;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,12 +23,14 @@ import com.zhangwy.integral.entity.IntegralBindEntity;
 import java.util.Collections;
 import java.util.List;
 
+import yixia.lib.core.base.BaseActivity;
 import yixia.lib.core.util.TimeUtil;
 import yixia.lib.core.util.Util;
 
-public class IntegralsActivity extends AppCompatActivity {
+public class IntegralsActivity extends BaseActivity {
 
     private static final int REQUEST_CODE_ADD = 100;
+    private static final int REQUEST_CODE_USE = 101;
     private static final String EXTRA_MEMBERID = "extraMemberId";
     public static void start(Activity activity, String memberId, int requestCode) {
         Intent intent = new Intent(activity, IntegralsActivity.class);
@@ -73,6 +76,9 @@ public class IntegralsActivity extends AppCompatActivity {
                 }
                 finish();
                 break;
+            case R.id.integralsUse:
+                IntegralUseActivity.start(this, this.memberId, REQUEST_CODE_USE);
+                break;
             case R.id.integralsAdd:
                 IntegralAddActivity.start(this, this.memberId, REQUEST_CODE_ADD);
                 break;
@@ -108,7 +114,12 @@ public class IntegralsActivity extends AppCompatActivity {
                 if (entity.getUsedDate() > entity.getCreateDate()) {
                     used.setVisibility(View.VISIBLE);
                     String usedTime = TimeUtil.dateMilliSecond2String(entity.getUsedDate(), TimeUtil.PATTERN_DAY4Y);
-                    used.setText(getString(R.string.member_integral_used, Util.float2String(entity.getUsedScore(), 2), usedTime));
+                    String text = getString(R.string.member_integral_used, Util.float2String(entity.getUsedScore(), 2), usedTime);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        used.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT));
+                    } else {
+                        used.setText(Html.fromHtml(text));
+                    }
                 } else {
                     used.setVisibility(View.GONE);
                 }

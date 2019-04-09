@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -68,7 +69,8 @@ public class SelectImageActivity extends BaseActivity implements View.OnClickLis
     private void takePhoto() {
         Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(this.filePath, this.fileName);
-        this.takePhotoUri = Uri.fromFile(file);
+        String authority = getPackageName() + ".provider";
+        this.takePhotoUri = FileProvider.getUriForFile(this, authority, file);
         // 指定照片保存路径（SD卡），image.jpg为一个临时文件，每次拍照后这个图片都会被替换
         openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, this.takePhotoUri);
         startActivityForResult(openCameraIntent, REQUEST_CODE_TAKE_PHOTO);
@@ -93,6 +95,11 @@ public class SelectImageActivity extends BaseActivity implements View.OnClickLis
                 break;
             }
             case REQUEST_CODE_SELECT_IMAGE: {
+                if (data == null) {
+                    this.setResult(RESULT_CANCELED);
+                    this.finish();
+                    break;
+                }
                 Uri uri = data.getData();
                 if (uri != null) {
                     if (cut) {

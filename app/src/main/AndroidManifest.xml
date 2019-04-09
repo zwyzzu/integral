@@ -15,7 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".IntegralsActivity"></activity>
+        <activity android:name=".IntegralUseActivity"></activity>
+        <activity android:name=".AddressActivity" />
+        <activity android:name=".AddressesActivity" />
+        <activity android:name=".IntegralsActivity" />
         <activity android:name=".IntegralAddActivity" />
         <activity android:name=".IntegralElementActivity" />
         <activity
@@ -34,6 +37,16 @@
         <activity
             android:name=".MemberActivity"
             android:label="@string/page_title_member" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 
 </manifest>

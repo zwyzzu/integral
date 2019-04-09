@@ -44,6 +44,8 @@ public abstract class PreferencesHelper {
 
     public abstract void init(Context ctx);
 
+    public abstract boolean contains(String key);
+
     public abstract boolean commitString(String key, String value);
     public abstract void applyString(String key, String value);
 
