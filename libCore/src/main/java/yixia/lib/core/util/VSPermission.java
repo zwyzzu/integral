@@ -3,7 +3,6 @@ package yixia.lib.core.util;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -69,15 +68,12 @@ public class VSPermission {
             Dialog dialog = WindowUtil.createAlertDialog(activity, Device.App.getAppName(activity),
                     activity.getString(R.string.permission_tip_message, permissionString),
                     activity.getString(R.string.permission_to_setting),
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(
-                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                            intent.setData(Uri.fromParts("package",
-                                    Device.App.getPackageName(activity), null));
-                            activity.startActivityForResult(intent, requestCode);
-                        }
+                    (dialog1, which) -> {
+                        Intent intent = new Intent(
+                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        intent.setData(Uri.fromParts("package",
+                                Device.App.getPackageName(activity), null));
+                        activity.startActivityForResult(intent, requestCode);
                     },
                     activity.getString(android.R.string.cancel), null);
             if (dialog != null) {

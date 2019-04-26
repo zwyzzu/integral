@@ -39,6 +39,7 @@ ext {
             leakcanary        : "1.6.1",
             arouter           : "1.4.1",
             butterknife       : "9.0.0-rc2",
+            wechat            : "+",
 
     ]
 }

@@ -41,13 +41,14 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${rootProject.ext.android.supportVersion}"
     implementation "com.android.support:recyclerview-v7:${rootProject.ext.android.supportVersion}"
     implementation "com.android.support.constraint:constraint-layout:${rootProject.ext.android.ConstraintLayout}"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.android.support:support-v4:27.1.1'
+    implementation "com.android.support.constraint:constraint-layout:1.1.3"
+    implementation "com.android.support:support-v4:${rootProject.ext.android.supportVersion}"
     testImplementation "junit:junit:${rootProject.ext.android.JUnitVersion}"
     androidTestImplementation "com.android.support.test:runner:${rootProject.ext.android.JUnitRunnerVersion}"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${rootProject.ext.android.espressoVersion}"
     implementation "com.facebook.fresco:fresco:${rootProject.ext.thirdParty.fresco}"
     implementation "com.android.support:multidex:${rootProject.ext.android.multidex}"
+    implementation "com.tencent.mm.opensdk:wechat-sdk-android-without-mta:${rootProject.ext.thirdParty.wechat}"
     implementation project(path: ':libCore')
     implementation project(path: ':widget')
     implementation project(path: ':pickTime')
