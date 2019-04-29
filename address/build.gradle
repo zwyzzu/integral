@@ -39,7 +39,7 @@ dependencies {
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${rootProject.ext.android.espressoVersion}"
 
     //gson
-    implementation "com.google.code.gson:gson:${rootProject.ext.thirdParty.gson}"
+    implementation "com.alibaba:fastjson:${rootProject.ext.thirdParty.fastJson}"
     implementation project(path: ':libCore')
     implementation project(path: ':widget')
 }

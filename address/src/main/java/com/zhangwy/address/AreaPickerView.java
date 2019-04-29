@@ -19,8 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.alibaba.fastjson.JSON;
 import com.yixia.widget.recycler.RecyclerAdapter;
 import com.yixia.widget.recycler.VSRecyclerView;
 import com.zhangwy.address.entities.AddressEntity;
@@ -39,7 +38,6 @@ import yixia.lib.core.util.Util;
 @SuppressWarnings("unused")
 public class AreaPickerView extends Dialog {
 
-    private Gson gson = new Gson();
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
@@ -72,7 +70,7 @@ public class AreaPickerView extends Dialog {
     public AreaPickerView(@NonNull Activity activity, int themeResId) {
         super(activity, themeResId);
         String json = FileUtil.readAssets(activity, "areas.json");
-        this.provinces = this.gson.fromJson(json, new TypeToken<List<ProvinceEntity>>(){}.getType());
+        this.provinces = JSON.parseArray(json, ProvinceEntity.class);
         this.screenHeight = Screen.getScreenHeight(activity);
         this.unCheckedLabel = activity.getString(R.string.unCheckedLabel);
     }
@@ -476,7 +474,6 @@ public class AreaPickerView extends Dialog {
         if (TextUtils.isEmpty(json)) {
             return new ArrayList<>();
         }
-
-        return this.gson.fromJson(json, new TypeToken<List<AddressEntity>>(){}.getType());
+        return JSON.parseArray(json, AddressEntity.class);
     }
 }

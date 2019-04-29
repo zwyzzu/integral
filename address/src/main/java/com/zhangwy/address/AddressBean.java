@@ -1,17 +1,17 @@
 package com.zhangwy.address;
 
-import com.google.gson.annotations.SerializedName;
+import com.alibaba.fastjson.annotation.JSONField;
 
 import java.util.List;
-
+@SuppressWarnings("unused")
 public class AddressBean {
 
-    @SerializedName("name")
+    @JSONField(name = "name")
     private String label;
-    @SerializedName("code")
+    @JSONField(name = "code")
     private String value;
     private boolean status;
-    @SerializedName("city")
+    @JSONField(name = "city")
     private List<CityBean> children;
 
     public String getLabel() {
@@ -47,12 +47,12 @@ public class AddressBean {
     }
 
     public class CityBean {
-        @SerializedName("name")
+        @JSONField(name = "name")
         private String label;
-        @SerializedName("code")
+        @JSONField(name = "code")
         private String value;
         private boolean status;
-        @SerializedName("area")
+        @JSONField(name = "area")
         private List<AreaBean> children;
 
         public String getLabel() {
@@ -90,9 +90,9 @@ public class AddressBean {
     }
 
     public class AreaBean {
-        @SerializedName("name")
+        @JSONField(name = "name")
         private String label;
-        @SerializedName("code")
+        @JSONField(name = "code")
         private String value;
         private boolean status;
 

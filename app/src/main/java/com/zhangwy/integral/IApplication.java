@@ -10,6 +10,7 @@ import com.zhangwy.integral.data.IDataManager;
 
 import yixia.lib.core.sharePreferences.PreferencesHelper;
 import yixia.lib.core.util.DirMgmt;
+import yixia.lib.core.util.UUID;
 
 /**
  * Created by zhangwy on 2018/12/22 上午1:40.
@@ -33,5 +34,6 @@ public class IApplication extends Application {
         IDataManager.initialize(this.getApplicationContext());
         IAddressTags.initialized(this.getApplicationContext());
         DirMgmt.getInstance().init(this.getApplicationContext());
+        UUID.getInstance().init(this.getApplicationContext());
     }
 }
