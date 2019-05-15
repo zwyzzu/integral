@@ -8,6 +8,7 @@ import java.util.List;
  * Description 县市包含区县
  */
 public class CityEntity extends AddressEntity {
+    private static final long serialVersionUID = 4765576981484985541L;
     private List<AreaEntity> area;
 
     public List<AreaEntity> getArea() {

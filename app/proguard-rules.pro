@@ -142,9 +142,11 @@
     public void set*(...);
 }
 
--keep public class com.zhangwy.integral.wxapi**
+-keep public class com.zhangwy.integral.wxapi.**
 
 #地理位置实体
+-dontwarn com.zhangwy.address.entities.**
+-keep class com.zhangwy.address.entities.** {*;}
 
 #友盟
 -keep class com.umeng.** {*;}
@@ -154,12 +156,12 @@
 
 #fastjson
 -dontwarn com.alibaba.fastjson.**
--keep class com.alibaba.fastjson.**{*; }
+-keep class com.alibaba.fastjson.** {*;}
 
 #okhttp
 -dontwarn com.squareup.okhttp.**
 -dontwarn com.squareup.okhttp3.**
--keep class com.squareup.okhttp3.** { *;}
+-keep class com.squareup.okhttp3.** {*;}
 -dontwarn okio.**
 
 #Retrofit

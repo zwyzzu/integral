@@ -1,11 +1,14 @@
 package com.zhangwy.address.entities;
 
+import java.io.Serializable;
+
 /**
  * Created by zhangwy on 2019/3/29.
  * Updated by zhangwy on 2019/3/29.
  * Description
  */
-public class AddressEntity {
+public class AddressEntity implements Serializable {
+    private static final long serialVersionUID = -6652695739217660100L;
     private String name;
     private String code;
     private boolean checked;
