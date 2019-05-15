@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.widget.RadioGroup;
 
+import com.zhangwy.upgrade.Upgrade;
+
 import yixia.lib.core.base.BaseActivity;
 
 public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
@@ -19,6 +21,13 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         setContentView(R.layout.activity_main);
         ((RadioGroup) this.findViewById(R.id.mainBottomBar)).setOnCheckedChangeListener(this);
         this.switchFragment(R.id.mainBottomBarMain);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Upgrade upgrade = Upgrade.newInstance(this, true);
+        upgrade.check(false, false, true);
     }
 
     @Override

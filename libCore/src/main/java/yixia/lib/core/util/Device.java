@@ -652,5 +652,9 @@ public class Device {
             }
             return UNKNOWN;
         }
+
+        public boolean isAvailable() {
+            return this != NONE;
+        }
     }
 }

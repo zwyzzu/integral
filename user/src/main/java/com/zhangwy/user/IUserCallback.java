@@ -1,5 +1,7 @@
 package com.zhangwy.user;
 
+import com.zhangwy.common.entities.IUserEntity;
+
 import yixia.lib.core.exception.CodeException;
 
 /**
@@ -10,7 +12,7 @@ import yixia.lib.core.exception.CodeException;
  **/
 interface IUserCallback {
 
-    void onSuccess(IUserInfoEntity userInfo);
+    void onSuccess(IUserEntity userInfo);
 
     void onException(CodeException e);
 }

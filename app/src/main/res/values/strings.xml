@@ -65,7 +65,7 @@
     <string name="mine_address">导出地址</string>
     <string name="mine_nickname">昵称</string>
     <string name="mine_message">这个人很懒，什么也没留下</string>
-    <string name="mine_login">登录</string>
+    <string name="mine_login">微信登录</string>
     <string name="error_message_logout">您尚未登录，请先登录</string>
     <string name="integral_element_label">积分项</string>
     <string name="element_item_score">分数：%1$s</string>
@@ -109,4 +109,16 @@
     <string name="error_uninput">您尚未输入</string>
     <string name="error_invalid_number">您未输入有效数字</string>
     <string name="error_integral_insufficient">积分余额不足以消费</string>
+    <string name="error_password_empty">密码为空!</string>
+    <string name="error_network">网络异常，请检查网络后重试</string>
+    <string name="error_account_lockout">账户被锁定，请联系客服</string>
+    <string name="error_unknown">登录错误，请重试!</string>
+    <string name="wechat_uninstall">您未安装微信</string>
+    <string name="auth_waiting">休息一会,%1$d秒后再次尝试</string>
+    <string name="user_auth_canceled">用户取消授权</string>
+    <string name="user_auth_deny">用户授权被拒</string>
+    <string name="user_auth_failed">用户授权失败，请重试</string>
+    <string name="user_auth_successful">用户授权成功</string>
+    <string name="user_finish">完成</string>
+    <string name="user_logining">正在登录，请稍候\.\.\.</string>
 </resources>

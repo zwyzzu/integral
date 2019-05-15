@@ -42,4 +42,6 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${rootProject.ext.android.supportVersion}"
     implementation "com.android.support:recyclerview-v7:${rootProject.ext.android.supportVersion}"
     implementation "com.android.support.constraint:constraint-layout:${rootProject.ext.android.ConstraintLayout}"
+    implementation "com.umeng.umsdk:analytics:${rootProject.ext.thirdParty.umeng}"
+    implementation "com.umeng.umsdk:common:${rootProject.ext.thirdParty.umengCommon}"
 }

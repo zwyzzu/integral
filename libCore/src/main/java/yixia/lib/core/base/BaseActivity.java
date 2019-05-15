@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
 
+import com.umeng.analytics.MobclickAgent;
+
 import java.util.ArrayList;
 
 import yixia.lib.core.BuildConfig;
@@ -39,6 +41,18 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mDecorView = getWindow().getDecorView();
         this.pushActivity();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

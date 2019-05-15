@@ -3,7 +3,6 @@ package com.yixia.widget.player;
 import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -557,34 +556,26 @@ public class XVideoView extends VideoView implements MediaPlayer.OnPreparedListe
         if (this.mobileDialog != null && this.mobileDialog.isShowing())
             return true;
         this.pause();
-        mobileDialog = WindowUtil.createAlertDialog(this.getContext(), R.string.app_name,
+        String appName = Device.App.getAppName(this.getContext());
+        String ok = getResources().getString(R.string.widget_dialog_ok);
+        String cancel = getResources().getString(R.string.widget_dialog_goback);
+        mobileDialog = WindowUtil.createAlertDialog(this.getContext(), appName,
                 this.getContext().getString(R.string.widget_dialog_message_mobile),
-                R.string.widget_dialog_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mobileDialog = null;
-                        dialog.dismiss();
-                        useMobile = true;
-                        UseMobileConfig.getInstance().setUseMobile(monitorType, true);
-                        start();
-                    }
-                }, R.string.widget_dialog_goback, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mobileDialog = null;
-                        dialog.dismiss();
-                        onInfo(INFO_CODE_GOBACK);
-                    }
+                ok, (dialog, which) -> {
+                    mobileDialog = null;
+                    dialog.dismiss();
+                    useMobile = true;
+                    UseMobileConfig.getInstance().setUseMobile(monitorType, true);
+                    start();
+                }, cancel, (dialog, which) -> {
+                    mobileDialog = null;
+                    dialog.dismiss();
+                    onInfo(INFO_CODE_GOBACK);
                 });
         if (mobileDialog != null && !mobileDialog.isShowing()) {
             mobileDialog.show();
             mobileDialog.setCanceledOnTouchOutside(false);
-            mobileDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-                @Override
-                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                    return keyCode == KeyEvent.KEYCODE_BACK;
-                }
-            });
+            mobileDialog.setOnKeyListener((dialog, keyCode, event) -> keyCode == KeyEvent.KEYCODE_BACK);
         }
         return true;
     }

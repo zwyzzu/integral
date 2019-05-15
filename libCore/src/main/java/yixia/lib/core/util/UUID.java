@@ -62,7 +62,7 @@ public class UUID {
         return MD5.md5Encode(text);
     }
 
-    public String getUUID(Context context) {
+    public String getUUID() {
         return this.uuid;
     }
 

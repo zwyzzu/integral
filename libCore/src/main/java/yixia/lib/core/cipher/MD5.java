@@ -85,7 +85,7 @@ public class MD5 {
         }
 
         private void encode(byte[] bytes) {
-            if (Util.isEmpty(bytes)) {
+            if (Util.arrayEmpty(bytes)) {
                 return;
             }
             try {
@@ -127,7 +127,7 @@ public class MD5 {
         }
 
         String hexString() {
-            if (Util.isEmpty(this.digest)) {
+            if (Util.arrayEmpty(this.digest)) {
                 return "";
             }
 

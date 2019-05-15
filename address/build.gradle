@@ -37,8 +37,6 @@ dependencies {
     testImplementation "junit:junit:${rootProject.ext.android.JUnitVersion}"
     androidTestImplementation "com.android.support.test:runner:${rootProject.ext.android.JUnitRunnerVersion}"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${rootProject.ext.android.espressoVersion}"
-
-    //gson
     implementation "com.alibaba:fastjson:${rootProject.ext.thirdParty.fastJson}"
     implementation project(path: ':libCore')
     implementation project(path: ':widget')

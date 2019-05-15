@@ -24,13 +24,19 @@ import java.util.Locale;
 
 import yixia.lib.core.R;
 
-/**
- * Created by liutao on 14/06/2018.
- */
 public class AppUtils {
 
+    private static Context context;
     private static final String TAG_FAKE_STATUS_BAR_VIEW = "tag_fake_status_bar_view";
     private static final String TAG_MARGIN_ADDED = "tag_margin_added";
+
+    public static void setContext(Context cxt) {
+        context = cxt;
+    }
+
+    public static Context getContext() {
+        return context;
+    }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void setStatusBarColorAndroidL(Activity activity, int statusColor) {

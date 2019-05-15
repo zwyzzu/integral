@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.PowerManager;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -17,6 +18,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -72,12 +75,16 @@ public class Util {
         return map == null || map.size() <= 0;
     }
 
-    public static <T> boolean isEmpty(T... obj) {
+    public static <T> boolean isEmpty(T[] obj) {
         return obj == null || obj.length <= 0;
     }
 
     public static boolean isEmpty(Collection<?> collection) {
         return collection == null || collection.isEmpty();
+    }
+
+    public static <T> boolean arrayEmpty(T... array) {
+        return array == null || array.length <= 0;
     }
 
     /**
@@ -242,7 +249,7 @@ public class Util {
     }
 
     public static String byte2hex(byte[] bytes, String splitter) {
-        if (isEmpty(bytes))
+        if (arrayEmpty(bytes))
             return "";
         StringBuffer buffer = new StringBuffer();
         try {
@@ -253,7 +260,7 @@ public class Util {
                 buffer.append(String.format("%02X", bytes[i]));
             }
         } catch (Exception e) {
-
+            Logger.d("byte2hex", e);
         }
 
         return String.valueOf(buffer);
@@ -336,9 +343,8 @@ public class Util {
 
     public static boolean isScreenOn(Context context) {
         try {
-            PowerManager powerManager = (PowerManager) context.getSystemService(
-                    Context.POWER_SERVICE);
-            return powerManager.isScreenOn();
+            PowerManager manager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            return manager != null && manager.isScreenOn();
         } catch (Exception e) {
             Logger.e("error:", e);
         }
@@ -347,17 +353,20 @@ public class Util {
 
     public static boolean isScreenLocked(Context context) {
         try {
-            KeyguardManager mKeyguardManager = (KeyguardManager) context.getSystemService(
-                    Context.KEYGUARD_SERVICE);
-            return mKeyguardManager.inKeyguardRestrictedInputMode();
+            KeyguardManager manager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+            return manager != null && manager.inKeyguardRestrictedInputMode();
         } catch (Exception e) {
             return false;
         }
     }
 
+    @SuppressLint("WakelockTimeout")
     public static PowerManager.WakeLock screenOn(Context context) {
         try {
             PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            if (pm == null) {
+                throw new NullPointerException();
+            }
             @SuppressLint("InvalidWakeLockTag")
             PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "==KeepScreenOn==");
             wakeLock.acquire();
@@ -395,7 +404,7 @@ public class Util {
     }
 
     public static boolean isPhone(String str) {
-        String regex="0\\d{2,3}[-]?\\d{7,8}|0\\d{2,3}\\s?\\d{7,8}|13[0-9]\\d{8}|15[1089]\\d{8}";
+        String regex = "0\\d{2,3}[-]?\\d{7,8}|0\\d{2,3}\\s?\\d{7,8}|13[0-9]\\d{8}|15[1089]\\d{8}";
         if (Pattern.compile(regex).matcher(str).matches()) {
             return true;
         }
@@ -420,5 +429,54 @@ public class Util {
             return;
         }
         cmb.setText(content.trim());
+    }
+
+    public static <T> T parseObject(String text, Class<T> clazz, char splitterArr, char splitterObj) {
+        if (TextUtils.isEmpty(text) || clazz == null)
+            return null;
+
+        T entity;
+        HashMap<String, Field> fields = new HashMap<>();
+        try {
+            entity = clazz.newInstance();
+            Field[] arr = clazz.getDeclaredFields();
+            for (Field field : arr) {
+                fields.put(field.getName().toLowerCase(Locale.getDefault()), field);
+            }
+        } catch (Exception e) {
+            //非法构造器 || 构造器为非public
+            return null;
+        }
+
+        String[] arr = string2Array(text, splitterArr);
+        if (isEmpty(arr))
+            return null;
+
+        for (String string : arr) {
+            Pair<String, String> pair = splitString(string, splitterObj);
+            try {
+                Field field = fields.get(pair.first.toLowerCase(Locale.getDefault()));
+                if (field != null) {
+                    field.setAccessible(true);
+                    field.set(entity, pair.second);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return entity;
+    }
+
+    public static Pair<String, String> splitString(String text, char splitter) {
+        return splitString(text, String.valueOf(splitter));
+    }
+
+    public static Pair<String, String> splitString(String text, String splitter) {
+        if (TextUtils.isEmpty(text))
+            return null;
+        int index = text.indexOf(splitter);
+        if (index <= 0)
+            return null;
+        return Pair.create(text.substring(0, index), text.substring(index + 1));
     }
 }

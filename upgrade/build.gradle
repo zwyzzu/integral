@@ -1,0 +1,45 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+
+
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.android.supportVersion}"
+    testImplementation "junit:junit:${rootProject.ext.android.JUnitVersion}"
+    androidTestImplementation "com.android.support.test:runner:${rootProject.ext.android.JUnitRunnerVersion}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:${rootProject.ext.android.espressoVersion}"
+
+    implementation "com.squareup.okhttp3:okhttp:${rootProject.ext.thirdParty.okhttp3}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${rootProject.ext.thirdParty.okhttp3}"
+    implementation "com.squareup.retrofit2:retrofit:${rootProject.ext.thirdParty.retrofit2}"
+    implementation "com.alibaba:fastjson:${rootProject.ext.thirdParty.fastJson}"
+    implementation "org.ligboy.retrofit2:converter-fastjson-android:${rootProject.ext.thirdParty.converterFastjson}"
+    implementation project(path: ':libCore')
+}

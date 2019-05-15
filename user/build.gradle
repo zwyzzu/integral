@@ -34,6 +34,10 @@ dependencies {
     testImplementation "junit:junit:${rootProject.ext.android.JUnitVersion}"
     androidTestImplementation "com.android.support.test:runner:${rootProject.ext.android.JUnitRunnerVersion}"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${rootProject.ext.android.espressoVersion}"
-    implementation project(path: ':libCore')
+    implementation "com.tencent.mm.opensdk:wechat-sdk-android-without-mta:${rootProject.ext.thirdParty.wechat}"
     implementation "com.alibaba:fastjson:${rootProject.ext.thirdParty.fastJson}"
+    implementation "com.squareup.retrofit2:retrofit:${rootProject.ext.thirdParty.retrofit2}"
+    implementation project(path: ':libCore')
+    implementation project(path: ':http')
+    implementation project(path: ':common')
 }

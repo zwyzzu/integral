@@ -2,6 +2,8 @@ package com.zhangwy.user;
 
 import android.content.Context;
 
+import com.zhangwy.common.entities.IUserEntity;
+
 import yixia.lib.core.exception.CodeException;
 
 /**
@@ -14,7 +16,6 @@ import yixia.lib.core.exception.CodeException;
 public abstract class IUser {
 
     private static IUser mInstance = null;
-
     public static IUser getInstance() {
         if (mInstance == null) {
             synchronized (IUser.class) {
@@ -51,22 +52,20 @@ public abstract class IUser {
 
     /**
      *
-     * @param userid   用户Id
      * @param token    用户临时密码
      * @param callBack 返回处理结果
      * @throws CodeException 登录时异常信息
      */
-    public abstract void login(String userid, String token, LoginCallBack callBack) throws CodeException;
+    public abstract void login(String token, LoginCallBack callBack) throws CodeException;
 
     /**
      * 服务器校验用户VIP信息
      *
-     * @param userid   用户id
      * @param token    用户token
      * @param callBack 回调接口
      * @throws CodeException 校验时异常信息
      */
-    public abstract void verifyVip(String userid, String token, VipCallBack callBack) throws CodeException;
+    public abstract void verifyVip(String token, VipCallBack callBack) throws CodeException;
 
     /**
      * 用户登出：
@@ -76,7 +75,7 @@ public abstract class IUser {
     /**
      * 用户信息
      */
-    public abstract IUserInfoEntity getUserInfo();
+    public abstract IUserEntity getUserInfo();
 
     /**
      * 注册监听登录状态事件
@@ -93,14 +92,14 @@ public abstract class IUser {
     public abstract void unRegister(Login login);
 
     public interface Login {
-        void login(IUserInfoEntity userInfo, IUserVipInfoEntity vipInfo);
+        void login(IUserEntity userInfo);
 
         void logout();
     }
 
     public interface LoginCallBack {
 
-        void onSuccess(IUserInfoEntity userInfo);
+        void onSuccess(IUserEntity userInfo);
 
         void onException(CodeException e);
 

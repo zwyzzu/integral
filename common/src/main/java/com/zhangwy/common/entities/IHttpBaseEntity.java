@@ -1,4 +1,4 @@
-package com.zhangwy.user;
+package com.zhangwy.common.entities;
 
 import java.io.Serializable;
 
@@ -6,10 +6,10 @@ import java.io.Serializable;
  * Author: zhangwy
  * 创建时间：2015年11月25日 下午5:45:14
  * 修改时间：2015年11月25日 下午5:45:14
- * Description: User系统所使用BaseEntity
+ * Description: http请求所使用BaseEntity
  **/
 @SuppressWarnings("unused")
-public class IUserBaseEntity implements Serializable {
+public class IHttpBaseEntity implements Serializable {
     private static final long serialVersionUID = -5997278037549333551L;
 
     public final String CODE_SUCCESS = "200";

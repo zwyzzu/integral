@@ -30,6 +30,8 @@ import yixia.lib.core.util.WindowUtil;
 public class IntegralElementActivity extends BaseActivity {
 
     public static void start(Context context) {
+        if (context == null)
+            return;
         context.startActivity(new Intent(context, IntegralElementActivity.class));
     }
 
