@@ -90,11 +90,15 @@
     public static ** valueOf(java.lang.String);
 }
 
+#保持 Parcelable 不被混淆
+-keepnames class * implements android.os.Parcelable
 #表示不混淆Parcelable实现类中的CREATOR字段，
 #毫无疑问，CREATOR字段是绝对不能改变的，包括大小写都不能变，不然整个Parcelable工作机制都会失败。
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
 }
+#保持 Serializable 不被混淆
+-keepnames class * implements java.io.Serializable
 # 这指定了继承Serizalizable的类的如下成员不被移除混淆
 -keepclassmembers class * implements java.io.Serializable {
     static final long serialVersionUID;
@@ -147,6 +151,10 @@
 #地理位置实体
 -dontwarn com.zhangwy.address.entities.**
 -keep class com.zhangwy.address.entities.** {*;}
+
+#升级实体
+-dontwarn com.zhangwy.upgrade.entities.**
+-keep class com.zhangwy.upgrade.entities.** {*;}
 
 #友盟
 -keep class com.umeng.** {*;}

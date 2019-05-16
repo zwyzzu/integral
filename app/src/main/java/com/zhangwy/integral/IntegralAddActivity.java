@@ -28,6 +28,7 @@ import yixia.lib.core.util.Util;
 public class IntegralAddActivity extends AppCompatActivity {
 
     private static final String EXTRA_BIND = "extra_bind_id";
+
     public static void start(Activity activity, String bindId, int requestCode) {
         Intent intent = new Intent(activity, IntegralAddActivity.class);
         intent.putExtra(EXTRA_BIND, bindId);
@@ -40,6 +41,8 @@ public class IntegralAddActivity extends AppCompatActivity {
     private EditText coefficient;
     private List<IntegralEntity> array;
     private String bindId;
+    private boolean emptyElement = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +59,9 @@ public class IntegralAddActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_integral_add, menu);
+        if (!this.emptyElement) {
+            getMenuInflater().inflate(R.menu.menu_integral_add, menu);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -64,6 +69,9 @@ public class IntegralAddActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.integralAddSave:
+                if (this.emptyElement) {
+                    break;
+                }
                 this.save();
                 break;
             case android.R.id.home:
@@ -90,6 +98,8 @@ public class IntegralAddActivity extends AppCompatActivity {
 
     private void initSpinner() {
         this.array = IDataManager.getInstance().getIntegrals();
+        this.emptyElement = Util.isEmpty(this.array);
+        this.showEmptyRemind(this.emptyElement);
         BaseAdapter<IntegralEntity> adapter = new BaseAdapter<>(array, (parent, convertView, entity) -> {
             if (convertView == null) {
                 convertView = getLayoutInflater().inflate(R.layout.view_item_integral_spinner, parent, false);
@@ -124,5 +134,13 @@ public class IntegralAddActivity extends AppCompatActivity {
         IDataManager.getInstance().addMemberIntegral(bindEntity);
         this.setResult(RESULT_OK);
         this.finish();
+    }
+
+    private void showEmptyRemind(boolean show) {
+        this.findViewById(R.id.integralAddEmpty).setVisibility(show ? View.VISIBLE : View.GONE);
+        this.findViewById(R.id.integralAddHasCoefficientText).setVisibility(!show ? View.VISIBLE : View.GONE);
+        this.spinner.setVisibility(!show ? View.VISIBLE : View.GONE);
+        this.hasCoefficient.setVisibility(!show ? View.VISIBLE : View.GONE);
+        this.coefficientHome.setVisibility(!show && this.hasCoefficient.isChecked() ? View.VISIBLE : View.GONE);
     }
 }

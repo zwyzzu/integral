@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.yixia.download.DownloadApp;
 import com.yixia.download.Downloader;
+import com.zhangwy.upgrade.entities.AppCheckEntity;
 
 import java.util.Locale;
 
@@ -123,7 +124,7 @@ public abstract class Upgrade {
         }
 
         private boolean checkVersion(AppCheckEntity entity) {
-            if (!TextUtils.equals(entity.getDetail().getVersion(), Device.App.getVersionName(this.activity)) && Util.parseInt(entity.getDetail().getVersionNo()) > Device.App.getVersionCode(this.activity)) {
+            if (!TextUtils.equals(entity.getDetail().getVersion(), Device.App.getVersionName(this.activity)) || Util.parseInt(entity.getDetail().getVersionNo()) > Device.App.getVersionCode(this.activity)) {
                 return true;
             }
 
@@ -152,8 +153,8 @@ public abstract class Upgrade {
         }
 
         private void showUpgradeDialog(final AppCheckEntity entity) {
-            String appName = Device.App.getAppName(this.activity);
-            String detail = this.activity.getString(R.string.dialog_upgrade_desc, entity.getDetail().getUpdateDescription());
+            String appName = this.activity.getString(R.string.upgrade_remind);
+            String detail = entity.getDetail().getUpdateDescription();
             String install = this.activity.getString(R.string.dialog_install);
             String cancel = this.activity.getString(R.string.dialog_cancel);
             if (this.forcedUpgrade) {
@@ -186,7 +187,7 @@ public abstract class Upgrade {
         }
 
         private void showDownloadProgress(AppCheckEntity.AppVersionEntity versionEntity) {
-            this.updateDialog = WindowUtil.createProgressDialog(this.activity, R.string.app_name, this.activity.getString(R.string.dialog_download, versionEntity.getName(), versionEntity.getVersion()), false, false);
+            this.updateDialog = WindowUtil.createProgressDialog(this.activity, 0, this.activity.getString(R.string.dialog_download, versionEntity.getName(), versionEntity.getVersion()), false, false);
             if (this.updateDialog == null) {
                 return;
             }

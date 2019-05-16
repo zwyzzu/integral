@@ -7,7 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.os.Build;
 import android.os.PowerManager;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.webkit.WebSettings;
@@ -286,13 +288,21 @@ public class Util {
                 }
             }
         } else {
-            if (context != null) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setDataAndType(Uri.fromFile(new File(filePath)),
-                        "application/vnd.android" + ".package-archive");
-                context.startActivity(intent);
+            if (context == null) {
+                return;
             }
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            Uri contentUri;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                String authority = Device.App.getPackageName(context) + ".provider";
+                contentUri = FileProvider.getUriForFile(context, authority, new File(filePath));
+            } else {
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                contentUri = Uri.fromFile(new File(filePath));
+            }
+            intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
+            context.startActivity(intent);
         }
     }
 

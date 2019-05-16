@@ -86,6 +86,7 @@
     <string name="add_integral_input_coefficient">请输入系数</string>
     <string name="add_integral_has_coefficient">带系数</string>
     <string name="add_integral_spinner_second">积分:%1$s\t\t%2$s</string>
+    <string name="add_integral_empty_element">您还没有积分项\n请到\"首页\-我的\-积分项\"中添加</string>
     <string name="integral_list_label">积分列表</string>
     <string name="address_list_label">收件人列表</string>
     <string name="address_label">新建收货地址</string>
@@ -121,4 +122,10 @@
     <string name="user_auth_successful">用户授权成功</string>
     <string name="user_finish">完成</string>
     <string name="user_logining">正在登录，请稍候\.\.\.</string>
+    <string name="disclaimer_title">免责声明</string>
+    <string name="disclaimer_content">条款1：该APP供使用者提供合法消费等记录，不得从事违法行为。\n\n条款2：该APP为本地版，所录入数据不上传至服务器，使用者不要随便清理数据，由于使用者清理数据导致数据丢失，APP研发者不予赔付损失!</string>
+    <string name="disclaimer_agreed_content">同意上述条款</string>
+    <string name="disclaimer_agreed">同意</string>
+    <string name="disclaimer_unAgreed">不同意</string>
+    <string name="disclaimer_unCheck_remind">请阅读并同意上述条款</string>
 </resources>

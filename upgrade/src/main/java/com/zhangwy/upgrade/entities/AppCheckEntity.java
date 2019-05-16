@@ -1,4 +1,4 @@
-package com.zhangwy.upgrade;
+package com.zhangwy.upgrade.entities;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
