@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -68,7 +69,7 @@ public class IntegralElementActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.integralElementAdd:
-                this.add();
+                this.add(null);
                 return true;
             case android.R.id.home:
                 this.finish();
@@ -98,6 +99,7 @@ public class IntegralElementActivity extends BaseActivity {
                 message.setText(getString(R.string.element_item_message, entity.getDesc()));
             }
         });
+        this.recyclerView.setOnItemClickListener((view, viewType, entity, position) -> add(entity));
     }
 
     private void reload() {
@@ -105,13 +107,20 @@ public class IntegralElementActivity extends BaseActivity {
         this.recyclerView.reload(array);
     }
 
-    private void add() {
+    private void add(IntegralEntity oldEntity) {
         View root = getLayoutInflater().inflate(R.layout.dialog_integral_element, this.recyclerView, false);
         final EditText score = root.findViewById(R.id.elementAddScore);
         final EditText title = root.findViewById(R.id.elementAddTitle);
         final EditText message = root.findViewById(R.id.elementAddMessage);
+        final CheckBox checkBox = root.findViewById(R.id.elementAddCheckBox);
         Button cancel = root.findViewById(R.id.elementAddCancel);
         Button ok = root.findViewById(R.id.elementAddOk);
+        if (oldEntity != null) {
+            score.setText(String.valueOf(oldEntity.getScore()));
+            title.setText(oldEntity.getName());
+            message.setText(oldEntity.getDesc());
+            checkBox.setChecked(oldEntity.isCheckCoefficient());
+        }
         final Dialog dialog = WindowUtil.createAlertDialog(this, 0, root, null, R.string.ok, null, R.string.cancel);
         ok.setOnClickListener(v -> {
             if (dialog != null) {
@@ -124,7 +133,13 @@ public class IntegralElementActivity extends BaseActivity {
             entity.setScore(scoreValue);
             entity.setName(titleValue);
             entity.setDesc(messageValue);
-            IDataManager.getInstance().addIntegral(entity);
+            entity.setCheckCoefficient(checkBox.isChecked());
+            if (oldEntity == null) {
+                IDataManager.getInstance().addIntegral(entity);
+            } else {
+                entity.setId(oldEntity.getId());
+                IDataManager.getInstance().updateIntegral(entity);
+            }
             reload();
         });
         cancel.setOnClickListener(v -> {

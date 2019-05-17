@@ -13,6 +13,7 @@ public class IntegralEntity extends BaseEntity {
     private float score;//分数
     private String name;
     private String desc;//描述
+    private boolean checkCoefficient = false;//自动勾选系数
 
     public IntegralEntity() {
         super();
@@ -46,11 +47,20 @@ public class IntegralEntity extends BaseEntity {
         this.desc = desc;
     }
 
+    public boolean isCheckCoefficient() {
+        return checkCoefficient;
+    }
+
+    public void setCheckCoefficient(boolean checkCoefficient) {
+        this.checkCoefficient = checkCoefficient;
+    }
+
     @Override
     void readParcel(Parcel in) {
         this.setScore(in.readFloat());
         this.setName(in.readString());
         this.setDesc(in.readString());
+        this.setCheckCoefficient(in.readInt() == 1);
     }
 
     @Override
@@ -58,6 +68,7 @@ public class IntegralEntity extends BaseEntity {
         dest.writeFloat(this.getScore());
         dest.writeString(this.getName());
         dest.writeString(this.getDesc());
+        dest.writeInt(this.isCheckCoefficient() ? 1 : 0);
     }
 
     public static final Creator<IntegralEntity> CREATOR = new Creator<IntegralEntity>() {

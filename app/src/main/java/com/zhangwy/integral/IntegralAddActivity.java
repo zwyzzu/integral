@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -109,6 +110,20 @@ public class IntegralAddActivity extends AppCompatActivity {
             first.setText(entity.getName());
             second.setText(getString(R.string.add_integral_spinner_second, Util.float2String(entity.getScore(), 2), entity.getDesc()));
             return convertView;
+        });
+        this.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                IntegralEntity entity = adapter.getItem(position);
+                if (entity != null) {
+                    hasCoefficient.setChecked(entity.isCheckCoefficient());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
         });
         this.spinner.setAdapter(adapter);
     }

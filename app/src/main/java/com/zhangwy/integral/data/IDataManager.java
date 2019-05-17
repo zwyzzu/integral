@@ -128,6 +128,14 @@ public abstract class IDataManager {
     public abstract List<IntegralEntity> getIntegrals();
 
     /**
+     * 获取积分项
+     *
+     * @param integralId 积分项ID
+     * @return 积分项
+     */
+    public abstract IntegralEntity getIntegral(String integralId);
+
+    /**
      * 添加积分项
      *
      * @param integral 积分

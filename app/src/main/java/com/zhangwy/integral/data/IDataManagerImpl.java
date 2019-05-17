@@ -30,7 +30,8 @@ import yixia.lib.core.util.Util;
 public class IDataManagerImpl extends IDataManager implements DatabaseHelper.UpgradeListener {
 
     private final int DATABASE_VERSION_1 = 1;
-    private final int DATABASE_VERSION = DATABASE_VERSION_1;
+    private final int DATABASE_VERSION_2 = 2;
+    private final int DATABASE_VERSION = DATABASE_VERSION_2;
 
     private final String TABLE_NAME_MEMBER = "member_data";
     private final String TABLE_NAME_INTEGRAL = "integral_data";
@@ -65,6 +66,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 .put("name", SQLCreator.Format.TEXT, false)
                 .put("desc", SQLCreator.Format.TEXT, false)
                 .put("score", SQLCreator.Format.FLOAT, false)
+                .put("checkCoefficient", SQLCreator.Format.INTEGER, false)
                 .build();
 
         SQL_CREATOR_ADDRESS.setPrimaryKey("id", SQLCreator.Format.TEXT)
@@ -136,14 +138,13 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         }
         switch (oldVersion) {
             case DATABASE_VERSION_1:
-                break;
+                this.SQL_CREATOR_INTEGRAL.addColumn(database, "checkCoefficient", SQLCreator.Format.INTEGER);
         }
     }
 
     @Override
     public void onDowngrade(SQLiteDatabase database, int oldVersion, int newVersion) {
     }
-
 
     /**
      * 获取成员列表
@@ -403,7 +404,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         }
         database.delete(TABLE_NAME_INTEGRAL_BIND, SQL_WHERECLAUSE_BIND, whereArgs);
         if (!Util.isEmpty(member.getIntegrals())) {
-            for (IntegralBindEntity integral: member.getIntegrals()) {
+            for (IntegralBindEntity integral : member.getIntegrals()) {
                 if (integral == null) {
                     continue;
                 }
@@ -655,6 +656,29 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         return array;
     }
 
+    @Override
+    public IntegralEntity getIntegral(String integralId) {
+        if (this.emptyHelper() || TextUtils.isEmpty(integralId)) {
+            return null;
+        }
+        IntegralEntity entity = null;
+        try {
+            SQLiteDatabase database = this.helper.open();
+            String query = SQL_CREATOR_INTEGRAL.queryWhereAnd(this.SQL_WHERECLAUSE_ID);
+            Cursor cursor = database.rawQuery(query, new String[]{integralId});
+            if (cursor == null) {
+                return null;
+            }
+            if (cursor.moveToNext()) {
+                entity = this.cursor2Integral(cursor);
+            }
+            cursor.close();
+        } catch (Exception e) {
+            Logger.d("getIntegral", e);
+        }
+        return entity;
+    }
+
     private IntegralEntity cursor2Integral(Cursor cursor) {
         int columnIndex = 0;
         IntegralEntity entity = new IntegralEntity();
@@ -662,6 +686,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         entity.setName(cursor.getString(columnIndex++));
         entity.setDesc(cursor.getString(columnIndex++));
         entity.setScore(cursor.getFloat(columnIndex++));
+        entity.setCheckCoefficient(cursor.getInt(columnIndex++) == 1);
         Logger.d(String.format("the table's column count is %s", columnIndex + ""));
         return entity;
     }
@@ -691,6 +716,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             values.put("name", integral.getName());
             values.put("desc", integral.getDesc());
             values.put("score", integral.getScore());
+            values.put("checkCoefficient", integral.isCheckCoefficient() ? 1 : 0);
             long raw = database.insertWithOnConflict(TABLE_NAME_INTEGRAL, null, values,
                     SQLiteDatabase.CONFLICT_REPLACE);
             if (raw >= 0 && beginTransaction) {
@@ -731,8 +757,8 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             values.put("name", integral.getName());
             values.put("desc", integral.getDesc());
             values.put("score", integral.getScore());
-            long raw = database.update(TABLE_NAME_INTEGRAL, values, SQL_WHERECLAUSE_ID, new
-                    String[]{integral.getId()});
+            values.put("checkCoefficient", integral.isCheckCoefficient() ? 1 : 0);
+            long raw = database.update(TABLE_NAME_INTEGRAL, values, SQL_WHERECLAUSE_ID, new String[]{integral.getId()});
             if (raw >= 0) {
                 database.setTransactionSuccessful();
             }
@@ -875,6 +901,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             }
         }
     }
+
     /**
      * 使用积分
      *

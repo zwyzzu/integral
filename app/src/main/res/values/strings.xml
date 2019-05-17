@@ -77,6 +77,7 @@
     <string name="element_add_score">请输入分数,最多支持两位小数点</string>
     <string name="element_add_title">请输入标题</string>
     <string name="element_add_message">请输入描述</string>
+    <string name="element_add_check_coefficient">自动勾选系数</string>
     <string name="retry">请重试</string>
     <string name="save">保存</string>
     <string name="ok">确定</string>

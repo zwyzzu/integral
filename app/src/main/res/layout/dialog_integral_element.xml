@@ -139,6 +139,28 @@
 
     </com.yixia.widget.VSVerificationLayout>
 
+    <CheckBox
+        android:id="@+id/elementAddCheckBox"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:checked="false"
+        android:layout_marginLeft="@dimen/margin_8"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_marginTop="@dimen/margin_8"
+        app:layout_constraintTop_toBottomOf="@id/elementAddMessageHome"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/elementAddCheckBoxContent"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:text="@string/element_add_check_coefficient"
+        app:layout_constraintBottom_toBottomOf="@id/elementAddCheckBox"
+        app:layout_constraintLeft_toRightOf="@id/elementAddCheckBox"
+        app:layout_constraintTop_toTopOf="@id/elementAddCheckBox" />
+
     <Button
         android:id="@+id/elementAddCancel"
         android:layout_width="0dp"
@@ -151,7 +173,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/elementAddOk"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/elementAddMessageHome" />
+        app:layout_constraintTop_toBottomOf="@id/elementAddCheckBox" />
 
     <Button
         android:id="@+id/elementAddOk"
@@ -165,5 +187,5 @@
         app:layout_constraintLeft_toRightOf="@id/elementAddCancel"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toEndOf="@id/elementAddCancel"
-        app:layout_constraintTop_toBottomOf="@id/elementAddMessageHome" />
+        app:layout_constraintTop_toBottomOf="@id/elementAddCheckBox" />
 </android.support.constraint.ConstraintLayout>
