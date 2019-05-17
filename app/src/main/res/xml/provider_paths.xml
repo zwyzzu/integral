@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <external-path name="external_files" path="." />
+    <external-path name="external_path_files" path="." />
+    <external-path name="external_path_other" path="yixia/other" />
+    <external-path name="external_path_apk" path="yixia/apk" />
+    <external-path name="external_path_image" path="yixia/image" />
+    <external-path name="external_path_gif" path="yixia/gif" />
+
+    <external-files-path name="external_files_path_files" path="." />
+    <external-files-path name="external_files_path_other" path="yixia/other" />
+    <external-files-path name="external_files_path_apk" path="yixia/apk" />
+    <external-files-path name="external_files_path_image" path="yixia/image" />
+    <external-files-path name="external_files_path_gif" path="yixia/gif" />
+
+    <files-path name="files_files" path="." />
+    <files-path name="files_other" path="yixia/other" />
+    <files-path name="files_apk" path="yixia/apk" />
+    <files-path name="files_image" path="yixia/image" />
+    <files-path name="files_gif" path="yixia/gif" />
 </paths>

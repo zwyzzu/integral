@@ -15,6 +15,7 @@ import com.zhangwy.upgrade.Upgrade;
 import yixia.lib.core.base.BaseActivity;
 import yixia.lib.core.sharePreferences.PreferencesHelper;
 import yixia.lib.core.util.Screen;
+import yixia.lib.core.util.Util;
 
 public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
 
@@ -22,6 +23,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     private FragmentAdd fragmentAdd;
     private FragmentMine fragmentMine;
     private final String PRFKEY_SHOW_DISCLAIMER = "showDisclaimer";
+    private boolean hasUpgraded = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +36,11 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     @Override
     protected void onResume() {
         super.onResume();
-        Upgrade upgrade = Upgrade.newInstance(this, true);
-        upgrade.check(false, false, true);
+        if (!this.hasUpgraded) {
+            this.hasUpgraded = true;
+            Upgrade upgrade = Upgrade.newInstance(this, true);
+            upgrade.check(false, false, true);
+        }
     }
 
     @Override
@@ -46,6 +51,10 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Util.REQUEST_CODE_APP_INSTALL && resultCode == RESULT_OK) {
+            Upgrade upgrade = Upgrade.newInstance(this, true);
+            upgrade.check(false, false, true);
+        }
     }
 
     private void switchFragment(int checkedId) {

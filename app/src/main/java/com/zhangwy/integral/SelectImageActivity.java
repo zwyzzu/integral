@@ -69,7 +69,7 @@ public class SelectImageActivity extends BaseActivity implements View.OnClickLis
     private void takePhoto() {
         Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(this.filePath, this.fileName);
-        String authority = getPackageName() + ".provider";
+        String authority = getPackageName() + ".fileprovider";
         this.takePhotoUri = FileProvider.getUriForFile(this, authority, file);
         // 指定照片保存路径（SD卡），image.jpg为一个临时文件，每次拍照后这个图片都会被替换
         openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, this.takePhotoUri);

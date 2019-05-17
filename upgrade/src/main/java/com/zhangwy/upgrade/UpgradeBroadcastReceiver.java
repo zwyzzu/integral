@@ -5,9 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
-import com.yixia.common.util.Logger;
-
 import yixia.lib.core.sharePreferences.PreferencesHelper;
+import yixia.lib.core.util.Logger;
 
 /**
  * Created by zhangwy on 2018/1/24 下午5:42.

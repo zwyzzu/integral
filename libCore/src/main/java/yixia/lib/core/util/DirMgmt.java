@@ -19,7 +19,7 @@ import yixia.lib.core.task.Task;
  */
 @SuppressWarnings("unused")
 public class DirMgmt {
-    private static final String ROOT = "yixia";
+    private static final String ROOT = "integral";
     private static DirMgmt instance;
 
     public static DirMgmt getInstance() {

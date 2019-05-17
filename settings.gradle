@@ -1,1 +1,1 @@
-include ':app', ':widget', ':address', ':user', ':http', ':common', ':upgrade', 'libCore', 'pickTime'
+include ':app', ':widget', ':address', ':user', ':http', ':download', ':httpNative', ':common', ':upgrade', 'libCore', 'pickTime'

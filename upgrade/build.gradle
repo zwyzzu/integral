@@ -42,4 +42,5 @@ dependencies {
     implementation "com.alibaba:fastjson:${rootProject.ext.thirdParty.fastJson}"
     implementation "org.ligboy.retrofit2:converter-fastjson-android:${rootProject.ext.thirdParty.converterFastjson}"
     implementation project(path: ':libCore')
+    implementation project(path: ':download')
 }

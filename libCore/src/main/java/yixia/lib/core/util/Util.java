@@ -1,6 +1,7 @@
 package yixia.lib.core.util;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -9,11 +10,14 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
+import android.provider.Settings;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -45,6 +49,7 @@ import java.util.regex.Pattern;
 @SuppressWarnings("unused")
 public class Util {
 
+    public static final int REQUEST_CODE_APP_INSTALL = 65531;
     /**
      * 获取当前应用程序的包名
      *
@@ -292,13 +297,17 @@ public class Util {
                 return;
             }
             Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             Uri contentUri;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !hasInstallPermissionWithO(context)) {
+                    startInstallPermission(context);
+                }
+                File file = new File(FileUtil.extractFilePath(filePath), FileUtil.extractFileName(filePath));
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                String authority = Device.App.getPackageName(context) + ".provider";
-                contentUri = FileProvider.getUriForFile(context, authority, new File(filePath));
+                String authority = Device.App.getPackageName(context) + ".fileprovider";
+                contentUri = FileProvider.getUriForFile(context, authority, file);
             } else {
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 contentUri = Uri.fromFile(new File(filePath));
             }
             intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
@@ -315,13 +324,37 @@ public class Util {
             printWriter.close();
             return process.waitFor() == 0;
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.d("hasRootPermission", e);
         } finally {
             if (process != null) {
                 process.destroy();
             }
         }
         return false;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private static boolean hasInstallPermissionWithO(Context context){
+        if (context == null){
+            return false;
+        }
+        return context.getPackageManager().canRequestPackageInstalls();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private static void startInstallPermission(Context context) {
+        if (context == null) {
+            return;
+        }
+        try {
+            String content= Device.App.getAppName(context);
+            content = "请找到『" + content + "』并打开安装未知应用权限";
+            Toast.makeText(context, content, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+            ((Activity) context).startActivityForResult(intent, REQUEST_CODE_APP_INSTALL);
+        } catch (Throwable throwable) {
+            Logger.e("startInstallPermission", throwable);
+        }
     }
 
     public static int getCpuCount() {
