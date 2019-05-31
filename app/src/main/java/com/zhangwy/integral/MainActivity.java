@@ -1,8 +1,10 @@
 package com.zhangwy.integral;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +14,13 @@ import android.widget.RadioGroup;
 
 import com.zhangwy.upgrade.Upgrade;
 
+import java.util.HashMap;
+
 import yixia.lib.core.base.BaseActivity;
 import yixia.lib.core.sharePreferences.PreferencesHelper;
 import yixia.lib.core.util.Screen;
 import yixia.lib.core.util.Util;
+import yixia.lib.core.util.VSPermission;
 
 public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
 
@@ -24,6 +29,8 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     private FragmentMine fragmentMine;
     private final String PRFKEY_SHOW_DISCLAIMER = "showDisclaimer";
     private boolean hasUpgraded = false;
+    private final int REQUESTCODE_PERMISSION = 100;
+    private VSPermission permission;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +38,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         ((RadioGroup) this.findViewById(R.id.mainBottomBar)).setOnCheckedChangeListener(this);
         this.switchFragment(R.id.mainBottomBarMain);
         this.showDisclaimer();
+        this.checkPermission();
     }
 
     @Override
@@ -48,12 +56,31 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         this.switchFragment(checkedId);
     }
 
+    private void checkPermission() {
+        HashMap<String, String> permissions = new HashMap<>();
+        permissions.put(Manifest.permission.READ_PHONE_STATE, getString(R.string.permission_read_phone_state));
+        permissions.put(Manifest.permission.READ_EXTERNAL_STORAGE, getString(R.string.permission_read_external_storage));
+        permissions.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, getString(R.string.permission_write_external_storage));
+        this.permission = VSPermission.newInstance(this, permissions);
+        this.permission.applyPermission(this.REQUESTCODE_PERMISSION);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (this.permission != null) {
+            this.permission.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Util.REQUEST_CODE_APP_INSTALL && resultCode == RESULT_OK) {
             Upgrade upgrade = Upgrade.newInstance(this, true);
             upgrade.check(false, false, true);
+        } else if (requestCode == REQUESTCODE_PERMISSION) {
+            //TODO
         }
     }
 
