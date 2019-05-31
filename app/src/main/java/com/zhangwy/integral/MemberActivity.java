@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -113,7 +114,9 @@ public class MemberActivity extends BaseActivity {
 
     private void refreshData() {
         this.member = IDataManager.getInstance().getMember(mmbId);
-        this.icon.setImageURI(Uri.fromFile(new File(member.getIcon())));
+        if (!TextUtils.isEmpty(member.getIcon())) {
+            this.icon.setImageURI(Uri.fromFile(new File(member.getIcon())));
+        }
         this.title.setText(member.getName());
         this.age.setText(getString(R.string.member_age, member.getAge()));
         this.sex.setText(getString(R.string.member_sex, getString(member.findSex().res)));

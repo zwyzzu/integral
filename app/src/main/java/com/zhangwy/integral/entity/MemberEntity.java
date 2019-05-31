@@ -3,6 +3,7 @@ package com.zhangwy.integral.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.StringRes;
+import android.text.TextUtils;
 
 import com.zhangwy.integral.R;
 
@@ -19,6 +20,7 @@ import yixia.lib.core.util.Util;
 @SuppressWarnings("unused")
 public class MemberEntity extends BaseEntity implements Parcelable {
 
+    private final String dbNull = "unknown";
     private String name;
     private String icon;
     private String desc;
@@ -60,6 +62,17 @@ public class MemberEntity extends BaseEntity implements Parcelable {
         this.icon = icon;
     }
 
+    public String getDBIcon() {
+        return TextUtils.isEmpty(this.getIcon()) ? this.dbNull : this.getIcon();
+    }
+
+    public void setDBIcon(String icon) {
+        if (TextUtils.equals(this.dbNull, icon)) {
+            return;
+        }
+        this.setIcon(icon);
+    }
+
     public String getDesc() {
         return desc;
     }
@@ -76,12 +89,34 @@ public class MemberEntity extends BaseEntity implements Parcelable {
         this.phone = phone;
     }
 
+    public String getDBPhone() {
+        return TextUtils.isEmpty(this.getPhone()) ? this.dbNull : this.getPhone();
+    }
+
+    public void setDBPhone(String phone) {
+        if (TextUtils.equals(this.dbNull, phone)) {
+            return;
+        }
+        this.setPhone(phone);
+    }
+
     public String getBirthday() {
         return birthday;
     }
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;
+    }
+
+    public String getDBBirthday() {
+        return TextUtils.isEmpty(this.getBirthday()) ? this.dbNull : this.getBirthday();
+    }
+
+    public void setDBBirthday(String birthday) {
+        if (TextUtils.equals(this.dbNull, birthday)) {
+            return;
+        }
+        this.setBirthday(birthday);
     }
 
     public int getSex() {

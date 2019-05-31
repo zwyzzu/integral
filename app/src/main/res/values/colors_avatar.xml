@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="avatar_ffdead">#ffdead</drawable>
+    <drawable name="avatar_ffdab9">#ffdab9</drawable>
+    <drawable name="avatar_ffd700">#ffd700</drawable>
+    <drawable name="avatar_ffd39b">#ffd39b</drawable>
+    <drawable name="avatar_ffc1c1">#ffc1c1</drawable>
+    <drawable name="avatar_ffc125">#ffc125</drawable>
+    <drawable name="avatar_ffc0cb">#ffc0cb</drawable>
+    <drawable name="avatar_ffbbff">#ffbbff</drawable>
+    <drawable name="avatar_ffb90f">#ffb90f</drawable>
+    <drawable name="avatar_ffb6c1">#ffb6c1</drawable>
+    <drawable name="avatar_ffb5c5">#ffb5c5</drawable>
+    <drawable name="avatar_ffaeb9">#ffaeb9</drawable>
+    <drawable name="avatar_ffa54f">#ffa54f</drawable>
+    <drawable name="avatar_ffa500">#ffa500</drawable>
+    <drawable name="avatar_ffa07a">#ffa07a</drawable>
+    <drawable name="avatar_ff8c69">#ff8c69</drawable>
+    <drawable name="avatar_ff8c00">#ff8c00</drawable>
+    <drawable name="avatar_ff83fa">#ff83fa</drawable>
+    <drawable name="avatar_ff82ab">#ff82ab</drawable>
+    <drawable name="avatar_ff8247">#ff8247</drawable>
+    <drawable name="avatar_ff7f50">#ff7f50</drawable>
+    <integer-array name="avatar">
+        <item>@drawable/avatar_ffdead</item>
+        <item>@drawable/avatar_ffdab9</item>
+        <item>@drawable/avatar_ffd700</item>
+        <item>@drawable/avatar_ffd39b</item>
+        <item>@drawable/avatar_ffc1c1</item>
+        <item>@drawable/avatar_ffc125</item>
+        <item>@drawable/avatar_ffc0cb</item>
+        <item>@drawable/avatar_ffbbff</item>
+        <item>@drawable/avatar_ffb90f</item>
+        <item>@drawable/avatar_ffb6c1</item>
+        <item>@drawable/avatar_ffb5c5</item>
+        <item>@drawable/avatar_ffaeb9</item>
+        <item>@drawable/avatar_ffa54f</item>
+        <item>@drawable/avatar_ffa500</item>
+        <item>@drawable/avatar_ffa07a</item>
+        <item>@drawable/avatar_ff8c69</item>
+        <item>@drawable/avatar_ff8c00</item>
+        <item>@drawable/avatar_ff83fa</item>
+        <item>@drawable/avatar_ff82ab</item>
+        <item>@drawable/avatar_ff8247</item>
+        <item>@drawable/avatar_ff7f50</item>
+    </integer-array>
+</resources>

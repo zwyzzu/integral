@@ -148,12 +148,7 @@ public class Util {
         ArrayList<Integer> array = string2IntList(text, splitter);
         if (isEmpty(array))
             return null;
-        Collections.sort(array, new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return sort ? o1 - o2 : o2 - o1;
-            }
-        });
+        Collections.sort(array, (o1, o2) -> sort ? o1 - o2 : o2 - o1);
         return array;
     }
 

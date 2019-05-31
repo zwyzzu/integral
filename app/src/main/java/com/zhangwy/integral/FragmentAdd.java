@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.codbking.widget.DatePickDialog;
 import com.codbking.widget.bean.DateType;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.yixia.widget.VSVerificationLayout;
 import com.zhangwy.integral.data.IDataManager;
 import com.zhangwy.integral.entity.MemberEntity;
 
@@ -43,7 +42,6 @@ public class FragmentAdd extends BaseFragment implements View.OnClickListener {
     private EditText addPhoneInput;
     private Spinner addSex;
     private EditText addAgeInput;
-    private VSVerificationLayout addBirthday;
     private TextView addBirthdayInput;
     private Spinner addMarital;
     private EditText childrenSon;
@@ -66,7 +64,6 @@ public class FragmentAdd extends BaseFragment implements View.OnClickListener {
         this.addPhoneInput = view.findViewById(R.id.addPhoneInput);
         this.addSex = view.findViewById(R.id.addSexSpinner);
         this.addAgeInput = view.findViewById(R.id.addAgeInput);
-        this.addBirthday = view.findViewById(R.id.addBirthday);
         this.addBirthdayInput = view.findViewById(R.id.addBirthdayInput);
         this.addMarital = view.findViewById(R.id.addMaritalSpinner);
         this.childrenSon = view.findViewById(R.id.addChildrenSonCount);
@@ -134,9 +131,7 @@ public class FragmentAdd extends BaseFragment implements View.OnClickListener {
             addBirthdayInput.setText(TimeUtil.date2String(date, TimeUtil.PATTERN_DAY4Y));
             completionAge(date);
             lastBirthday = date;
-            addBirthday.empty();
         });
-        dialog.setOnCancelListener(dialog1 -> this.addBirthday.empty());
         int yearPast = 200;
         int yearFuture = 0;
         if (this.lastBirthday != null) {
@@ -181,31 +176,28 @@ public class FragmentAdd extends BaseFragment implements View.OnClickListener {
     private void saveData() {
         try {
             MemberEntity entity = new MemberEntity();
-            if (this.avatarUri == null) {
-                throw new Exception("用户头像为空");
+            if (this.avatarUri != null) {
+                entity.setIcon(this.avatarUri.getPath());
             }
-            entity.setIcon(this.avatarUri.getPath());
             String name = this.addNameInput.getText().toString();
             if (TextUtils.isEmpty(name)) {
                 throw new Exception("用户名为空");
             }
             entity.setName(name);
             String phone = this.addPhoneInput.getText().toString();
-            if (!Util.isMobile(phone) && !Util.isPhone(phone)) {
+            if (!TextUtils.isEmpty(phone) && !Util.isMobile(phone) && !Util.isPhone(phone)) {
                 throw new Exception("电话号码不正确");
             }
             entity.setPhone(phone);
             entity.setSex(this.addSex.getSelectedItemPosition());
-            if (this.lastBirthday == null) {
-                throw new Exception("生日不存在");
+            if (this.lastBirthday != null) {
+                entity.setBirthday(TimeUtil.date2String(this.lastBirthday, TimeUtil.PATTERN_DAY4Y));
             }
-            entity.setBirthday(TimeUtil.date2String(this.lastBirthday, TimeUtil.PATTERN_DAY4Y));
             String ageString = this.addAgeInput.getText().toString();
-            if (TextUtils.isEmpty(ageString)) {
-                throw new Exception("用户年龄为空");
+            if (!TextUtils.isEmpty(ageString)) {
+                int age = Integer.parseInt(ageString);
+                entity.setAge(age);
             }
-            int age = Integer.parseInt(ageString);
-            entity.setAge(age);
             entity.setDesc(this.addMessage.getText().toString());
             entity.setMarital(this.addMarital.getSelectedItemPosition());
             entity.setSonCount(this.getCount(this.childrenSon));

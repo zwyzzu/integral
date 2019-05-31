@@ -63,9 +63,12 @@
     <string name="member_update_message">修改用户信息</string>
     <string name="mine_integral">积分项</string>
     <string name="mine_address">导出地址</string>
+    <string name="mine_show_member_avatar">显示成员头像</string>
     <string name="mine_nickname">昵称</string>
     <string name="mine_message">这个人很懒，什么也没留下</string>
     <string name="mine_login">微信登录</string>
+    <string name="on">开</string>
+    <string name="off">关</string>
     <string name="error_message_logout">您尚未登录，请先登录</string>
     <string name="integral_element_label">积分项</string>
     <string name="element_item_score">分数：%1$s</string>
@@ -129,4 +132,14 @@
     <string name="disclaimer_agreed">同意</string>
     <string name="disclaimer_unAgreed">不同意</string>
     <string name="disclaimer_unCheck_remind">请阅读并同意上述条款</string>
+    <string name="coupons_label">优惠券</string>
+    <string name="coupons_unused">未使用(%1$d)</string>
+    <string name="coupons_used">使用记录(%1$d)</string>
+    <string name="coupons_overdue">已过期(%1$d)</string>
+    <string name="coupons_use">立即使用</string>
+
+    <string name="permission_read_phone_state">读取电话状态</string>
+    <string name="permission_read_external_storage">读取外部存储</string>
+    <string name="permission_write_external_storage">写入外部存储</string>
+    <string name="permission_record_audio">录音</string>
 </resources>

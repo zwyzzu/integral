@@ -3,16 +3,19 @@ package com.zhangwy.integral;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.yixia.widget.recycler.RecyclerAdapter;
 import com.yixia.widget.recycler.RecyclerAdapter.OnItemClickListener;
 import com.yixia.widget.recycler.VSRecyclerView;
+import com.zhangwy.common.Common;
 import com.zhangwy.common.ErrorMessage;
 import com.zhangwy.common.entities.IUserEntity;
 import com.zhangwy.user.IUser;
@@ -24,6 +27,7 @@ import java.util.List;
 
 import yixia.lib.core.base.BaseFragment;
 import yixia.lib.core.exception.CodeException;
+import yixia.lib.core.sharePreferences.PreferencesHelper;
 import yixia.lib.core.util.Logger;
 import yixia.lib.core.util.Util;
 import yixia.lib.core.util.WindowUtil;
@@ -101,14 +105,33 @@ public class FragmentMine extends BaseFragment implements OnItemClickListener<Fr
         this.recyclerView.loadData(array, new RecyclerAdapter.OnItemLoading<MineItem>() {
 
             @Override
+            public int getItemViewType(MineItem entity, int position) {
+                return entity.viewType;
+            }
+
+            @Override
             public View onCreateView(ViewGroup parent, int viewType) {
-                return LayoutInflater.from(getContext()).inflate(R.layout.view_item_mine, parent, false);
+                int layout = R.layout.view_item_mine;
+                switch (viewType) {
+                    case 0:
+                        layout = R.layout.view_item_mine;
+                        break;
+                    case 1:
+                        layout = R.layout.view_item_mine1;
+                        break;
+                }
+                return LayoutInflater.from(getContext()).inflate(layout, parent, false);
             }
 
             @Override
             public void onLoadView(View root, int viewType, MineItem entity, int position) {
                 TextView textView = root.findViewById(R.id.mineItemTitle);
                 textView.setText(entity.res);
+                if (viewType == 1) {
+                    SwitchCompat switchCompat = root.findViewById(R.id.mineItemSwitch);
+                    switchCompat.setChecked(PreferencesHelper.defaultInstance().getBoolean(Common.PFRC_SHOW_MEMBER_AVATAR, true));
+                    switchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> PreferencesHelper.defaultInstance().applyBoolean(Common.PFRC_SHOW_MEMBER_AVATAR, isChecked));
+                }
             }
         });
         this.recyclerView.setOnItemClickListener(this);
@@ -143,7 +166,7 @@ public class FragmentMine extends BaseFragment implements OnItemClickListener<Fr
         long AUTH_INTERVAL = 2000;
         if (cTime < AUTH_INTERVAL) {
             cTime = (cTime + 999) / 1000;
-            this.showMessage(true, getString(R.string.auth_waiting,cTime));
+            this.showMessage(true, getString(R.string.auth_waiting, cTime));
             return;
         }
         this.lastAuth = System.currentTimeMillis();
@@ -234,16 +257,20 @@ public class FragmentMine extends BaseFragment implements OnItemClickListener<Fr
     }
 
     public enum MineItem {
-        Integral("integral", "积分项", R.string.mine_integral),
-        Address("address", "导出地址", R.string.mine_address);
+        Integral("integral", "积分项", R.string.mine_integral, 0),
+        Address("address", "导出地址", R.string.mine_address, 0),
+        ShowMemberAvatar("showMemberAvatar", "显示成员头像", R.string.mine_show_member_avatar, 1),
+        ;
         public String code;
         public String name;
         public int res;
+        public int viewType;
 
-        MineItem(String code, String name, int res) {
+        MineItem(String code, String name, int res, int viewType) {
             this.code = code;
             this.name = name;
             this.res = res;
+            this.viewType = viewType;
         }
     }
 

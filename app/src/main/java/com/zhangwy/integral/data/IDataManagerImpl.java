@@ -217,10 +217,10 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         MemberEntity member = new MemberEntity();
         member.setId(cursor.getString(columnIndex++));
         member.setName(cursor.getString(columnIndex++));
-        member.setIcon(cursor.getString(columnIndex++));
+        member.setDBIcon(cursor.getString(columnIndex++));
         member.setDesc(cursor.getString(columnIndex++));
-        member.setPhone(cursor.getString(columnIndex++));
-        member.setBirthday(cursor.getString(columnIndex++));
+        member.setDBPhone(cursor.getString(columnIndex++));
+        member.setDBBirthday(cursor.getString(columnIndex++));
         member.setSex(cursor.getInt(columnIndex++));
         member.setAge(cursor.getInt(columnIndex++));
         member.setMarital(cursor.getInt(columnIndex++));
@@ -319,10 +319,10 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             ContentValues values = new ContentValues();
             values.put("id", member.getId());
             values.put("name", member.getName());
-            values.put("icon", member.getIcon());
+            values.put("icon", member.getDBIcon());
             values.put("desc", member.getDesc());
-            values.put("phone", member.getPhone());
-            values.put("birthday", member.getBirthday());
+            values.put("phone", member.getDBPhone());
+            values.put("birthday", member.getDBBirthday());
             values.put("sex", member.getSex());
             values.put("age", member.getAge());
             values.put("marital", member.getMarital());
@@ -330,8 +330,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             values.put("daughterCount", member.getDaughterCount());
             values.put("created", member.getCreated());
             values.put("modified", System.currentTimeMillis());
-            long raw = database.insertWithOnConflict(TABLE_NAME_MEMBER, null, values,
-                    SQLiteDatabase.CONFLICT_REPLACE);
+            long raw = database.insertWithOnConflict(TABLE_NAME_MEMBER, null, values, SQLiteDatabase.CONFLICT_REPLACE);
             if (raw < 0) {
                 return;
             }
@@ -364,18 +363,17 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             database.beginTransaction();
             ContentValues values = new ContentValues();
             values.put("name", member.getName());
-            values.put("icon", member.getIcon());
+            values.put("icon", member.getDBIcon());
             values.put("desc", member.getDesc());
-            values.put("phone", member.getPhone());
-            values.put("birthday", member.getBirthday());
+            values.put("phone", member.getDBPhone());
+            values.put("birthday", member.getDBBirthday());
             values.put("sex", member.getSex());
             values.put("age", member.getAge());
             values.put("marital", member.getMarital());
             values.put("sonCount", member.getSonCount());
             values.put("daughterCount", member.getDaughterCount());
             values.put("modified", System.currentTimeMillis());
-            long raw = database.update(TABLE_NAME_MEMBER, values, SQL_WHERECLAUSE_ID, new
-                    String[]{member.getId()});
+            long raw = database.update(TABLE_NAME_MEMBER, values, SQL_WHERECLAUSE_ID, new String[]{member.getId()});
             if (raw < 0) {
                 return;
             }
@@ -502,8 +500,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             values.put("desc", address.getDesc());
             values.put("bind", address.getBind());
             values.put("position", address.getPosition());
-            long raw = database.insertWithOnConflict(TABLE_NAME_ADDRESS, null, values,
-                    SQLiteDatabase.CONFLICT_REPLACE);
+            long raw = database.insertWithOnConflict(TABLE_NAME_ADDRESS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
             if (raw >= 0) {
                 this.updateModified(database, address.getBind());
                 if (beginTransaction) {
@@ -553,8 +550,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             values.put("desc", address.getDesc());
             values.put("bind", address.getBind());
             values.put("position", address.getPosition());
-            long raw = database.update(TABLE_NAME_ADDRESS, values, SQL_WHERECLAUSE_ID, new
-                    String[]{address.getId()});
+            long raw = database.update(TABLE_NAME_ADDRESS, values, SQL_WHERECLAUSE_ID, new String[]{address.getId()});
             if (raw >= 0) {
                 this.updateModified(database, address.getBind());
                 database.setTransactionSuccessful();
@@ -717,8 +713,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             values.put("desc", integral.getDesc());
             values.put("score", integral.getScore());
             values.put("checkCoefficient", integral.isCheckCoefficient() ? 1 : 0);
-            long raw = database.insertWithOnConflict(TABLE_NAME_INTEGRAL, null, values,
-                    SQLiteDatabase.CONFLICT_REPLACE);
+            long raw = database.insertWithOnConflict(TABLE_NAME_INTEGRAL, null, values, SQLiteDatabase.CONFLICT_REPLACE);
             if (raw >= 0 && beginTransaction) {
                 database.setTransactionSuccessful();
             }

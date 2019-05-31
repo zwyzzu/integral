@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_8"
-    android:paddingBottom="@dimen/padding_4"
-    android:background="@color/common_white">
+    android:background="@color/common_white"
+    android:paddingBottom="@dimen/padding_4">
 
     <com.yixia.widget.VSSquareConstraintLayout
         android:id="@+id/mainItemIconHome"
@@ -38,7 +38,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/mainItemIconHome"
         tools:ignore="MissingConstraints" />
-
 
     <TextView
         android:id="@+id/mainItemIntegralHeader"

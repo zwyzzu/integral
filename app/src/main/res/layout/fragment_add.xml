@@ -62,34 +62,40 @@
             android:lines="1"
             android:maxLines="1"
             android:singleLine="true"
-            tools:ignore="LabelFor,TextFields" />
+            tools:ignore="Autofill,LabelFor,TextFields" />
     </com.yixia.widget.VSVerificationLayout>
 
-    <com.yixia.widget.VSVerificationLayout
-        android:id="@+id/addPhone"
+    <!--<com.yixia.widget.VSVerificationLayout-->
+    <!--android:id="@+id/addPhone"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="@dimen/add_line_height"-->
+    <!--android:layout_marginStart="@dimen/margin_16"-->
+    <!--android:layout_marginLeft="@dimen/margin_16"-->
+    <!--android:layout_marginEnd="@dimen/margin_16"-->
+    <!--android:layout_marginRight="@dimen/margin_16"-->
+    <!--app:inputId="@+id/addPhoneInput"-->
+    <!--app:layout_constraintBottom_toBottomOf="@+id/addIcon"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toEndOf="@+id/addIcon">-->
+
+    <EditText
+        android:id="@+id/addPhoneInput"
         android:layout_width="0dp"
         android:layout_height="@dimen/add_line_height"
         android:layout_marginStart="@dimen/margin_16"
         android:layout_marginLeft="@dimen/margin_16"
         android:layout_marginEnd="@dimen/margin_16"
         android:layout_marginRight="@dimen/margin_16"
-        app:inputId="@+id/addPhoneInput"
+        android:background="@drawable/background_input_line"
+        android:hint="@string/add_hint_phone"
+        android:inputType="phone"
+        android:lines="1"
+        android:maxLines="1"
+        android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="@+id/addIcon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/addIcon">
-
-        <EditText
-            android:id="@+id/addPhoneInput"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/background_input_line"
-            android:hint="@string/add_hint_phone"
-            android:inputType="phone"
-            android:lines="1"
-            android:maxLines="1"
-            android:singleLine="true"
-            tools:ignore="LabelFor" />
-    </com.yixia.widget.VSVerificationLayout>
+        app:layout_constraintStart_toEndOf="@+id/addIcon"
+        tools:ignore="Autofill,LabelFor" />
 
     <TextView
         android:id="@+id/addSexHeader"
@@ -102,7 +108,7 @@
         android:textSize="@dimen/widget_fontSize_18"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addIcon" />
+        app:layout_constraintTop_toBottomOf="@id/addPhoneInput" />
 
     <Spinner
         android:id="@+id/addSexSpinner"
@@ -126,32 +132,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/addSexHeader" />
 
-    <com.yixia.widget.VSVerificationLayout
-        android:id="@+id/addBirthday"
-        android:layout_width="0dp"
+    <!--<com.yixia.widget.VSVerificationLayout-->
+    <!--android:id="@+id/addBirthday"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="@dimen/add_line_height"-->
+    <!--android:layout_marginStart="@dimen/margin_8"-->
+    <!--android:layout_marginLeft="@dimen/margin_8"-->
+    <!--android:layout_marginEnd="@dimen/margin_16"-->
+    <!--android:layout_marginRight="@dimen/margin_16"-->
+    <!--app:inputId="@+id/addBirthdayInput"-->
+    <!--app:layout_constraintBottom_toBottomOf="@+id/addBirthdayHeader"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toEndOf="@+id/addBirthdayHeader"-->
+    <!--app:layout_constraintTop_toTopOf="@+id/addBirthdayHeader">-->
+
+    <TextView
+        android:id="@+id/addBirthdayInput"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/add_line_height"
         android:layout_marginStart="@dimen/margin_8"
         android:layout_marginLeft="@dimen/margin_8"
         android:layout_marginEnd="@dimen/margin_16"
         android:layout_marginRight="@dimen/margin_16"
-        app:inputId="@+id/addBirthdayInput"
+        android:background="@drawable/background_input_line"
+        android:hint="@string/add_hint_birthday"
+        android:lines="1"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textSize="@dimen/widget_fontSize_18"
         app:layout_constraintBottom_toBottomOf="@+id/addBirthdayHeader"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/addBirthdayHeader"
         app:layout_constraintStart_toEndOf="@+id/addBirthdayHeader"
-        app:layout_constraintTop_toTopOf="@+id/addBirthdayHeader">
-
-        <TextView
-            android:id="@+id/addBirthdayInput"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@drawable/background_input_line"
-            android:hint="@string/add_hint_birthday"
-            android:lines="1"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:textSize="@dimen/widget_fontSize_18"
-            tools:ignore="LabelFor" />
-    </com.yixia.widget.VSVerificationLayout>
+        app:layout_constraintTop_toTopOf="@+id/addBirthdayHeader"
+        tools:ignore="LabelFor" />
 
     <TextView
         android:id="@+id/addAgeHeader"
@@ -166,32 +179,38 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/addBirthdayHeader" />
 
-    <com.yixia.widget.VSVerificationLayout
-        android:id="@+id/addAge"
-        android:layout_width="0dp"
+    <!--<com.yixia.widget.VSVerificationLayout-->
+    <!--android:id="@+id/addAge"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="@dimen/add_line_height"-->
+    <!--android:layout_marginStart="@dimen/margin_8"-->
+    <!--android:layout_marginLeft="@dimen/margin_8"-->
+    <!--android:layout_marginEnd="@dimen/margin_16"-->
+    <!--android:layout_marginRight="@dimen/margin_16"-->
+    <!--app:inputId="@+id/addAgeInput"-->
+    <!--app:layout_constraintBottom_toBottomOf="@+id/addAgeHeader"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toEndOf="@+id/addAgeHeader"-->
+    <!--app:layout_constraintTop_toTopOf="@+id/addAgeHeader">-->
+
+    <EditText
+        android:id="@+id/addAgeInput"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/add_line_height"
         android:layout_marginStart="@dimen/margin_8"
         android:layout_marginLeft="@dimen/margin_8"
         android:layout_marginEnd="@dimen/margin_16"
         android:layout_marginRight="@dimen/margin_16"
-        app:inputId="@+id/addAgeInput"
+        android:background="@drawable/background_input_line"
+        android:hint="@string/add_hint_age"
+        android:inputType="number"
+        android:lines="1"
+        android:maxLines="1"
+        android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="@+id/addAgeHeader"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/addAgeHeader"
-        app:layout_constraintTop_toTopOf="@+id/addAgeHeader">
-
-        <EditText
-            android:id="@+id/addAgeInput"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@drawable/background_input_line"
-            android:hint="@string/add_hint_age"
-            android:inputType="number"
-            android:lines="1"
-            android:maxLines="1"
-            android:singleLine="true"
-            tools:ignore="LabelFor" />
-    </com.yixia.widget.VSVerificationLayout>
+        app:layout_constraintTop_toTopOf="@+id/addAgeHeader"
+        tools:ignore="Autofill,LabelFor" />
 
     <TextView
         android:id="@+id/addMaritalHeader"
@@ -242,7 +261,7 @@
         android:singleLine="true"
         app:layout_constraintStart_toEndOf="@+id/addChildrenHeader"
         app:layout_constraintTop_toTopOf="@+id/addChildrenHeader"
-        tools:ignore="LabelFor" />
+        tools:ignore="Autofill,LabelFor" />
 
     <TextView
         android:id="@+id/addChildrenSon"
@@ -271,7 +290,7 @@
         app:layout_constraintLeft_toRightOf="@id/addChildrenSon"
         app:layout_constraintStart_toEndOf="@+id/addChildrenSon"
         app:layout_constraintTop_toTopOf="@+id/addChildrenSon"
-        tools:ignore="LabelFor" />
+        tools:ignore="Autofill,LabelFor" />
 
     <TextView
         android:id="@+id/addChildrenDaughter"
@@ -301,7 +320,8 @@
         android:minLines="3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addChildrenHeader" />
+        app:layout_constraintTop_toBottomOf="@+id/addChildrenHeader"
+        tools:ignore="Autofill,TextFields" />
 
     <Button
         android:id="@+id/addButtonClear"

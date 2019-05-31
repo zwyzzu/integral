@@ -1,7 +1,10 @@
 package com.zhangwy.integral;
 
+import android.app.Activity;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +19,7 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.yixia.widget.recycler.RecyclerAdapter;
 import com.yixia.widget.recycler.VSRecyclerView;
+import com.zhangwy.common.Common;
 import com.zhangwy.integral.data.IDataManager;
 import com.zhangwy.integral.entity.MemberEntity;
 
@@ -26,7 +30,9 @@ import java.util.Comparator;
 import java.util.List;
 
 import yixia.lib.core.base.BaseFragment;
+import yixia.lib.core.sharePreferences.PreferencesHelper;
 import yixia.lib.core.util.Screen;
+import yixia.lib.core.util.Util;
 
 /**
  * Created by zhangwy on 2018/12/21 下午8:10.
@@ -42,6 +48,7 @@ public class FragmentMain extends BaseFragment {
     private final int REQUEST_CODE_MEMBER = 100;
     private final int spanCount = 3;
     private int length = 200;
+    private boolean showMemberAvatar = true;
     private VSRecyclerView<MemberEntity> recyclerView;
 
     @Override
@@ -51,6 +58,7 @@ public class FragmentMain extends BaseFragment {
 
     @Override
     protected void init(View view, Bundle saveInstanceState) {
+        this.showMemberAvatar = PreferencesHelper.defaultInstance().getBoolean(Common.PFRC_SHOW_MEMBER_AVATAR, true);
         this.recyclerView = view.findViewById(R.id.mainRecycler);
         int divisionSize = getResources().getDimensionPixelOffset(R.dimen.padding_15);
         this.length = (Screen.getScreenWidth(getContext()) - divisionSize * (spanCount + 1)) / spanCount;
@@ -64,10 +72,18 @@ public class FragmentMain extends BaseFragment {
 
             @Override
             public void onLoadView(View root, int viewType, MemberEntity entity, int position) {
+                View iconHome = root.findViewById(R.id.mainItemIconHome);
                 SimpleDraweeView icon = root.findViewById(R.id.mainItemIcon);
                 TextView name = root.findViewById(R.id.mainItemName);
                 TextView integral = root.findViewById(R.id.mainItemIntegral);
-                refreshThumbnail(entity.getIcon(), icon);
+                if (showMemberAvatar) {
+                    iconHome.setVisibility(View.VISIBLE);
+                    icon.setVisibility(View.VISIBLE);
+                    refreshThumbnail(entity.getIcon(), icon);
+                } else {
+                    iconHome.setVisibility(View.GONE);
+                    icon.setVisibility(View.GONE);
+                }
                 name.setText(entity.getName());
                 integral.setText(String.valueOf(entity.getIntegral()));
             }
@@ -84,7 +100,11 @@ public class FragmentMain extends BaseFragment {
 
     private void refreshThumbnail(String file, SimpleDraweeView cover) {
         Object tag = cover.getTag();
-        if (TextUtils.isEmpty(file) || file.equals(tag)) {
+        if (TextUtils.isEmpty(file)) {
+            cover.setImageResource(this.getAvatar());
+            return;
+        }
+        if (file.equals(tag)) {
             return;
         }
         Uri uri = Uri.fromFile(new File(file));
@@ -97,5 +117,23 @@ public class FragmentMain extends BaseFragment {
                 .build();
         cover.setController(controller);
         cover.setTag(file);
+    }
+
+    private @DrawableRes int getAvatar() {
+        Activity activity = getActivity();
+        if (activity == null) {
+            return R.drawable.avatar_ff7f50;
+        }
+        Resources resources = activity.getResources();
+        int[] avatars = resources.getIntArray(R.array.avatar);
+        if (avatars == null || avatars.length <= 0) {
+            return R.drawable.avatar_ff8c00;
+        }
+        int maxIndex = avatars.length - 1;
+        int index = (int) (maxIndex * Math.random());
+        if (index > maxIndex) {
+            index = maxIndex;
+        }
+        return resources.obtainTypedArray(R.array.avatar).getResourceId(index, 0);
     }
 }
