@@ -1,5 +1,7 @@
 package com.zhangwy.integral;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
@@ -8,10 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.pgyersdk.feedback.PgyFeedback;
 import com.yixia.widget.recycler.RecyclerAdapter;
 import com.yixia.widget.recycler.RecyclerAdapter.OnItemClickListener;
 import com.yixia.widget.recycler.VSRecyclerView;
@@ -146,9 +148,21 @@ public class FragmentMine extends BaseFragment implements OnItemClickListener<Fr
         switch (entity) {
             case Address:
                 break;
+            case Feedback:
+                PgyFeedback.getInstance().showDialog(this.getAppCompatActivity());
+                this.checkPermission();
+                break;
             case Integral:
                 IntegralElementActivity.start(getContext());
                 break;
+        }
+    }
+
+    private void checkPermission() {
+        Activity activity = getAppCompatActivity();
+        if (activity instanceof OnRequestPermission) {
+            OnRequestPermission permission = (OnRequestPermission) activity;
+            permission.requestPermission(Manifest.permission.RECORD_AUDIO, getString(R.string.permission_record_audio));
         }
     }
 
@@ -259,6 +273,7 @@ public class FragmentMine extends BaseFragment implements OnItemClickListener<Fr
     public enum MineItem {
         Integral("integral", "积分项", R.string.mine_integral, 0),
         Address("address", "导出地址", R.string.mine_address, 0),
+        Feedback("Feedback", "问题反馈", R.string.mine_feedback, 0),
         ShowMemberAvatar("showMemberAvatar", "显示成员头像", R.string.mine_show_member_avatar, 1),
         ;
         public String code;

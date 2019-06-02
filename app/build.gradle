@@ -85,6 +85,7 @@ dependencies {
     implementation "com.alibaba:fastjson:${rootProject.ext.thirdParty.fastJson}"
     implementation "com.umeng.umsdk:analytics:${rootProject.ext.thirdParty.umeng}"
     implementation "com.umeng.umsdk:common:${rootProject.ext.thirdParty.umengCommon}"
+    implementation "com.pgyersdk:sdk:${rootProject.ext.thirdParty.pgyersdk}"
     implementation project(path: ':libCore')
     implementation project(path: ':widget')
     implementation project(path: ':pickTime')

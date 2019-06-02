@@ -28,16 +28,22 @@ public class VSPermission {
         return newInstance(null, null);
     }
 
+    public static VSPermission newInstance(Activity activity) {
+        return newInstance(activity, null);
+    }
+
     public static VSPermission newInstance(Activity activity, HashMap<String, String> permissions) {
         return new VSPermission(activity, permissions);
     }
 
     private Activity activity;
-    private HashMap<String, String> permissions;
+    private HashMap<String, String> permissions = new HashMap<>();
 
     private VSPermission(Activity activity, HashMap<String, String> permissions) {
         this.activity = activity;
-        this.permissions = permissions;
+        if (!Util.isEmpty(permissions)) {
+            this.permissions.putAll(permissions);
+        }
     }
 
     public boolean hasPermissions(Context context, String... permissions) {
@@ -63,44 +69,86 @@ public class VSPermission {
         }
     }
 
-    public boolean applyPermission(final int requestCode) {
-        if (this.activity == null || Util.isEmpty(this.permissions) || Util.isEmpty(this.permissions.entrySet())) {
-            return false;
+    public void requestPermission(final int requestCode, String permission, String message) {
+        if (this.activity == null || TextUtils.isEmpty(permission) || TextUtils.isEmpty(message)) {
+            return;
+        }
+        if (!this.permissions.containsKey(permission)) {
+            this.permissions.put(permission, message);
+        }
+        if (this.hasPermission(this.activity, permission)) {
+            return;
+        }
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this.activity, permission)) {
+            HashMap<String, String> hashMap = new HashMap<>();
+            hashMap.put(permission, message);
+            this.showDialog(requestCode, hashMap);
+        } else {
+            ActivityCompat.requestPermissions(this.activity, new String[]{permission}, requestCode);
+        }
+    }
+
+    public void requestPermission(int requestCode) {
+        this.requestPermissions(requestCode, this.permissions);
+    }
+
+    public void requestPermissions(int requestCode, HashMap<String, String> permissions) {
+        if (this.activity == null || Util.isEmpty(permissions) || Util.isEmpty(permissions.entrySet())) {
+            return;
         }
 
         HashMap<String, String> noPermissions = new HashMap<>();
         HashMap<String, String> showDialogPermissions = new HashMap<>();
 
-        for (Map.Entry<String, String> entry : this.permissions.entrySet()) {
+        for (Map.Entry<String, String> entry : permissions.entrySet()) {
             if (entry == null) {
                 continue;
             }
             String permission = entry.getKey();
+            String message = entry.getValue();
+            if (TextUtils.isEmpty(permission) || TextUtils.isEmpty(message)) {
+                continue;
+            }
+            if (!this.permissions.containsKey(permission)) {
+                this.permissions.put(permission, message);
+            }
             if (!this.hasPermission(this.activity, permission)) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this.activity, permission)) {
-                    showDialogPermissions.put(permission, entry.getValue());
+                    showDialogPermissions.put(permission, message);
                 } else {
-                    noPermissions.put(permission, entry.getValue());
+                    noPermissions.put(permission, message);
                 }
             }
         }
 
         if (!Util.isEmpty(showDialogPermissions)) {
             showDialogPermissions.putAll(noPermissions);
-            String permissionString = Util.array2Strings('\n', showDialogPermissions.values());
-            Dialog dialog = WindowUtil.createAlertDialog(this.activity, Device.App.getAppName(this.activity),
-                    this.activity.getString(R.string.permission_tip_message, permissionString), this.activity.getString(R.string.permission_to_setting),
-                    (dialog1, which) -> ActivityCompat.requestPermissions(this.activity, showDialogPermissions.keySet().toArray(new String[0]), requestCode), this.activity.getString(android.R.string.cancel), null);
-            if (dialog != null) {
-                dialog.show();
-            }
-            return true;
+            this.showDialog(requestCode, showDialogPermissions);
+        } else if (!Util.isEmpty(noPermissions)) {
+            this.requestPermissions(noPermissions, requestCode);
         }
-        if (!Util.isEmpty(noPermissions)) {
-            ActivityCompat.requestPermissions(this.activity, noPermissions.keySet().toArray(new String[0]), requestCode);
-            return true;
+    }
+
+    private void showDialog(int requestCode, HashMap<String, String> permissions) {
+        if (Util.isEmpty(permissions)) {
+            return;
         }
-        return false;
+        String permissionString = Util.array2Strings('\n', permissions.values());
+        permissionString = this.activity.getString(R.string.permission_tip_message, permissionString);
+        String button = this.activity.getString(R.string.permission_to_setting);
+        Dialog dialog = WindowUtil.createAlertDialog(this.activity, Device.App.getAppName(this.activity), permissionString,
+                button, (dialog1, which) -> requestPermissions(permissions, requestCode),
+                this.activity.getString(android.R.string.cancel), null);
+        if (dialog != null) {
+            dialog.show();
+        }
+    }
+
+    private void requestPermissions(HashMap<String, String> permissions, int requestCode) {
+        if (Util.isEmpty(permissions)) {
+            return;
+        }
+        ActivityCompat.requestPermissions(this.activity, permissions.keySet().toArray(new String[0]), requestCode);
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

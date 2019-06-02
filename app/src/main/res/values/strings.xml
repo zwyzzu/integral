@@ -63,6 +63,7 @@
     <string name="member_update_message">修改用户信息</string>
     <string name="mine_integral">积分项</string>
     <string name="mine_address">导出地址</string>
+    <string name="mine_feedback">问题反馈</string>
     <string name="mine_show_member_avatar">显示成员头像</string>
     <string name="mine_nickname">昵称</string>
     <string name="mine_message">这个人很懒，什么也没留下</string>

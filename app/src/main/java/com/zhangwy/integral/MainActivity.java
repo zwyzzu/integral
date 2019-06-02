@@ -22,7 +22,7 @@ import yixia.lib.core.util.Screen;
 import yixia.lib.core.util.Util;
 import yixia.lib.core.util.VSPermission;
 
-public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
+public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, OnRequestPermission {
 
     private FragmentMain fragmentMain;
     private FragmentAdd fragmentAdd;
@@ -62,7 +62,23 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         permissions.put(Manifest.permission.READ_EXTERNAL_STORAGE, getString(R.string.permission_read_external_storage));
         permissions.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, getString(R.string.permission_write_external_storage));
         this.permission = VSPermission.newInstance(this, permissions);
-        this.permission.applyPermission(this.REQUESTCODE_PERMISSION);
+        this.permission.requestPermission(this.REQUESTCODE_PERMISSION);
+    }
+
+    @Override
+    public void requestPermission(String permission, String message) {
+        if (this.permission == null) {
+            this.permission = VSPermission.newInstance(this);
+        }
+        this.permission.requestPermission(this.REQUESTCODE_PERMISSION, permission, message);
+    }
+
+    @Override
+    public void requestPermission(HashMap<String, String> permissions) {
+        if (this.permission == null) {
+            this.permission = VSPermission.newInstance(this);
+        }
+        this.permission.requestPermissions(this.REQUESTCODE_PERMISSION, permissions);
     }
 
     @Override
