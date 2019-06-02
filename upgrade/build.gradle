@@ -41,6 +41,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${rootProject.ext.thirdParty.retrofit2}"
     implementation "com.alibaba:fastjson:${rootProject.ext.thirdParty.fastJson}"
     implementation "org.ligboy.retrofit2:converter-fastjson-android:${rootProject.ext.thirdParty.converterFastjson}"
+    implementation "com.pgyersdk:sdk:${rootProject.ext.thirdParty.pgyersdk}"
     implementation project(path: ':libCore')
     implementation project(path: ':download')
 }

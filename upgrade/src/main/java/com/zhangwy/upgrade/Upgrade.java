@@ -47,10 +47,17 @@ public abstract class Upgrade {
         return new UpgradeImpl(activity, apiKey, appKey, password, showDownloadProgress);
     }
 
+    /**
+     * 检测更新
+     *
+     * @param checkPGY      是否检测蒲公英版本
+     * @param dialogCheck   是否显示检测更新弹窗
+     * @param forcedUpgrade 是否强制更新
+     */
     public abstract void check(boolean checkPGY, boolean dialogCheck, boolean forcedUpgrade);
 
     private static class UpgradeImpl extends Upgrade implements Callback<AppCheckEntity>, Downloader.DownloadListener {
-        private final String URL_DOWNLOAD = "https://www.pgyer.com/apiv2/app/install?_api_key=%1$s&appKey=%2$s%3$s&version=%4$s_%5$s_%6$s";
+        private final String URL_DOWNLOAD = "https://www.pgyer.com/apiv2/app/install?_api_key=%1$s&appKey=%2$s%3$s&buildKey=%4$s";
         private final String URL_ICON = "https://www.pgyer.com/image/view/app_icons/%1$s";
         private ProgressDialog checkDialog;
         private ProgressDialog updateDialog;
@@ -155,12 +162,15 @@ public abstract class Upgrade {
         private void showUpgradeDialog(final AppCheckEntity entity) {
             String appName = this.activity.getString(R.string.upgrade_remind);
             String detail = entity.getDetail().getUpdateDescription();
+            float size = Integer.parseInt(entity.getDetail().size);
+            size = size / 1024 / 1024;
             String install = this.activity.getString(R.string.dialog_install);
             String cancel = this.activity.getString(R.string.dialog_cancel);
+            String content = this.activity.getString(R.string.dialog_upgrade_tip, Util.float2String(size, 2), detail);
             if (this.forcedUpgrade) {
                 cancel = "";
             }
-            Dialog dialog = WindowUtil.createAlertDialog(this.activity, appName, detail, install, (dialog12, which) -> {
+            Dialog dialog = WindowUtil.createAlertDialog(this.activity, appName, content, install, (dialog12, which) -> {
                 remoteCheckEntity = entity;
                 uploadApp();
             }, cancel, null);
@@ -181,7 +191,7 @@ public abstract class Upgrade {
             }
             AppCheckEntity.AppVersionEntity versionEntity = this.remoteCheckEntity.getDetail();
             this.showDownloadProgress(versionEntity);
-            String url = String.format(Locale.getDefault(), URL_DOWNLOAD, this.apiKey, this.appKey, this.password, versionEntity.getVersion(), versionEntity.getVersionNo(), versionEntity.getBuildVersion());
+            String url = String.format(Locale.getDefault(), URL_DOWNLOAD, this.apiKey, this.appKey, this.password, versionEntity.getBuildKey());
             String iconUrl = String.format(Locale.getDefault(), URL_ICON, versionEntity.getIcon());
             DownloadApp.newInstance(this.activity).setListener(this).download(url, versionEntity.getName(), iconUrl, "", Util.parseInt(versionEntity.getSize()));
         }

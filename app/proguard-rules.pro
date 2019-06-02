@@ -202,3 +202,7 @@
 -keep class com.tencent.mm.sdk.** {
     *;
 }
+
+#蒲公英混淆过滤
+-dontwarn com.pgyersdk.**
+-keep class com.pgyersdk.** { *; }
