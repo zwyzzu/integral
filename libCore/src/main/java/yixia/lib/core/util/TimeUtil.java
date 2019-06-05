@@ -29,7 +29,6 @@ public class TimeUtil {
         return date2String(new Date(), pattern);
     }
 
-    // Time Past
     public static long getCurrentDateCutWeek(int cutWeek) {
         return getCurrentDateCutDay(cutWeek * 7);
     }
@@ -55,8 +54,7 @@ public class TimeUtil {
         return getDateCutDay(new Date(), pattern, countDay);
     }
 
-    public static String getDateCutDay(String date, String srcPattern, String destPattern,
-                                       int cutDay) {
+    public static String getDateCutDay(String date, String srcPattern, String destPattern, int cutDay) {
         try {
             return getDateCutDay(dateString2Date(date, srcPattern), destPattern, cutDay);
         } catch (Exception e) {
@@ -82,8 +80,73 @@ public class TimeUtil {
         return 0;
     }
 
-    public static String changeDatePattern(String timeString, String srcPattern,
-                                           String destPattern) {
+    public static String getFutureDateByWeek(Date date, String pattern, int week) {
+        return date2String(getFutureDateByWeek(date, week), pattern);
+    }
+
+    public static long getFutureDateMSByWeek(Date date, int week) {
+        return getFutureDateByWeek(date, week).getTime();
+    }
+
+    public static Date getFutureDateByWeek(Date date, int week) {
+        return getFutureDateByDay(date, week * 7);
+    }
+
+    public static String getFutureDateByDay(Date date, String pattern, int day) {
+        return date2String(getFutureDateByDay(date, day), pattern);
+    }
+
+    public static long getFutureDateMSByDay(Date date, int day) {
+        return getFutureDateByDay(date, day).getTime();
+    }
+
+    public static Date getFutureDateByDay(Date date, int day) {
+        try {
+            date.setDate(date.getDate() + day);
+            return date;
+        } catch (Exception e) {
+            Logger.d("getFutureDateByDay", e);
+        }
+        return new Date();
+    }
+
+    public static String getFutureDateByMonth(Date date, String pattern, int month) {
+        return date2String(getFutureDateByMonth(date, month), pattern);
+    }
+
+    public static long getFutureDateMSByMonth(Date date, int month) {
+        return getFutureDateByMonth(date, month).getTime();
+    }
+
+    public static Date getFutureDateByMonth(Date date, int month) {
+        try {
+            date.setMonth(date.getMonth() + month);
+            return date;
+        } catch (Exception e) {
+            Logger.d("getFutureDateByMonth", e);
+        }
+        return new Date();
+    }
+
+    public static String getFutureDateByYear(Date date, String pattern, int year) {
+        return date2String(getFutureDateByYear(date, year), pattern);
+    }
+
+    public static long getFutureDateMSByYear(Date date, int year) {
+        return getFutureDateByYear(date, year).getTime();
+    }
+
+    public static Date getFutureDateByYear(Date date, int year) {
+        try {
+            date.setYear(date.getYear() + year);
+            return date;
+        } catch (Exception e) {
+            Logger.d("getFutureDateByYear", e);
+        }
+        return new Date();
+    }
+
+    public static String changeDatePattern(String timeString, String srcPattern, String destPattern) {
         Date dt = dateString2Date(timeString, srcPattern);
         return date2String(dt, destPattern);
     }
@@ -128,16 +191,16 @@ public class TimeUtil {
 
     //获取小时
     public static int getHour(Date date) {
-        Calendar calendar=Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        return calendar.get(calendar.HOUR_OF_DAY);
+        return calendar.get(Calendar.HOUR_OF_DAY);
     }
 
     //获取分钟
     public static int getMinute(Date date) {
-        Calendar calendar=Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        return calendar.get(calendar.MINUTE);
+        return calendar.get(Calendar.MINUTE);
     }
 
     //获取周
@@ -148,34 +211,34 @@ public class TimeUtil {
     }
 
     //获取周
-    public static int getWeek(int year,int moth,int day) {
+    public static int getWeek(int year, int moth, int day) {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year,moth-1,day);
+        calendar.set(year, moth - 1, day);
         return calendar.get(Calendar.DAY_OF_WEEK);
     }
 
     //获取年
     public static int getYear(Date date) {
-        Calendar calendar=Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        return calendar.get(calendar.YEAR);
+        return calendar.get(Calendar.YEAR);
     }
 
     //获取月
     public static int getMoth(Date date) {
-        Calendar calendar=Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        return calendar.get(calendar.MONTH)+1;
+        return calendar.get(Calendar.MONTH) + 1;
     }
 
     //获取日
     public static int getDay(Date date) {
-        Calendar calendar=Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        return calendar.get(calendar.DATE);
+        return calendar.get(Calendar.DATE);
     }
 
-    public static Date getDate(int year, int moth, int day,int hour,int minute) {
+    public static Date getDate(int year, int moth, int day, int hour, int minute) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, moth - 1, day, hour, minute);
         return calendar.getTime();

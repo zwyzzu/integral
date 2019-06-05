@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.zhangwy.integral.entity.AddressEntity;
+import com.zhangwy.integral.entity.CouponsBindEntity;
+import com.zhangwy.integral.entity.CouponsEntity;
+import com.zhangwy.integral.entity.CouponsExpiryEntity;
 import com.zhangwy.integral.entity.IntegralBindEntity;
 import com.zhangwy.integral.entity.IntegralEntity;
 import com.zhangwy.integral.entity.MemberEntity;
@@ -31,12 +34,16 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
 
     private final int DATABASE_VERSION_1 = 1;
     private final int DATABASE_VERSION_2 = 2;
-    private final int DATABASE_VERSION = DATABASE_VERSION_2;
+    private final int DATABASE_VERSION_3 = 3;
+    private final int DATABASE_VERSION = DATABASE_VERSION_3;
 
     private final String TABLE_NAME_MEMBER = "member_data";
     private final String TABLE_NAME_INTEGRAL = "integral_data";
     private final String TABLE_NAME_ADDRESS = "address_data";
     private final String TABLE_NAME_INTEGRAL_BIND = "integral_bind_data";
+    private final String TABLE_NAME_COUPONS = "coupons_data";
+    private final String TABLE_NAME_COUPONS_BIND = "coupons_bind_data";
+    private final String TABLE_NAME_EXPIRY = "expiry_data";
 
     private final String SQL_WHERECLAUSE_BIND = " bind = ? ";
     private final String SQL_WHERECLAUSE_ID = " id = ? ";
@@ -45,6 +52,9 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
     private final SQLCreator SQL_CREATOR_INTEGRAL = SQLCreator.newInstance(this.TABLE_NAME_INTEGRAL);
     private final SQLCreator SQL_CREATOR_ADDRESS = SQLCreator.newInstance(this.TABLE_NAME_ADDRESS);
     private final SQLCreator SQL_CREATOR_INTEGRAL_BIND = SQLCreator.newInstance(this.TABLE_NAME_INTEGRAL_BIND);
+    private final SQLCreator SQL_CREATOR_COUPONS = SQLCreator.newInstance(this.TABLE_NAME_COUPONS);
+    private final SQLCreator SQL_CREATOR_COUPONS_BIND = SQLCreator.newInstance(this.TABLE_NAME_COUPONS_BIND);
+    private final SQLCreator SQL_CREATOR_EXPIRY = SQLCreator.newInstance(this.TABLE_NAME_EXPIRY);
 
     {//
         SQL_CREATOR_MEMBER.setPrimaryKey("id", SQLCreator.Format.TEXT)
@@ -92,6 +102,30 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 .put("createDate", SQLCreator.Format.LONG, false)
                 .put("usedDate", SQLCreator.Format.LONG, true)
                 .build();
+
+        SQL_CREATOR_COUPONS.setPrimaryKey("id", SQLCreator.Format.TEXT)
+                .put("amount", SQLCreator.Format.FLOAT, false)
+                .put("name", SQLCreator.Format.TEXT, false)
+                .put("desc", SQLCreator.Format.TEXT, true)
+                .build();
+
+        SQL_CREATOR_COUPONS_BIND.setPrimaryKey("id", SQLCreator.Format.TEXT)
+                .put("amount", SQLCreator.Format.FLOAT, false)
+                .put("createDate", SQLCreator.Format.LONG, false)
+                .put("expiryDate", SQLCreator.Format.LONG, false)
+                .put("usedDate", SQLCreator.Format.LONG, false)
+                .put("expiryCode", SQLCreator.Format.TEXT, false)
+                .put("name", SQLCreator.Format.TEXT, false)
+                .put("desc", SQLCreator.Format.TEXT, true)
+                .put("bind", SQLCreator.Format.TEXT, false)
+                .put("couponsBind", SQLCreator.Format.TEXT, false)
+                .put("expiryBind", SQLCreator.Format.TEXT, false)
+                .build();
+
+        SQL_CREATOR_EXPIRY.setPrimaryKey("id", SQLCreator.Format.TEXT)
+                .put("count", SQLCreator.Format.INTEGER, false)
+                .put("expiryCode", SQLCreator.Format.TEXT, false)
+                .build();
     }
 
     private Context mContext;
@@ -128,6 +162,9 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             database.execSQL(this.SQL_CREATOR_INTEGRAL.create());
             database.execSQL(this.SQL_CREATOR_ADDRESS.create());
             database.execSQL(this.SQL_CREATOR_INTEGRAL_BIND.create());
+            database.execSQL(this.SQL_CREATOR_EXPIRY.create());
+            database.execSQL(this.SQL_CREATOR_COUPONS.create());
+            database.execSQL(this.SQL_CREATOR_COUPONS_BIND.create());
         }
     }
 
@@ -139,6 +176,11 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         switch (oldVersion) {
             case DATABASE_VERSION_1:
                 this.SQL_CREATOR_INTEGRAL.addColumn(database, "checkCoefficient", SQLCreator.Format.INTEGER);
+            case DATABASE_VERSION_2:
+                database.execSQL(this.SQL_CREATOR_EXPIRY.create());
+                database.execSQL(this.SQL_CREATOR_COUPONS.create());
+                database.execSQL(this.SQL_CREATOR_COUPONS_BIND.create());
+            case DATABASE_VERSION_3:
         }
     }
 
@@ -843,24 +885,6 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         this.updateMemberIntegral(true, true, integral);
     }
 
-    @Override
-    public List<IntegralBindEntity> getMemberIntegrals(String memberId) {
-        if (this.emptyHelper() || TextUtils.isEmpty(memberId)) {
-            return new ArrayList<>();
-        }
-        SQLiteDatabase database = null;
-        try {
-            database = this.helper.open();
-            database.beginTransaction();
-            return this.queryMemberIntegral(database, memberId);
-        } catch (Exception e) {
-            Logger.d("getMember", e);
-        } finally {
-            this.endTransaction(database);
-        }
-        return new ArrayList<>();
-    }
-
     private void updateMemberIntegral(boolean beginTransaction, boolean modifiedMember, IntegralBindEntity integral) {
         SQLiteDatabase database = null;
         try {
@@ -889,12 +913,30 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 database.setTransactionSuccessful();
             }
         } catch (Exception e) {
-            Logger.d("addMemberIntegral", e);
+            Logger.d("updateMemberIntegral", e);
         } finally {
             if (beginTransaction) {
                 this.endTransaction(database);
             }
         }
+    }
+
+    @Override
+    public List<IntegralBindEntity> getMemberIntegrals(String memberId) {
+        if (this.emptyHelper() || TextUtils.isEmpty(memberId)) {
+            return new ArrayList<>();
+        }
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            database.beginTransaction();
+            return this.queryMemberIntegral(database, memberId);
+        } catch (Exception e) {
+            Logger.d("getMember", e);
+        } finally {
+            this.endTransaction(database);
+        }
+        return new ArrayList<>();
     }
 
     /**
@@ -962,11 +1004,402 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         }
         try {
             ContentValues values = new ContentValues();
-            values.put("", System.currentTimeMillis());
+            values.put("modified", System.currentTimeMillis());
             database.update(TABLE_NAME_MEMBER, values, SQL_WHERECLAUSE_ID, new String[]{memberId});
         } catch (Exception e) {
             Logger.d("updateModified", e);
         }
+    }
+
+    @Override
+    public boolean checkExpiry(CouponsExpiryEntity expiry) {
+        if (!this.emptyHelper() || expiry == null || TextUtils.isEmpty(expiry.getExpiryCode())) {
+            return false;
+        }
+        try {
+            SQLiteDatabase database = this.helper.open();
+            return this.hasExpiry(database, expiry);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private boolean hasExpiry(SQLiteDatabase database, CouponsExpiryEntity expiry) {
+        Cursor cursor = null;
+        String query = SQL_CREATOR_EXPIRY.queryWhereAnd("count = ? ", "expiryCode = ? ");
+        try {
+            cursor = database.rawQuery(query, new String[]{String.valueOf(expiry.getCount()), expiry.getExpiryCode()});
+            return cursor != null && cursor.moveToNext();
+        } catch (Exception e) {
+            return false;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    /**
+     * @param expiry 有效期对象
+     * @throws CodeException "
+     */
+    @Override
+    public void addExpiry(CouponsExpiryEntity expiry) throws CodeException {
+        if (expiry == null || TextUtils.isEmpty(expiry.getExpiryCode())) {
+            return;
+        }
+        if (this.emptyHelper()) {
+            throw new CodeException(IDataCode.DATABASE_UNINITIALIZED);
+        }
+        SQLiteDatabase database;
+        try {
+            database = this.helper.open();
+            if (this.hasExpiry(database, expiry)) {
+                throw new CodeException(IDataCode.DATABASE_HAS_EXPIRY);
+            }
+            ContentValues values = new ContentValues();
+            values.put("id", expiry.getId());
+            values.put("count", expiry.getCount());
+            values.put("expiryCode", expiry.getExpiryCode());
+            database.insertWithOnConflict(TABLE_NAME_EXPIRY, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        } catch (CodeException e) {
+            throw e;
+        } catch (Exception e) {
+            Logger.d("addExpiry", e);
+        }
+    }
+
+    @Override
+    public void dldExpiry(String expiryId) {
+        if (this.emptyHelper() || TextUtils.isEmpty(expiryId)) {
+            return;
+        }
+        try {
+            SQLiteDatabase database = this.helper.open();
+            database.delete(TABLE_NAME_EXPIRY, SQL_WHERECLAUSE_ID, new String[]{expiryId});
+        } catch (Exception e) {
+            Logger.d("clearAddress", e);
+        }
+    }
+
+    @Override
+    public List<CouponsExpiryEntity> getExpiries() {
+        List<CouponsExpiryEntity> array = new ArrayList<>();
+        if (this.emptyHelper()) {
+            return array;
+        }
+
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            database.beginTransaction();
+            String query = SQL_CREATOR_EXPIRY.query();
+            Cursor cursor = database.rawQuery(query, null);
+            if (cursor == null) {
+                return null;
+            }
+            while (cursor.moveToNext()) {
+                CouponsExpiryEntity entity = this.cursor2Expiry(cursor);
+                array.add(entity);
+            }
+            cursor.close();
+        } catch (Exception e) {
+            Logger.d("getMember", e);
+        } finally {
+            this.endTransaction(database);
+        }
+        return array;
+    }
+
+    private CouponsExpiryEntity cursor2Expiry(Cursor cursor) {
+        int columnIndex = 0;
+        CouponsExpiryEntity entity = new CouponsExpiryEntity();
+        entity.setId(cursor.getString(columnIndex++));
+        entity.setCount(cursor.getInt(columnIndex++));
+        entity.setExpiryCode(cursor.getString(columnIndex++));
+        Logger.d(String.format("the table's column count is %s", columnIndex + ""));
+        return entity;
+    }
+
+    @Override
+    public void addCoupons(CouponsEntity coupons) {
+        if (this.emptyHelper() || coupons == null) {
+            return;
+        }
+
+        this.addCoupons(true, coupons);
+    }
+
+    private boolean addCoupons(boolean beginTransaction, CouponsEntity coupons) {
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            if (beginTransaction) {
+                database.beginTransaction();
+            }
+            ContentValues values = new ContentValues();
+            values.put("id", coupons.getId());
+            values.put("amount", coupons.getAmount());
+            values.put("name", coupons.getName());
+            values.put("desc", coupons.getDesc());
+            long raw = database.insertWithOnConflict(TABLE_NAME_COUPONS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            if (raw >= 0 && beginTransaction) {
+                database.setTransactionSuccessful();
+            }
+            return raw >= 0;
+        } catch (Exception e) {
+            Logger.d("addCoupons", e);
+        } finally {
+            if (beginTransaction) {
+                this.endTransaction(database);
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void updateCoupons(CouponsEntity coupons) {
+        if (this.emptyHelper() || coupons == null) {
+            return;
+        }
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            database.beginTransaction();
+            if (!this.has(database, TABLE_NAME_COUPONS, "id", coupons.getId())) {
+                if (this.addCoupons(false, coupons)) {
+                    database.setTransactionSuccessful();
+                }
+                return;
+            }
+            ContentValues values = new ContentValues();
+            values.put("amount", coupons.getAmount());
+            values.put("name", coupons.getName());
+            values.put("desc", coupons.getDesc());
+            long raw = database.update(TABLE_NAME_COUPONS, values, SQL_WHERECLAUSE_ID, new String[]{coupons.getId()});
+            if (raw >= 0) {
+                database.setTransactionSuccessful();
+            }
+        } catch (Exception e) {
+            Logger.d("updateCoupons", e);
+        } finally {
+            this.endTransaction(database);
+        }
+    }
+
+    @Override
+    public void dldCoupons(String couponsId) {
+        if (TextUtils.isEmpty(couponsId) || this.emptyHelper()) {
+            return;
+        }
+        try {
+            SQLiteDatabase database = this.helper.open();
+            database.delete(TABLE_NAME_COUPONS, SQL_WHERECLAUSE_ID, new String[]{couponsId});
+        } catch (Exception e) {
+            Logger.d("dldIntegral", e);
+        }
+    }
+
+    @Override
+    public void addMemberCoupons(CouponsBindEntity coupons) {
+        if (coupons == null || this.emptyHelper() || TextUtils.isEmpty(coupons.getBind())) {
+            return;
+        }
+        this.addMemberCoupons(true, coupons);
+    }
+
+    private void addMemberCoupons(boolean beginTransaction, CouponsBindEntity coupons) {
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            if (beginTransaction) {
+                database.beginTransaction();
+            }
+            if (!this.hasMember(database, coupons.getBind())) {
+                return;
+            }
+            ContentValues values = new ContentValues();
+            values.put("id", coupons.getId());
+            values.put("amount", coupons.getAmount());
+            values.put("createDate", coupons.getCreateDate());
+            values.put("expiryDate", coupons.getExpiryDate());
+            values.put("usedDate", coupons.getUsedDate());
+            values.put("expiryCode", coupons.getExpiryCode());
+            values.put("name", coupons.getName());
+            values.put("desc", coupons.getDesc());
+            values.put("bind", coupons.getBind());
+            values.put("couponsBind", coupons.getCouponsBind());
+            values.put("expiryBind", coupons.getExpiryBind());
+            long raw = database.insertWithOnConflict(TABLE_NAME_COUPONS_BIND, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            if (raw >= 0) {
+                this.updateModified(database, coupons.getBind());
+                if (beginTransaction) {
+                    database.setTransactionSuccessful();
+                }
+            }
+        } catch (Exception e) {
+            Logger.d("addMemberCoupons", e);
+        } finally {
+            if (beginTransaction) {
+                this.endTransaction(database);
+            }
+        }
+    }
+
+    @Override
+    public void updateMemberCoupons(CouponsBindEntity coupons) {
+        if (coupons == null || this.emptyHelper() || TextUtils.isEmpty(coupons.getBind())) {
+            return;
+        }
+        this.updateMemberCoupons(true, coupons);
+    }
+
+    private void updateMemberCoupons(boolean beginTransaction, CouponsBindEntity coupons) {
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            if (beginTransaction) {
+                database.beginTransaction();
+            }
+            if (!this.hasMember(database, coupons.getBind())) {
+                return;
+            }
+            ContentValues values = new ContentValues();
+            values.put("amount", coupons.getAmount());
+            values.put("createDate", coupons.getCreateDate());
+            values.put("expiryDate", coupons.getExpiryDate());
+            values.put("usedDate", coupons.getUsedDate());
+            values.put("expiryCode", coupons.getExpiryCode());
+            values.put("name", coupons.getName());
+            values.put("desc", coupons.getDesc());
+            values.put("bind", coupons.getBind());
+            values.put("couponsBind", coupons.getCouponsBind());
+            values.put("expiryBind", coupons.getExpiryBind());
+            long raw = database.update(TABLE_NAME_COUPONS_BIND, values, SQL_WHERECLAUSE_ID, new String[]{coupons.getId()});
+            if (raw < 0) {
+                return;
+            }
+            this.updateModified(database, coupons.getBind());
+            if (beginTransaction) {
+                database.setTransactionSuccessful();
+            }
+        } catch (Exception e) {
+            Logger.d("updateMemberCoupons", e);
+        } finally {
+            if (beginTransaction) {
+                this.endTransaction(database);
+            }
+        }
+    }
+
+    @Override
+    public CouponsBindEntity getMemberCoupons(String memberId, String couponsId) {
+        if (this.emptyHelper() || TextUtils.isEmpty(memberId) || TextUtils.isEmpty(couponsId)) {
+            return null;
+        }
+        try {
+            return this.queryMemberCoupons(this.helper.open(), memberId, couponsId);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private CouponsBindEntity queryMemberCoupons(SQLiteDatabase database, String memberId, String couponsId) {
+        String query = SQL_CREATOR_COUPONS_BIND.queryWhereAnd(SQL_WHERECLAUSE_ID, SQL_WHERECLAUSE_BIND);
+        Cursor cursor = database.rawQuery(query, new String[]{couponsId, memberId});
+        if (cursor == null || !cursor.moveToNext()) {
+            return null;
+        }
+        CouponsBindEntity coupons = this.cursor2MemberCoupons(cursor);
+        cursor.close();
+        return coupons;
+    }
+
+    private CouponsBindEntity cursor2MemberCoupons(Cursor cursor) {
+        int columnIndex = 0;
+        CouponsBindEntity coupons = new CouponsBindEntity();
+        coupons.setId(cursor.getString(columnIndex++));
+        coupons.setAmount(cursor.getFloat(columnIndex++));
+        coupons.setCreateDate(cursor.getLong(columnIndex++));
+        coupons.setExpiryDate(cursor.getLong(columnIndex++));
+        coupons.setUsedDate(cursor.getLong(columnIndex++));
+        coupons.setExpiryCode(cursor.getString(columnIndex++));
+        coupons.setName(cursor.getString(columnIndex++));
+        coupons.setDesc(cursor.getString(columnIndex++));
+        coupons.setBind(cursor.getString(columnIndex++));
+        coupons.setCouponsBind(cursor.getString(columnIndex++));
+        coupons.setExpiryBind(cursor.getString(columnIndex++));
+        Logger.d(String.format("the table's column count is %s", columnIndex + ""));
+        return coupons;
+    }
+
+    @Override
+    public void useCoupons(String memberId, String couponsId) throws CodeException {
+        if (TextUtils.isEmpty(couponsId) || TextUtils.isEmpty(memberId)) {
+            throw new CodeException(IDataCode.PARAMETER_UNUSABLE);
+        }
+        if (this.emptyHelper()) {
+            throw new CodeException(IDataCode.DATABASE_UNINITIALIZED);
+        }
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            database.beginTransaction();
+            if (!this.hasMember(database, memberId)) {
+                throw new CodeException(IDataCode.MEMBER_NOFOUND);
+            }
+            CouponsBindEntity coupons = this.queryMemberCoupons(database, memberId, couponsId);
+            if (coupons == null) {
+                throw new CodeException(IDataCode.COUPONS_NOFOUND);
+            }
+
+            if (coupons.useable()) {
+                coupons.setUsedDate(System.currentTimeMillis());
+                this.updateMemberCoupons(false, coupons);
+                database.setTransactionSuccessful();
+            } else {
+                throw new CodeException(IDataCode.COUPONS_UNAVAILABLE);
+            }
+        } catch (CodeException e) {
+            throw e;
+        } catch (Exception e) {
+            Logger.d("useIntegral", e);
+        } finally {
+            this.endTransaction(database);
+        }
+    }
+
+    @Override
+    public List<CouponsBindEntity> getMemberCoupons(String memberId) {
+        if (this.emptyHelper() || TextUtils.isEmpty(memberId)) {
+            return new ArrayList<>();
+        }
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            database.beginTransaction();
+            return this.queryMemberCoupons(database, memberId);
+        } catch (Exception e) {
+            Logger.d("getMemberCoupons", e);
+        } finally {
+            this.endTransaction(database);
+        }
+        return new ArrayList<>();
+    }
+
+    private List<CouponsBindEntity> queryMemberCoupons(SQLiteDatabase database, String bindId) {
+        List<CouponsBindEntity> array = new ArrayList<>();
+        String query = SQL_CREATOR_COUPONS_BIND.queryWhereAnd(SQL_WHERECLAUSE_BIND);
+        Cursor cursor = database.rawQuery(query, new String[]{bindId});
+        if (cursor == null) {
+            return array;
+        }
+        while (cursor.moveToNext()) {
+            CouponsBindEntity address = this.cursor2MemberCoupons(cursor);
+            array.add(address);
+        }
+        cursor.close();
+        return array;
     }
 
     private boolean openDatabase(SQLiteDatabase database) {

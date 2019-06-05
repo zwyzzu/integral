@@ -3,6 +3,9 @@ package com.zhangwy.integral.data;
 import android.content.Context;
 
 import com.zhangwy.integral.entity.AddressEntity;
+import com.zhangwy.integral.entity.CouponsBindEntity;
+import com.zhangwy.integral.entity.CouponsEntity;
+import com.zhangwy.integral.entity.CouponsExpiryEntity;
 import com.zhangwy.integral.entity.IntegralBindEntity;
 import com.zhangwy.integral.entity.IntegralEntity;
 import com.zhangwy.integral.entity.MemberEntity;
@@ -13,7 +16,7 @@ import yixia.lib.core.exception.CodeException;
 
 /**
  * Created by zhangwy on 2018/12/11 上午10:37.
- * Updated by zhangwy on 2018/12/11 上午10:37.
+ * Updated by zhangwy on 2019/06/05 上午21:58.
  * Description
  */
 @SuppressWarnings("unused")
@@ -185,4 +188,94 @@ public abstract class IDataManager {
      * @param useScore 使用积分数
      */
     public abstract void useIntegral(String memberId, float useScore) throws CodeException;
+
+    /**
+     * 检测有效期是否存在
+     *
+     * @param expiry 有效期
+     * @return TRUE 存在否则不存在
+     */
+    public abstract boolean checkExpiry(CouponsExpiryEntity expiry);
+
+    /**
+     * 添加有效期配置
+     *
+     * @param expiry 有效期对象
+     * @throws CodeException 抛异常
+     */
+    public abstract void addExpiry(CouponsExpiryEntity expiry) throws CodeException;
+
+    /**
+     * 删除有效期配置
+     *
+     * @param expiryId 有效期ID
+     */
+    public abstract void dldExpiry(String expiryId);
+
+    /**
+     * 获取所有的有效期列表
+     *
+     * @return 有效期项列表
+     */
+    public abstract List<CouponsExpiryEntity> getExpiries();
+
+    /**
+     * 添加优惠券项
+     *
+     * @param coupons 优惠券实体类
+     */
+    public abstract void addCoupons(CouponsEntity coupons);
+
+    /**
+     * 修改优惠券项
+     *
+     * @param coupons 优惠券实体类
+     */
+    public abstract void updateCoupons(CouponsEntity coupons);
+
+    /**
+     * 删除优惠券项
+     *
+     * @param couponsId 优惠券ID
+     */
+    public abstract void dldCoupons(String couponsId);
+
+    /**
+     * 添加成员优惠券
+     *
+     * @param coupons 优惠券对象
+     */
+    public abstract void addMemberCoupons(CouponsBindEntity coupons);
+
+    /**
+     * 修改成员优惠券
+     *
+     * @param coupons 优惠券对象
+     */
+    public abstract void updateMemberCoupons(CouponsBindEntity coupons);
+
+    /**
+     * 获取成员优惠券
+     *
+     * @param memberId  成员ID
+     * @param couponsId 优惠券ID
+     * @return 优惠券对象
+     */
+    public abstract CouponsBindEntity getMemberCoupons(String memberId, String couponsId);
+
+    /**
+     * 使用优惠券
+     *
+     * @param memberId  成员ID
+     * @param couponsId 优惠券ID
+     * @throws CodeException 使用优惠券期间出现异常
+     */
+    public abstract void useCoupons(String memberId, String couponsId) throws CodeException;
+
+    /**
+     * 获取成员优惠券列表
+     *
+     * @return 成员优惠券列表
+     */
+    public abstract List<CouponsBindEntity> getMemberCoupons(String memberId);
 }
