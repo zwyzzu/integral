@@ -107,6 +107,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 .put("amount", SQLCreator.Format.FLOAT, false)
                 .put("name", SQLCreator.Format.TEXT, false)
                 .put("desc", SQLCreator.Format.TEXT, true)
+                .put("checkCoefficient", SQLCreator.Format.INTEGER, false)
                 .build();
 
         SQL_CREATOR_COUPONS_BIND.setPrimaryKey("id", SQLCreator.Format.TEXT)
@@ -1142,6 +1143,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             values.put("amount", coupons.getAmount());
             values.put("name", coupons.getName());
             values.put("desc", coupons.getDesc());
+            values.put("checkCoefficient", coupons.isCheckCoefficient() ? 1 : 0);
             long raw = database.insertWithOnConflict(TABLE_NAME_COUPONS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
             if (raw >= 0 && beginTransaction) {
                 database.setTransactionSuccessful();
@@ -1176,6 +1178,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             values.put("amount", coupons.getAmount());
             values.put("name", coupons.getName());
             values.put("desc", coupons.getDesc());
+            values.put("checkCoefficient", coupons.isCheckCoefficient() ? 1 : 0);
             long raw = database.update(TABLE_NAME_COUPONS, values, SQL_WHERECLAUSE_ID, new String[]{coupons.getId()});
             if (raw >= 0) {
                 database.setTransactionSuccessful();
@@ -1198,6 +1201,47 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         } catch (Exception e) {
             Logger.d("dldIntegral", e);
         }
+    }
+
+    @Override
+    public List<CouponsEntity> getCoupons() {
+        List<CouponsEntity> array = new ArrayList<>();
+        if (this.emptyHelper()) {
+            return array;
+        }
+
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            database.beginTransaction();
+            String query = SQL_CREATOR_COUPONS.query();
+            Cursor cursor = database.rawQuery(query, null);
+            if (cursor == null) {
+                return null;
+            }
+            while (cursor.moveToNext()) {
+                CouponsEntity entity = this.cursor2Coupons(cursor);
+                array.add(entity);
+            }
+            cursor.close();
+        } catch (Exception e) {
+            Logger.d("getMember", e);
+        } finally {
+            this.endTransaction(database);
+        }
+        return array;
+    }
+
+    private CouponsEntity cursor2Coupons(Cursor cursor) {
+        int columnIndex = 0;
+        CouponsEntity entity = new CouponsEntity();
+        entity.setId(cursor.getString(columnIndex++));
+        entity.setAmount(cursor.getFloat(columnIndex++));
+        entity.setName(cursor.getString(columnIndex++));
+        entity.setDesc(cursor.getString(columnIndex++));
+        entity.setCheckCoefficient(cursor.getInt(columnIndex++) == 1);
+        Logger.d(String.format("the table's column count is %s", columnIndex + ""));
+        return entity;
     }
 
     @Override
@@ -1371,7 +1415,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
 
     @Override
     public List<CouponsBindEntity> getMemberCoupons(String memberId) {
-        if (this.emptyHelper() || TextUtils.isEmpty(memberId)) {
+        if (this.emptyHelper()) {
             return new ArrayList<>();
         }
         SQLiteDatabase database = null;
@@ -1389,8 +1433,14 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
 
     private List<CouponsBindEntity> queryMemberCoupons(SQLiteDatabase database, String bindId) {
         List<CouponsBindEntity> array = new ArrayList<>();
-        String query = SQL_CREATOR_COUPONS_BIND.queryWhereAnd(SQL_WHERECLAUSE_BIND);
-        Cursor cursor = database.rawQuery(query, new String[]{bindId});
+        Cursor cursor;
+        if (TextUtils.isEmpty(bindId)) {
+            String query = SQL_CREATOR_COUPONS_BIND.queryWhereAnd();
+            cursor = database.rawQuery(query, null);
+        } else {
+            String query = SQL_CREATOR_COUPONS_BIND.queryWhereAnd(SQL_WHERECLAUSE_BIND);
+            cursor = database.rawQuery(query, new String[]{bindId});
+        }
         if (cursor == null) {
             return array;
         }

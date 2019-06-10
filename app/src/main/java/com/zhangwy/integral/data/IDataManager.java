@@ -241,6 +241,13 @@ public abstract class IDataManager {
     public abstract void dldCoupons(String couponsId);
 
     /**
+     * 获取优惠券项
+     *
+     * @return 返回优惠券项
+     */
+    public abstract List<CouponsEntity> getCoupons();
+
+    /**
      * 添加成员优惠券
      *
      * @param coupons 优惠券对象
@@ -275,6 +282,7 @@ public abstract class IDataManager {
     /**
      * 获取成员优惠券列表
      *
+     * @param memberId 成员ID 为空时将返回全部成员的优惠券
      * @return 成员优惠券列表
      */
     public abstract List<CouponsBindEntity> getMemberCoupons(String memberId);
