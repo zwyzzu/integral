@@ -2,6 +2,8 @@ package com.zhangwy.integral.entity;
 
 import android.os.Parcel;
 import android.text.TextUtils;
+
+import com.zhangwy.common.Common;
 import com.zhangwy.integral.entity.CouponsExpiryEntity.Expiry;
 
 import java.util.Date;
@@ -15,6 +17,7 @@ import yixia.lib.core.util.TimeUtil;
  */
 @SuppressWarnings("unused")
 public class CouponsBindEntity extends BaseEntity {
+
     private float amount;//金额
     private long createDate;//产生优惠券日期
     private long expiryDate;//有效期
@@ -163,6 +166,14 @@ public class CouponsBindEntity extends BaseEntity {
 
     public boolean useable() {
         return !this.used() && !this.overdue();
+    }
+
+    public boolean nearOverDue() {
+        if (!this.useable()) {
+            return false;
+        }
+
+        return this.getExpiryDate() - System.currentTimeMillis() <= Common.NEAR_OVERDUE_SM;
     }
 
     @Override

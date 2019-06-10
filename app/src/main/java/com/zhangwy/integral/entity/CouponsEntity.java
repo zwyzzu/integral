@@ -12,6 +12,7 @@ public class CouponsEntity extends BaseEntity {
     private float amount;//金额
     private String name;//名称
     private String desc;//描述
+    private boolean checkCoefficient = false;//自动勾选系数
     public CouponsEntity() {
         super();
     }
@@ -44,11 +45,20 @@ public class CouponsEntity extends BaseEntity {
         this.desc = desc;
     }
 
+    public boolean isCheckCoefficient() {
+        return checkCoefficient;
+    }
+
+    public void setCheckCoefficient(boolean checkCoefficient) {
+        this.checkCoefficient = checkCoefficient;
+    }
+
     @Override
     void readParcel(Parcel in) {
         this.setAmount(in.readFloat());
         this.setName(in.readString());
         this.setDesc(in.readString());
+        this.setCheckCoefficient(in.readInt() == 1);
     }
 
     @Override
@@ -56,6 +66,7 @@ public class CouponsEntity extends BaseEntity {
         dest.writeFloat(this.getAmount());
         dest.writeString(this.getName());
         dest.writeString(this.getDesc());
+        dest.writeInt(this.isCheckCoefficient() ? 1 : 0);
     }
 
     public static final Creator<CouponsEntity> CREATOR = new Creator<CouponsEntity>() {
