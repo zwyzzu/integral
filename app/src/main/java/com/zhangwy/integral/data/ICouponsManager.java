@@ -44,7 +44,11 @@ public abstract class ICouponsManager {
 
     public abstract List<CouponsBindEntity> getNearOverDue(String memberId);
 
+    public abstract List<CouponsBindEntity> getCoupons(String memberId, CouponsMold mold);
+
     public abstract List<CouponsBindEntity> getAllNearOverDue();
+
+    public abstract boolean hasNearOverDue();
     /*------------------------------------------------------------------------------*/
     private static class ICouponsManagerImpl extends ICouponsManager {
         private boolean loadDataEnd = false;
@@ -92,6 +96,7 @@ public abstract class ICouponsManager {
                 protected void onPostExecute(Boolean aBoolean) {
                     super.onPostExecute(aBoolean);
                     loadDataEnd = true;
+                    notifyObserver();
                 }
 
                 @Override
@@ -108,7 +113,7 @@ public abstract class ICouponsManager {
                 return;
             }
             if (this.loadDataEnd) {
-                listener.onLoadSuccess();
+                listener.onLoadCouponsSuccess();
             }
             this.listeners.add(listener);
         }
@@ -119,6 +124,13 @@ public abstract class ICouponsManager {
                 return;
             }
             this.listeners.remove(listener);
+        }
+
+        private void notifyObserver() {
+            List<OnCouponsDataListener> array = new ArrayList<>(this.listeners);
+            for (OnCouponsDataListener listener: array) {
+                listener.onLoadCouponsSuccess();
+            }
         }
 
         @Override
@@ -154,6 +166,20 @@ public abstract class ICouponsManager {
         }
 
         @Override
+        public List<CouponsBindEntity> getCoupons(String memberId, CouponsMold mold) {
+            switch (mold) {
+                case USEABLE:
+                    return this.getUseable(memberId);
+                case USED:
+                    return this.getUsed(memberId);
+                case OVERDUE:
+                    return this.getOverDue(memberId);
+                case UNKNOWN:
+            }
+            return new ArrayList<>();
+        }
+
+        @Override
         public List<CouponsBindEntity> getAllNearOverDue() {
             if (!this.loadDataEnd) {
                 return new ArrayList<>();
@@ -167,10 +193,26 @@ public abstract class ICouponsManager {
             }
             return array;
         }
+
+        @Override
+        public boolean hasNearOverDue() {
+            if (!this.loadDataEnd) {
+                return false;
+            }
+            if (Util.isEmpty(this.nearOverDue)) {
+                return false;
+            }
+            for (List<CouponsBindEntity> coupons : this.nearOverDue.values()) {
+                if (!Util.isEmpty(coupons)) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     public interface OnCouponsDataListener {
-        void onLoadSuccess();
+        void onLoadCouponsSuccess();
     }
 
     private static class CouponsCollection extends HashMap<String, List<CouponsBindEntity>> {
@@ -187,6 +229,26 @@ public abstract class ICouponsManager {
                 return;
             }
             array.add(coupons);
+        }
+    }
+
+    public enum CouponsMold {
+        USEABLE("useable", "可用的"), USED("used", "已使用的"),
+        OVERDUE("overDue", "过期的"), UNKNOWN("unknown", "未知的");
+        public String code;
+        public String name;
+
+        CouponsMold(String code, String name) {
+            this.code = code;
+            this.name = name;
+        }
+
+        public static CouponsMold find(String code) {
+            for (CouponsMold mold : CouponsMold.values()) {
+                if (TextUtils.equals(code, mold.code))
+                    return mold;
+            }
+            return UNKNOWN;
         }
     }
 }
