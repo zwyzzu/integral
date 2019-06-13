@@ -145,6 +145,13 @@
     <string name="coupons_expiry_forever">长期</string>
     <string name="coupons_member"><u>%1$s ></u></string>
 
+    <string name="error_params_data">数据有误请退出重新进入</string>
+    <string name="error_no_data">还没有相关数据</string>
+    <string name="error_nofound_member">未找到成员</string>
+    <string name="error_nofound_coupons">未找到优惠券</string>
+    <string name="error_unavailable_coupons">无效优惠券</string>
+    <string name="error_use_coupons">使用优惠券错误</string>
+
     <string name="permission_read_phone_state">读取电话状态</string>
     <string name="permission_read_external_storage">读取外部存储</string>
     <string name="permission_write_external_storage">写入外部存储</string>

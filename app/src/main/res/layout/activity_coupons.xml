@@ -19,58 +19,11 @@
         app:navigationIcon="@drawable/icon_widget_back"
         tools:ignore="UnusedAttribute">
 
-        <TextView
-            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        <com.yixia.widget.VSTabLayout
+            android:id="@+id/couponsTopBar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/coupons_label" />
+            android:layout_height="match_parent" />
     </android.support.v7.widget.Toolbar>
-
-    <RadioGroup
-        android:id="@+id/couponsTopBar"
-        android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/background_bar"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/padding_8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/couponsToolbar">
-
-        <RadioButton
-            android:id="@+id/couponsTopBarUnused"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:button="@null"
-            android:checked="true"
-            android:gravity="center"
-            android:text="@string/coupons_unused"
-            android:textColor="@drawable/textcolor_main_bottombar" />
-
-        <RadioButton
-            android:id="@+id/couponsTopBarUsed"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center"
-            android:text="@string/coupons_used"
-            android:textColor="@drawable/textcolor_main_bottombar" />
-
-        <RadioButton
-            android:id="@+id/couponsTopBarOverdue"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center"
-            android:text="@string/coupons_overdue"
-            android:textColor="@drawable/textcolor_main_bottombar" />
-    </RadioGroup>
 
     <FrameLayout
         android:id="@+id/couponsContent"
@@ -79,5 +32,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/couponsTopBar" />
+        app:layout_constraintTop_toBottomOf="@id/couponsToolbar" />
 </android.support.constraint.ConstraintLayout>

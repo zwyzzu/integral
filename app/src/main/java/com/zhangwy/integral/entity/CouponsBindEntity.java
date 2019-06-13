@@ -1,5 +1,6 @@
 package com.zhangwy.integral.entity;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.text.TextUtils;
 
@@ -166,6 +167,16 @@ public class CouponsBindEntity extends BaseEntity {
             long timeMs = TimeUtil.dateString2Long(time, TimeUtil.PATTERN_DAY4Y);
             this.setExpiryDate(timeMs - 1);
         }
+    }
+
+    public String getExpiry(Context context) {
+        if (this.getExpiryDate() < 0) {
+            return context == null ? "" : context.getString(Expiry.FOREVER.res);
+        }
+        String time = TimeUtil.dateMilliSecond2String(this.getCreateDate(), TimeUtil.PATTERN_DAY4Y);
+        time += "--";
+        time += TimeUtil.dateMilliSecond2String(this.getExpiryDate(), TimeUtil.PATTERN_DAY4Y);
+        return time;
     }
 
     public boolean used() {

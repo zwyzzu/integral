@@ -1,15 +1,20 @@
 package com.zhangwy.integral.data;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.text.TextUtils;
+import android.widget.Toast;
 
+import com.zhangwy.integral.R;
 import com.zhangwy.integral.entity.CouponsBindEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import yixia.lib.core.exception.CodeException;
+import yixia.lib.core.util.Logger;
 import yixia.lib.core.util.Util;
 
 /**
@@ -49,6 +54,9 @@ public abstract class ICouponsManager {
     public abstract List<CouponsBindEntity> getAllNearOverDue();
 
     public abstract boolean hasNearOverDue();
+
+    public abstract void useCoupons(Context context, CouponsBindEntity entity);
+
     /*------------------------------------------------------------------------------*/
     private static class ICouponsManagerImpl extends ICouponsManager {
         private boolean loadDataEnd = false;
@@ -174,6 +182,11 @@ public abstract class ICouponsManager {
                     return this.getUsed(memberId);
                 case OVERDUE:
                     return this.getOverDue(memberId);
+                case NEAROVERDUE:
+                    if (TextUtils.isEmpty(memberId)) {
+                        return this.getAllNearOverDue();
+                    }
+                    return this.getNearOverDue(memberId);
                 case UNKNOWN:
             }
             return new ArrayList<>();
@@ -209,6 +222,60 @@ public abstract class ICouponsManager {
             }
             return false;
         }
+
+        @Override
+        public void useCoupons(Context context, CouponsBindEntity entity) {
+            if (entity == null) {
+                return;
+            }
+
+            try {
+                IDataManager.getInstance().useCoupons(entity.getBind(), entity.getId());
+                this.removeItem(entity, this.useable.get(entity.getBind()));
+                this.removeItem(entity, this.nearOverDue.get(entity.getBind()));
+                this.used.put(entity.getBind(), entity);
+                this.notifyObserver();
+            } catch (CodeException e) {
+                Logger.d("useCoupons", e);
+                int res;
+                switch (e.code) {
+                    case IDataCode.MEMBER_NOFOUND:
+                        res = R.string.error_nofound_member;
+                        break;
+                    case IDataCode.COUPONS_NOFOUND:
+                        res = R.string.error_nofound_coupons;
+                        break;
+                    case IDataCode.COUPONS_UNAVAILABLE:
+                        res = R.string.error_unavailable_coupons;
+                        break;
+                    default:
+                        res = R.string.error_use_coupons;
+                        break;
+                }
+                if (context != null) {
+                    Toast.makeText(context, res, Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+
+        private void removeItem(CouponsBindEntity entity, List<CouponsBindEntity> array) {
+            if (Util.isEmpty(array)) {
+                return;
+            }
+            if (array.contains(entity)) {
+                array.remove(entity);
+                return;
+            }
+            for (CouponsBindEntity coupons : array) {
+                if (coupons == null) {
+                    continue;
+                }
+                if (TextUtils.equals(coupons.getId(), entity.getId())) {
+                    array.remove(coupons);
+                    break;
+                }
+            }
+        }
     }
 
     public interface OnCouponsDataListener {
@@ -234,7 +301,8 @@ public abstract class ICouponsManager {
 
     public enum CouponsMold {
         USEABLE("useable", "可用的"), USED("used", "已使用的"),
-        OVERDUE("overDue", "过期的"), UNKNOWN("unknown", "未知的");
+        OVERDUE("overDue", "过期的"), NEAROVERDUE("nearOverDue", "临近过期的"),
+        UNKNOWN("unknown", "未知的");
         public String code;
         public String name;
 

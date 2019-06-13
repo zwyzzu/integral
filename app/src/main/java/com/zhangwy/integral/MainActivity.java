@@ -54,6 +54,11 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         this.switchFragment(checkedId);
     }
