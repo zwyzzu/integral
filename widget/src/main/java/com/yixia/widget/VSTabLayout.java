@@ -191,12 +191,41 @@ public class VSTabLayout extends HorizontalScrollView implements ViewPager.OnPag
         this.delegatePageListener = listener;
     }
 
+    public void setStringTabs(String... tabs) {
+        this.setStringTabs(Util.array2List(tabs));
+    }
+
+    public void setStringTabs(List<String> tabs) {
+        final List<String> newTabs = tabs == null ? new ArrayList<>() : tabs;
+        this.notifyDataSetChanged(new NotifyTabs() {
+            @Override
+            public int tabCount() {
+                return newTabs.size();
+            }
+
+            @Override
+            public void add(int position) {
+                addTab(position, this.getTitle(position));
+            }
+
+            private String getTitle(int position) {
+                return newTabs.size() < position + 1 ? "" : newTabs.get(position);
+            }
+
+            @Override
+            public int currentPosition() {
+                return 0;
+            }
+        });
+        this.setPosition(0);
+    }
+
     public void setTabs(@StringRes Integer... tabs) {
         this.setTabs(Util.array2List(tabs));
     }
 
     public void setTabs(List<Integer> tabs) {
-        final List<Integer> newTabs = tabs == null ? new ArrayList<Integer>() : tabs;
+        final List<Integer> newTabs = tabs == null ? new ArrayList<>() : tabs;
         this.notifyDataSetChanged(new NotifyTabs() {
             @Override
             public int tabCount() {
@@ -312,12 +341,7 @@ public class VSTabLayout extends HorizontalScrollView implements ViewPager.OnPag
     }
 
     public void addTab(final int position, View tab) {
-        tab.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setPosition(position);
-            }
-        });
+        tab.setOnClickListener(v -> setPosition(position));
 
         if (position == tabCount - 1) {
             tab.setPadding(tabPadding, 0, tabPadding + endPadding, 0);
