@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.RadioGroup;
 
+import com.zhangwy.integral.data.ICouponsManager;
 import com.zhangwy.upgrade.Upgrade;
 
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     private FragmentAdd fragmentAdd;
     private FragmentMine fragmentMine;
     private final String PRFKEY_SHOW_DISCLAIMER = "showDisclaimer";
-    private boolean hasUpgraded = false;
+    private boolean first = false;
     private final int REQUESTCODE_PERMISSION = 100;
     private VSPermission permission;
     @Override
@@ -44,10 +45,11 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     @Override
     protected void onResume() {
         super.onResume();
-        if (!this.hasUpgraded) {
-            this.hasUpgraded = true;
+        if (!this.first) {
+            this.first = true;
             Upgrade upgrade = Upgrade.newInstance(this, true);
             upgrade.check(false, false, true);
+            ICouponsManager.getInstance();
         }
     }
 
