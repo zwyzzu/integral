@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.yixia.widget.VSTabLayout;
 import com.zhangwy.integral.data.ICouponsManager;
@@ -35,7 +39,38 @@ public class CouponsActivity extends BaseActivity implements VSTabLayout.OnTabCl
         this.memberId = getIntent().getStringExtra(EXTRA_MEMBERID);
         if (!this.initTabLayout()) {
             this.finish();
+            return;
         }
+        this.setToolbar();
+    }
+
+    private void setToolbar() {
+        Toolbar toolbar = this.findViewById(R.id.couponsTopBar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_coupons, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.couponsAdd:
+                //TODO
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private boolean initTabLayout() {
@@ -67,21 +102,21 @@ public class CouponsActivity extends BaseActivity implements VSTabLayout.OnTabCl
                     this.fragmentUnused = FragmentCoupons.newInstance(this.memberId, ICouponsManager.CouponsMold.USEABLE);
                 }
                 fragment = this.fragmentUnused;
-                this.showMessage(false, true, "main");
+                this.showMessage(false, true, "useable");
                 break;
             case 1:
                 if (this.fragmentUsed == null) {
                     this.fragmentUsed = FragmentCoupons.newInstance(this.memberId, ICouponsManager.CouponsMold.USED);
                 }
                 fragment = this.fragmentUsed;
-                this.showMessage(false, true, "add");
+                this.showMessage(false, true, "used");
                 break;
             case 2:
                 if (this.fragmentOverDue == null) {
                     this.fragmentOverDue = FragmentCoupons.newInstance(this.memberId, ICouponsManager.CouponsMold.OVERDUE);
                 }
                 fragment = this.fragmentOverDue;
-                this.showMessage(false, true, "mine");
+                this.showMessage(false, true, "overdue");
                 break;
             default:
                 if (this.fragmentUnused == null) {
