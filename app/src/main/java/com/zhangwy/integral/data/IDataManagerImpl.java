@@ -122,6 +122,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 .put("couponsBind", SQLCreator.Format.TEXT, false)
                 .put("expiryBind", SQLCreator.Format.TEXT, false)
                 .put("bindName", SQLCreator.Format.TEXT, false)
+                .put("tag", SQLCreator.Format.TEXT, false)
                 .build();
 
         SQL_CREATOR_EXPIRY.setPrimaryKey("id", SQLCreator.Format.TEXT)
@@ -1276,6 +1277,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             values.put("couponsBind", coupons.getCouponsBind());
             values.put("expiryBind", coupons.getExpiryBind());
             values.put("bindName", coupons.getBindName());
+            values.put("tag", coupons.getTag());
             long raw = database.insertWithOnConflict(TABLE_NAME_COUPONS_BIND, null, values, SQLiteDatabase.CONFLICT_REPLACE);
             if (raw >= 0) {
                 this.updateModified(database, coupons.getBind());
@@ -1322,6 +1324,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             values.put("couponsBind", coupons.getCouponsBind());
             values.put("expiryBind", coupons.getExpiryBind());
             values.put("bindName", coupons.getBindName());
+            values.put("tag", coupons.getTag());
             long raw = database.update(TABLE_NAME_COUPONS_BIND, values, SQL_WHERECLAUSE_ID, new String[]{coupons.getId()});
             if (raw < 0) {
                 return;
@@ -1377,6 +1380,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         coupons.setCouponsBind(cursor.getString(columnIndex++));
         coupons.setExpiryBind(cursor.getString(columnIndex++));
         coupons.setBindName(cursor.getString(columnIndex++));
+        coupons.setTag(cursor.getString(columnIndex++));
         Logger.d(String.format("the table's column count is %s", columnIndex + ""));
         return coupons;
     }

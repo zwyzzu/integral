@@ -29,6 +29,7 @@ public class CouponsBindEntity extends BaseEntity {
     private String couponsBind;//绑定优惠券ID
     private String expiryBind;//绑定有效期ID
     private String bindName;//绑定到成员名字
+    private String tag;//优惠券标签
 
     public CouponsBindEntity() {
         super();
@@ -126,6 +127,14 @@ public class CouponsBindEntity extends BaseEntity {
         this.bindName = bindName;
     }
 
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
     public void setExpiry(CouponsExpiryEntity expiry) {
         if (expiry == null) {
             return;
@@ -197,6 +206,7 @@ public class CouponsBindEntity extends BaseEntity {
         this.setCouponsBind(in.readString());
         this.setExpiryBind(in.readString());
         this.setBindName(in.readString());
+        this.setTag(in.readString());
     }
 
     @Override
@@ -211,6 +221,7 @@ public class CouponsBindEntity extends BaseEntity {
         dest.writeString(this.getCouponsBind());
         dest.writeString(this.getExpiryBind());
         dest.writeString(this.getBindName());
+        dest.writeString(this.getTag());
     }
 
     public static final Creator<CouponsBindEntity> CREATOR = new Creator<CouponsBindEntity>() {
