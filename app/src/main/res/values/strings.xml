@@ -143,6 +143,7 @@
     <string name="coupons_expiry_month">月</string>
     <string name="coupons_expiry_year">年</string>
     <string name="coupons_expiry_forever">长期</string>
+    <string name="coupons_member"><u>%1$s ></u></string>
 
     <string name="permission_read_phone_state">读取电话状态</string>
     <string name="permission_read_external_storage">读取外部存储</string>

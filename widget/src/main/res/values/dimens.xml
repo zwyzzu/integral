@@ -3,6 +3,7 @@
     <dimen name="topBar_padding_left">18dip</dimen>
     <dimen name="topBar_padding_right">18dip</dimen>
     <dimen name="topBar_centre_textSize">18sp</dimen>
+    <dimen name="widget_fontSize_10">10sp</dimen>
     <dimen name="widget_fontSize_12">12sp</dimen>
     <dimen name="widget_fontSize_13">13sp</dimen>
     <dimen name="widget_fontSize_14">14sp</dimen>
