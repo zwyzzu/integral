@@ -31,12 +31,15 @@
     </declare-styleable>
     <declare-styleable name="VSTabLayout">
         <attr name="tabItemTextColor" format="reference" />
+        <attr name="tabItemTextSize" format="dimension" />
         <attr name="tabIndicatorColor" format="color" />
         <attr name="tabUnderlineColor" format="color" />
         <attr name="tabDividerColor" format="color" />
         <attr name="tabIndicatorHeight" format="dimension" />
         <attr name="tabUnderlineHeight" format="dimension" />
         <attr name="tabDividerPadding" format="dimension" />
+        <attr name="tabDividerWidth" format="dimension" />
+        <attr name="tabDividerHeight" format="dimension" />
         <attr name="tabItemPaddingLeftRight" format="dimension" />
         <attr name="tabScrollOffset" format="dimension" />
         <attr name="tabItemBackground" format="reference" />

@@ -79,6 +79,8 @@ public class VSTabLayout extends HorizontalScrollView implements ViewPager.OnPag
     private int indicatorHeight = 8;
     private int underlineHeight = 2;
     private int dividerPadding = 0;
+    private int dividerWidth = 1;
+    private int dividerHeight = -1;
     private int tabPadding = 24;
     private int endPadding = 0;
     private int tabDividerPadding = 6;
@@ -128,20 +130,21 @@ public class VSTabLayout extends HorizontalScrollView implements ViewPager.OnPag
         underlineHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, underlineHeight, dm);
         dividerPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dividerPadding, dm);
         tabPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, tabPadding, dm);
-        int dividerWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, dm);
+        dividerWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, dm);
         tabTextSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, tabTextSize, dm);
         endPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, endPadding, dm);
 
         TypedArray a = context.obtainStyledAttributes(attrs, ATTRS);
-
-        tabTextSize = a.getDimensionPixelSize(0, tabTextSize);
         a.recycle();
         a = context.obtainStyledAttributes(attrs, R.styleable.VSTabLayout);
         tabTextColor = a.getColorStateList(R.styleable.VSTabLayout_tabItemTextColor);
+        tabTextSize = a.getDimensionPixelSize(R.styleable.VSTabLayout_tabItemTextSize, tabTextSize);
         indicatorColor = a.getColor(R.styleable.VSTabLayout_tabIndicatorColor, indicatorColor);
         toCenter = a.getBoolean(R.styleable.VSTabLayout_tabScrollToCenter, toCenter);
         underlineColor = a.getColor(R.styleable.VSTabLayout_tabUnderlineColor, underlineColor);
         dividerColor = a.getColor(R.styleable.VSTabLayout_tabDividerColor, dividerColor);
+        dividerWidth = a.getDimensionPixelSize(R.styleable.VSTabLayout_tabDividerWidth, dividerWidth);
+        dividerHeight = a.getDimensionPixelSize(R.styleable.VSTabLayout_tabDividerHeight, dividerHeight);
         indicatorHeight = a.getDimensionPixelSize(R.styleable.VSTabLayout_tabIndicatorHeight, indicatorHeight);
         underlineHeight = a.getDimensionPixelSize(R.styleable.VSTabLayout_tabUnderlineHeight, underlineHeight);
         dividerPadding = a.getDimensionPixelSize(R.styleable.VSTabLayout_tabDividerPadding, dividerPadding);
@@ -515,7 +518,9 @@ public class VSTabLayout extends HorizontalScrollView implements ViewPager.OnPag
         dividerPaint.setColor(dividerColor);
         for (int i = 0; i < tabCount - 1; i++) {
             View tab = tabsContainer.getChildAt(i);
-            canvas.drawLine(tab.getLeft(), dividerPadding, tab.getRight(), height, dividerPaint);
+            int startY = dividerHeight <= 0 ? 0 : (height - dividerHeight) / 2;
+            int stopY = dividerHeight <= 0 ? height : (height + dividerHeight) / 2;
+            canvas.drawLine(tab.getRight(), startY, tab.getRight(), stopY, dividerPaint);
         }
     }
 
