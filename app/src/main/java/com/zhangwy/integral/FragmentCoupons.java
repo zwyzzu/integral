@@ -53,7 +53,6 @@ public class FragmentCoupons extends BaseFragment implements ICouponsManager.OnC
     protected void init(View view, Bundle saveInstanceState) {
         this.recyclerView = view.findViewById(R.id.couponsRecycler);
         this.tip = view.findViewById(R.id.couponsTip);
-        ICouponsManager.getInstance().register(this);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             this.memberId = getArguments().getString(EXTRA_MEMBERID);
@@ -63,9 +62,10 @@ public class FragmentCoupons extends BaseFragment implements ICouponsManager.OnC
             this.recyclerView.setVisibility(View.GONE);
             this.tip.setVisibility(View.VISIBLE);
             this.tip.setText(R.string.error_params_data);
-            return;
+        } else {
+            this.reload();
         }
-        this.reload();
+        ICouponsManager.getInstance().register(this);
     }
 
     @Override

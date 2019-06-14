@@ -3,12 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background"
-    tools:context=".CouponsActivity">
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/couponsToolbar"
+        android:id="@+id/couponsNearOverdueToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/background_bar"
@@ -19,28 +17,20 @@
         app:navigationIcon="@drawable/icon_widget_back"
         tools:ignore="UnusedAttribute">
 
-        <com.yixia.widget.VSTabLayout
-            android:id="@+id/couponsTopBar"
+        <TextView
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:tabDividerColor="@android:color/darker_gray"
-            app:tabDividerHeight="@dimen/padding_10"
-            app:tabDividerWidth="@dimen/padding_2"
-            app:tabEndPadding="@dimen/padding_8"
-            app:tabItemPaddingLeftRight="@dimen/padding_8"
-            app:tabItemTextColor="@color/tab_color"
-            app:tabItemTextSize="@dimen/widget_fontSize_14"
-            app:tabUnderlineColor="@android:color/transparent" />
+            android:text="@string/coupons_near_overdue_label" />
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
-        android:id="@+id/couponsContent"
+        android:id="@+id/couponsNearOverdueContent"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/couponsToolbar" />
+        app:layout_constraintTop_toBottomOf="@id/couponsNearOverdueToolbar" />
 </android.support.constraint.ConstraintLayout>

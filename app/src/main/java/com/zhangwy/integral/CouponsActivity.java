@@ -45,7 +45,7 @@ public class CouponsActivity extends BaseActivity implements VSTabLayout.OnTabCl
     }
 
     private void setToolbar() {
-        Toolbar toolbar = this.findViewById(R.id.couponsTopBar);
+        Toolbar toolbar = this.findViewById(R.id.couponsToolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -126,6 +126,6 @@ public class CouponsActivity extends BaseActivity implements VSTabLayout.OnTabCl
                 this.showMessage(false, true, "default");
                 break;
         }
-        this.addFragment(fragment, R.id.mainContent);
+        this.addFragment(fragment, R.id.couponsContent);
     }
 }

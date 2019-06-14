@@ -1,5 +1,6 @@
 package com.zhangwy.integral.entity;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
@@ -73,20 +74,22 @@ public class CouponsExpiryEntity extends BaseEntity {
     };
 
     public enum Expiry {
-        DAY("expiryDay", "天", R.string.coupons_expiry_day),
-        WEEK("expiryWeek", "周", R.string.coupons_expiry_forever),
-        MONTH("expiryMonth", "月", R.string.coupons_expiry_month),
-        YEAR("expiryYear", "年", R.string.coupons_expiry_year),
-        FOREVER("expiryForever", "长期", R.string.coupons_expiry_forever);
+        DAY("expiryDay", "天", 0, R.string.coupons_expiry_day),
+        WEEK("expiryWeek", "周", 1, R.string.coupons_expiry_week),
+        MONTH("expiryMonth", "月", 2, R.string.coupons_expiry_month),
+        YEAR("expiryYear", "年", 3, R.string.coupons_expiry_year),
+        FOREVER("expiryForever", "长期", 4, R.string.coupons_expiry_forever);
 
         public String code;
         public String name;
+        public int position;
         public @StringRes
         int res;
 
-        Expiry(String code, String name, @StringRes int res) {
+        Expiry(String code, String name, int position, @StringRes int res) {
             this.code = code;
             this.name = name;
+            this.position = position;
             this.res = res;
         }
 
@@ -97,6 +100,23 @@ public class CouponsExpiryEntity extends BaseEntity {
                 }
             }
             return DAY;
+        }
+
+        public static Expiry find(int position) {
+            for (Expiry expiry : Expiry.values()) {
+                if (expiry.position == position) {
+                    return expiry;
+                }
+            }
+            return DAY;
+        }
+
+        public String getName(Context context) {
+            if (context == null) {
+                return this.name;
+            } else {
+                return context.getString(this.res);
+            }
         }
     }
 }
