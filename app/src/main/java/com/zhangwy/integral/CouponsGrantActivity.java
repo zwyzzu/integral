@@ -22,6 +22,7 @@ import com.yixia.widget.VSVerificationLayout;
 import com.yixia.widget.VSVerificationLayout.Command;
 import com.yixia.widget.adapter.BaseAdapter;
 import com.yixia.widget.flowlayout.FlowLayout;
+import com.zhangwy.integral.data.ICouponsManager;
 import com.zhangwy.integral.data.IDataManager;
 import com.zhangwy.integral.data.ITagManager;
 import com.zhangwy.integral.entity.CouponsBindEntity;
@@ -313,6 +314,7 @@ public class CouponsGrantActivity extends BaseActivity {
         }
 
         IDataManager.getInstance().addMemberCoupons(bindEntity);
+        ICouponsManager.getInstance().addCoupons(bindEntity);
     }
 
     private void showEmptyRemind() {

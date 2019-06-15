@@ -55,6 +55,8 @@ public abstract class ICouponsManager {
 
     public abstract boolean hasNearOverDue();
 
+    public abstract void addCoupons(CouponsBindEntity entity);
+
     public abstract void useCoupons(Context context, CouponsBindEntity entity);
 
     /*------------------------------------------------------------------------------*/
@@ -77,19 +79,7 @@ public abstract class ICouponsManager {
                 protected Boolean doInBackground(String... strings) {
                     List<CouponsBindEntity> all = IDataManager.getInstance().getMemberCoupons("");
                     for (CouponsBindEntity coupons : all) {
-                        if (coupons == null) {
-                            continue;
-                        }
-                        if (coupons.used()) {
-                            used.put(coupons.getBind(), coupons);
-                        } else if (coupons.overdue()){
-                            overDue.put(coupons.getBind(), coupons);
-                        } else {
-                            useable.put(coupons.getBind(), coupons);
-                            if (coupons.nearOverDue()) {
-                                nearOverDue.put(coupons.getBind(), coupons);
-                            }
-                        }
+                        verifyCoupons(coupons);
                     }
                     return true;
                 }
@@ -113,6 +103,23 @@ public abstract class ICouponsManager {
                 }
             };
             asyncTask.execute();
+        }
+
+        private boolean verifyCoupons(CouponsBindEntity coupons) {
+            if (coupons == null) {
+                return false;
+            }
+            if (coupons.used()) {
+                this.used.put(coupons.getBind(), coupons);
+            } else if (coupons.overdue()){
+                this.overDue.put(coupons.getBind(), coupons);
+            } else {
+                this.useable.put(coupons.getBind(), coupons);
+                if (coupons.nearOverDue()) {
+                    this.nearOverDue.put(coupons.getBind(), coupons);
+                }
+            }
+            return true;
         }
 
         @Override
@@ -221,6 +228,13 @@ public abstract class ICouponsManager {
                 }
             }
             return false;
+        }
+
+        @Override
+        public void addCoupons(CouponsBindEntity entity) {
+            if (this.verifyCoupons(entity)) {
+                this.notifyObserver();
+            }
         }
 
         @Override
