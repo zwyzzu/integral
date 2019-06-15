@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="38dp"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/tagAddButton"
+        android:layout_width="54dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="@dimen/margin_8"
+        android:background="@drawable/background_address_tags"
+        android:gravity="center"
+        android:visibility="gone"
+        android:padding="@dimen/padding_4"
+        android:src="@mipmap/icon_tag_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <LinearLayout
+        android:id="@+id/tagAddLayout"
+        android:layout_width="160dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        android:layout_marginBottom="@dimen/margin_8"
+        android:background="@drawable/background_address_tags_add"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/tagAddInput"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:lines="1"
+            android:maxLines="1"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"
+            android:hint="@string/address_tag_add_hint"
+            android:textSize="@dimen/widget_fontSize_15"
+            tools:ignore="Autofill,TextFields" />
+
+        <TextView
+            android:id="@+id/tagAddOk"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_address_tags_add_save_unclick"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/padding_6"
+            android:paddingLeft="@dimen/padding_6"
+            android:paddingEnd="@dimen/padding_6"
+            android:paddingRight="@dimen/padding_6"
+            android:text="@string/ok"
+            android:textColor="@color/white"
+            android:textSize="@dimen/widget_fontSize_15" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

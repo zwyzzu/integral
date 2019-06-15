@@ -223,10 +223,11 @@ public class FlowLayout<E> extends RelativeLayout {
         if (this.loading == null) {
             return;
         }
-        View view = this.getChildAt(position);
         final E entity = this.data.get(position);
-        this.loading.onLoadView(view, entity);
-        view.setOnClickListener(this.createClickListener(entity));
+        int type = this.loading.getItemViewType(entity, position);
+        View view = this.getChildAt(position);
+        view.setOnClickListener(this.createClickListener(entity, type, position));
+        this.loading.onLoadView(view, type, entity, position);
     }
 
     private boolean addData(E entity, int position) {
@@ -271,14 +272,16 @@ public class FlowLayout<E> extends RelativeLayout {
         }
 
         this.removeAllViews();
-        for (final E e : this.data) {
-            if (e == null) {
+        for (int position = 0; position < this.data.size(); position++) {
+            E entity = this.data.get(position);
+            if (entity == null) {
                 continue;
             }
-            View view = this.loading.onCreateView(this, e);
-            this.loading.onLoadView(view, e);
+            int type = this.loading.getItemViewType(entity, position);
+            View view = this.loading.onCreateView(this, type);
+            view.setOnClickListener(this.createClickListener(entity, type, position));
+            this.loading.onLoadView(view, type, entity, position);
             addView(view, this.childLayoutParams());
-            view.setOnClickListener(this.createClickListener(e));
         }
     }
 
@@ -286,12 +289,12 @@ public class FlowLayout<E> extends RelativeLayout {
         return new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     }
 
-    private OnClickListener createClickListener(final E entity) {
+    private OnClickListener createClickListener(final E entity, int type, int position) {
         return v -> {
             if (listener == null) {
                 return;
             }
-            listener.onItemClick(v, entity, data.indexOf(entity));
+            listener.onItemClick(v, type, entity, position);
         };
     }
 
@@ -384,7 +387,7 @@ public class FlowLayout<E> extends RelativeLayout {
         }
     }
 
-    public interface OnItemClickListener<E> {
+    public interface OnItemClickListener<OC> {
         /**
          * Callback method to be invoked when an item in this AdapterView has
          * been clicked.
@@ -394,16 +397,21 @@ public class FlowLayout<E> extends RelativeLayout {
          *
          * @param view     The view within the AdapterView that was clicked (this
          *                 will be a view provided by the adapter)Ø
+         * @param viewType "
          * @param entity   The entity within the adapter data that was clicked item
          * @param position The position of the view in the adapter.
          */
-        void onItemClick(View view, E entity, int position);
+        void onItemClick(View view, int viewType, OC entity, int position);
     }
 
-    public interface OnItemLoading<E> {
+    public static abstract class OnItemLoading<OL> {
 
-        View onCreateView(ViewGroup parent, E entity);
+        public int getItemViewType(OL entity, int position) {
+            return 0;
+        }
 
-        void onLoadView(View root, E entity);
+        public abstract View onCreateView(ViewGroup parent, int viewType);
+
+        public abstract void onLoadView(View root, int viewType, OL entity, int position);
     }
 }

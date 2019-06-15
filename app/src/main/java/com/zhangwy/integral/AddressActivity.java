@@ -102,24 +102,24 @@ public class AddressActivity extends BaseActivity {
         List<String> tags = IAddressTags.getInstance().getTags();
         this.flowLayout.loadData(tags, new FlowLayout.OnItemLoading<String>() {
             @Override
-            public View onCreateView(ViewGroup parent, String entity) {
-                return getLayoutInflater().inflate(R.layout.view_item_address_tag, parent, false);
+            public View onCreateView(ViewGroup parent, int viewType) {
+                return getLayoutInflater().inflate(R.layout.view_item_tag, parent, false);
             }
 
             @Override
-            public void onLoadView(View root, String entity) {
+            public void onLoadView(View root, int viewType, String entity, int position) {
                 if (!TextUtils.isEmpty(entity)) {
                     if (TextUtils.equals(entity, tag)) {
                         root.setBackgroundResource(R.drawable.background_address_tags_checked);
                     } else {
                         root.setBackgroundResource(R.drawable.background_address_tags);
                     }
-                    TextView title = root.findViewById(R.id.addressTagTitle);
+                    TextView title = root.findViewById(R.id.tagTitle);
                     title.setText(entity);
                 }
             }
         });
-        this.flowLayout.setOnItemListener((view, entity, position) -> {
+        this.flowLayout.setOnItemListener((view, viewType, entity, position) -> {
             this.tag = entity;
             this.tagAdd.setBackgroundResource(R.drawable.background_address_tags);
             this.flowLayout.refresh();

@@ -136,6 +136,18 @@ public class CouponsBindEntity extends BaseEntity {
         this.tag = tag;
     }
 
+    public void setCoupons(CouponsEntity coupons, float coefficient) {
+        if(coupons == null) {
+            return;
+        }
+        this.setCouponsBind(coupons.getId());
+        this.setName(coupons.getName());
+        if (TextUtils.isEmpty(this.getDesc())) {
+            this.setDesc(coupons.getDesc());
+        }
+        this.setAmount(coefficient * coupons.getAmount());
+    }
+
     public void setExpiry(CouponsExpiryEntity expiry) {
         if (expiry == null) {
             return;

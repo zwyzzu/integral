@@ -7,5 +7,344 @@
     android:background="@color/background"
     tools:context=".CouponsGrantActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/couponsGrantToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/background_bar"
+        android:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/icon_widget_back"
+        tools:ignore="UnusedAttribute">
 
+        <TextView
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/coupons_grant_label" />
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/couponsGrantDoneeHead"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/padding_16"
+        android:paddingLeft="@dimen/padding_16"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:text="@string/coupons_grant_donee"
+        android:textColor="@color/black"
+        android:textSize="@dimen/widget_fontSize_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/couponsGrantToolbar" />
+
+    <TextView
+        android:id="@+id/couponsGrantCouponsHead"
+        android:layout_width="0dp"
+        android:layout_height="86dp"
+        android:background="@color/white"
+        android:gravity="start"
+        android:paddingStart="@dimen/padding_16"
+        android:paddingLeft="@dimen/padding_16"
+        android:paddingTop="@dimen/padding_14"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:paddingBottom="@dimen/padding_14"
+        android:text="@string/coupons_grant_coupons"
+        android:textColor="@color/black"
+        android:textSize="@dimen/widget_fontSize_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/couponsGrantDoneeHead" />
+
+    <TextView
+        android:id="@+id/couponsGrantExpiryHead"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/padding_16"
+        android:paddingLeft="@dimen/padding_16"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:text="@string/coupons_grant_expiry"
+        android:textColor="@color/black"
+        android:textSize="@dimen/widget_fontSize_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/couponsGrantCouponsHead" />
+
+    <TextView
+        android:id="@+id/couponsGrantMessageHead"
+        android:layout_width="wrap_content"
+        android:layout_height="84dp"
+        android:background="@color/white"
+        android:gravity="start"
+        android:paddingStart="@dimen/padding_16"
+        android:paddingLeft="@dimen/padding_16"
+        android:paddingTop="@dimen/padding_14"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:paddingBottom="@dimen/padding_14"
+        android:text="@string/coupons_grant_message"
+        android:textColor="@color/black"
+        android:textSize="@dimen/widget_fontSize_16"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/couponsGrantExpiryHead" />
+
+    <TextView
+        android:id="@+id/couponsGrantTagHead"
+        android:layout_width="0dp"
+        android:layout_height="84dp"
+        android:background="@color/white"
+        android:gravity="start"
+        android:paddingStart="@dimen/padding_16"
+        android:paddingLeft="@dimen/padding_16"
+        android:paddingTop="@dimen/padding_14"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:paddingBottom="@dimen/padding_14"
+        android:text="@string/coupons_grant_tag"
+        android:textColor="@color/black"
+        android:textSize="@dimen/widget_fontSize_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/couponsGrantMessageHead" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:background="@color/background"
+        app:layout_constraintBottom_toBottomOf="@id/couponsGrantTagHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/couponsGrantMessage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:gravity="start"
+        android:hint="@string/coupons_grant_message_hint"
+        android:lines="3"
+        android:paddingStart="0dp"
+        android:paddingLeft="0dp"
+        android:paddingTop="@dimen/padding_14"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:paddingBottom="@dimen/padding_14"
+        android:textSize="@dimen/widget_fontSize_16"
+        app:layout_constraintBottom_toBottomOf="@id/couponsGrantMessageHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/couponsGrantMessageHead"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@id/couponsGrantMessageHead"
+        app:layout_constraintTop_toTopOf="@id/couponsGrantMessageHead"
+        tools:ignore="Autofill,TextFields" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:background="@color/background"
+        app:layout_constraintBottom_toBottomOf="@id/couponsGrantMessageHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/couponsGrantDonee"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingStart="0dp"
+        android:paddingLeft="0dp"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:text="@string/coupons_grant_donee"
+        android:textColor="@color/black"
+        android:textSize="@dimen/widget_fontSize_16"
+        app:layout_constraintBottom_toBottomOf="@id/couponsGrantDoneeHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/couponsGrantMessage"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@id/couponsGrantMessage"
+        app:layout_constraintTop_toTopOf="@id/couponsGrantDoneeHead" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:background="@color/background"
+        app:layout_constraintBottom_toBottomOf="@id/couponsGrantDoneeHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Spinner
+        android:id="@+id/couponsGrantCoupons"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        android:dropDownVerticalOffset="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/couponsGrantDonee"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@id/couponsGrantDonee"
+        app:layout_constraintTop_toTopOf="@id/couponsGrantCouponsHead" />
+
+    <CheckBox
+        android:id="@+id/couponsGrantCouponsHasCoefficient"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="@dimen/margin_4"
+        android:checked="false"
+        app:layout_constraintRight_toRightOf="@id/couponsGrantCoupons"
+        app:layout_constraintTop_toBottomOf="@id/couponsGrantCoupons" />
+
+    <TextView
+        android:id="@+id/couponsGrantCouponsHasCoefficientText"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/margin_4"
+        android:layout_marginRight="@dimen/margin_4"
+        android:gravity="center_vertical"
+        android:text="@string/has_coefficient"
+        app:layout_constraintBottom_toBottomOf="@id/couponsGrantCouponsHasCoefficient"
+        app:layout_constraintRight_toLeftOf="@id/couponsGrantCouponsHasCoefficient"
+        app:layout_constraintTop_toTopOf="@id/couponsGrantCouponsHasCoefficient" />
+
+    <com.yixia.widget.VSVerificationLayout
+        android:id="@+id/couponsGrantCouponsCoefficientHome"
+        android:layout_width="180dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        app:inputId="@+id/couponsGrantCouponsCoefficient"
+        app:layout_constraintBottom_toBottomOf="@id/couponsGrantCouponsHasCoefficient"
+        app:layout_constraintLeft_toLeftOf="@id/couponsGrantCoupons"
+        app:layout_constraintStart_toStartOf="@id/couponsGrantCoupons"
+        app:layout_constraintTop_toTopOf="@id/couponsGrantCouponsHasCoefficient">
+
+        <EditText
+            android:id="@+id/couponsGrantCouponsCoefficient"
+            android:layout_width="180dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_4"
+            android:layout_marginBottom="@dimen/margin_4"
+            android:background="@drawable/background_element_input"
+            android:hint="@string/input_coefficient"
+            android:inputType="numberDecimal"
+            android:lines="1"
+            android:paddingStart="@dimen/padding_4"
+            android:paddingLeft="@dimen/padding_4"
+            android:paddingEnd="@dimen/padding_4"
+            android:paddingRight="@dimen/padding_4"
+            android:singleLine="true"
+            android:textSize="@dimen/widget_fontSize_14"
+            tools:ignore="Autofill" />
+    </com.yixia.widget.VSVerificationLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:background="@color/background"
+        app:layout_constraintBottom_toBottomOf="@id/couponsGrantCouponsHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Spinner
+        android:id="@+id/couponsGrantExpiry"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        android:dropDownVerticalOffset="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/couponsGrantDonee"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@id/couponsGrantDonee"
+        app:layout_constraintTop_toTopOf="@id/couponsGrantExpiryHead" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:background="@color/background"
+        app:layout_constraintBottom_toBottomOf="@id/couponsGrantExpiryHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.yixia.widget.flowlayout.FlowLayout
+        android:id="@+id/couponsGrantTag"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_4"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        android:layout_marginBottom="@dimen/margin_4"
+        app:horizontalSpacing="@dimen/margin_4"
+        app:layout_constraintBottom_toBottomOf="@id/couponsGrantTagHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/couponsGrantMessage"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@id/couponsGrantMessage"
+        app:layout_constraintTop_toTopOf="@id/couponsGrantTagHead"
+        app:maxLines="3"
+        app:verticalSpacing="@dimen/margin_4" />
+
+    <TextView
+        android:id="@+id/couponsGrantEmpty"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_margin="32dp"
+        android:background="@drawable/background_remind"
+        android:gravity="center"
+        android:text="@string/add_integral_empty_element"
+        android:textSize="@dimen/widget_fontSize_18"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

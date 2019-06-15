@@ -105,10 +105,10 @@
     <string name="cancel">取消</string>
     <string name="add_integral_label">赠送积分</string>
     <string name="add_address_label">新建收件人</string>
-    <string name="add_integral_input_coefficient">请输入系数</string>
-    <string name="add_integral_has_coefficient">带系数</string>
     <string name="add_integral_spinner_second">积分:%1$s\t\t%2$s</string>
     <string name="add_integral_empty_element">您还没有积分项\n请到\"首页\-我的\-积分项\"中添加</string>
+    <string name="input_coefficient">请输入系数</string>
+    <string name="has_coefficient">带系数</string>
     <string name="integral_list_label">积分列表</string>
     <string name="address_list_label">收件人列表</string>
     <string name="address_label">新建收货地址</string>
@@ -177,6 +177,18 @@
     <string name="coupons_config_label">优惠券配置</string>
     <string name="coupons_config_items">优惠券</string>
     <string name="coupons_config_expiry">有效期</string>
+
+    <string name="coupons_grant_label">赠送优惠券</string>
+    <string name="coupons_grant_donee">赠予</string>
+    <string name="coupons_grant_coupons">优惠券</string>
+    <string name="coupons_grant_expiry">有效期</string>
+    <string name="coupons_grant_message">使用描述</string>
+    <string name="coupons_grant_tag">标签</string>
+    <string name="coupons_grant_message_hint">使用描述信息-选填(不填写将使用优惠券描述)</string>
+    <string name="coupons_grant_coupons_spinner_second">面值:%1$s\t\t%2$s</string>
+    <string name="coupons_grant_empty_element">您还没有%1$s\n请到\"首页\-我的\-优惠券配置\"中添加</string>
+    <string name="error_coupons_unselect">请选择优惠券</string>
+    <string name="error_expiry_unselect">请选择有效期</string>
 
     <string name="permission_read_phone_state">读取电话状态</string>
     <string name="permission_read_external_storage">读取外部存储</string>

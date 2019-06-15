@@ -122,26 +122,25 @@ public class VSVerificationLayout extends FrameLayout implements View.OnFocusCha
         this.hideHint();
     }
 
-    public void verify(Command... commands) {
+    public boolean verify(Command... commands) {
         if (Util.isEmpty(commands))
-            return;
+            return false;
+        if (this.hintView == null) {
+            this.addHint();
+        }
         for (Command command : commands) {
             if (command == null) {
                 continue;
             }
             if (command.verify(this.getInput())) {
-                if (this.hintView == null) {
-                    return;
-                }
                 this.hintView.setVisibility(VISIBLE);
                 this.hintView.setText(command.hint());
+                return true;
             } else {
-                if (this.hintView == null) {
-                    return;
-                }
                 this.hideHint();
             }
         }
+        return false;
     }
 
     private String getInput() {
@@ -152,7 +151,7 @@ public class VSVerificationLayout extends FrameLayout implements View.OnFocusCha
         return input.getText().toString();
     }
 
-    public interface Command {
+    public static interface Command {
         String hint();
 
         boolean verify(String text);
