@@ -22,13 +22,16 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.yixia.widget.recycler.RecyclerAdapter;
 import com.yixia.widget.recycler.VSRecyclerView;
+import com.zhangwy.integral.data.ICouponsManager;
 import com.zhangwy.integral.data.IDataManager;
 import com.zhangwy.integral.entity.AddressEntity;
+import com.zhangwy.integral.entity.CouponsBindEntity;
 import com.zhangwy.integral.entity.IntegralBindEntity;
 import com.zhangwy.integral.entity.MemberEntity;
 import com.zhangwy.integral.entity.MemberItemEntity;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import yixia.lib.core.base.BaseActivity;
@@ -37,11 +40,12 @@ import yixia.lib.core.util.Util;
 import yixia.lib.core.util.WindowUtil;
 
 @SuppressWarnings("unused")
-public class MemberActivity extends BaseActivity {
+public class MemberActivity extends BaseActivity implements ICouponsManager.OnCouponsDataListener {
 
     private static final int REQUEST_CODE_ADD = 100;
     private static final int REQUEST_CODE_INTEGRAL_LIST = 101;
     private static final int REQUEST_CODE_ADDRESS_LIST = 102;
+    private static final int REQUEST_CODE_COUPONS_LIST = 103;
     private static final String EXTRA_MEMBERID = "extraMemberId";
 
     public static void start(Activity activity, String memberId, int requestCode) {
@@ -87,9 +91,11 @@ public class MemberActivity extends BaseActivity {
         this.recyclerView.setLinearLayoutManager(VSRecyclerView.VERTICAL, false);
         this.mmbId = this.getIntent().getStringExtra(EXTRA_MEMBERID);
         this.refreshData();
+        this.initRecycler();
         this.refreshRecycler();
         this.setToolbar();
         this.setMsgClick();
+        ICouponsManager.getInstance().register(this);
     }
 
     private void setToolbar() {
@@ -128,13 +134,8 @@ public class MemberActivity extends BaseActivity {
         this.message.setText(member.getDesc());
     }
 
-    private void refreshRecycler() {
-        this.member = IDataManager.getInstance().getMember(mmbId);
-        List<MemberItemEntity> entities = MemberItemEntity.createMembers(this.member);
-        if (Util.isEmpty(entities)) {
-            return;
-        }
-        this.recyclerView.loadData(entities, new RecyclerAdapter.OnItemLoading<MemberItemEntity>() {
+    private void initRecycler() {
+        this.recyclerView.loadData(new ArrayList<>(), new RecyclerAdapter.OnItemLoading<MemberItemEntity>() {
 
             @Override
             public int getItemViewType(MemberItemEntity entity, int position) {
@@ -163,6 +164,15 @@ public class MemberActivity extends BaseActivity {
                     case MemberItemEntity.TYPE_ADDRESS_MORE:
                         layout = R.layout.view_item_member_more;
                         break;
+                    case MemberItemEntity.TYPE_COUPONS_HEAD:
+                        layout = R.layout.view_item_member_title;
+                        break;
+                    case MemberItemEntity.TYPE_COUPONS:
+                        layout = R.layout.view_item_coupons;
+                        break;
+                    case MemberItemEntity.TYPE_COUPONS_MORE:
+                        layout = R.layout.view_item_member_more;
+                        break;
                 }
                 return LayoutInflater.from(MemberActivity.this).inflate(layout, parent, false);
             }
@@ -171,49 +181,75 @@ public class MemberActivity extends BaseActivity {
             public void onLoadView(View root, int viewType, MemberItemEntity entity, int position) {
                 switch (viewType) {
                     case MemberItemEntity.TYPE_INTEGRAL_HEAD:
-                        refreshHead(root, true);
+                        refreshHead(root, viewType);
                         break;
                     case MemberItemEntity.TYPE_INTEGRAL:
                         refreshIntegral(root, (IntegralBindEntity) entity.data);
                         break;
                     case MemberItemEntity.TYPE_INTEGRAL_MORE:
-                        refreshMore(root, true);
+                        refreshMore(root, viewType);
                         break;
                     case MemberItemEntity.TYPE_ADDRESS_HEAD:
-                        refreshHead(root, false);
+                        refreshHead(root, viewType);
                         break;
                     case MemberItemEntity.TYPE_ADDRESS:
                         refreshAddress(root, (AddressEntity) entity.data);
                         break;
                     case MemberItemEntity.TYPE_ADDRESS_MORE:
-                        refreshMore(root, false);
+                        refreshMore(root, viewType);
+                        break;
+                    case MemberItemEntity.TYPE_COUPONS_HEAD:
+                        refreshHead(root, viewType);
+                        break;
+                    case MemberItemEntity.TYPE_COUPONS:
+                        refreshCoupons(root, (CouponsBindEntity) entity.data);
+                        break;
+                    case MemberItemEntity.TYPE_COUPONS_MORE:
+                        refreshMore(root, viewType);
                         break;
                 }
             }
         });
     }
 
-    private void refreshHead(View root, boolean integral) {
+    private void refreshRecycler() {
+        this.member = IDataManager.getInstance().getMember(mmbId);
+        List<MemberItemEntity> entities = MemberItemEntity.createMembers(this.member);
+        this.recyclerView.reload(entities);
+    }
+
+    private void refreshHead(View root, int viewType) {
         TextView title = root.findViewById(R.id.memberTitleText);
         ImageView add = root.findViewById(R.id.memberTitleAdd);
         ImageView use = root.findViewById(R.id.memberTitleUse);
-        if (integral) {
-            use.setVisibility(View.VISIBLE);
-            title.setText(R.string.member_list_integral);
-        } else {
-            use.setVisibility(View.GONE);
-            title.setText(R.string.member_list_address);
+        switch (viewType) {
+            case MemberItemEntity.TYPE_INTEGRAL_HEAD:
+                use.setVisibility(View.VISIBLE);
+                title.setText(R.string.member_list_integral);
+                break;
+            case MemberItemEntity.TYPE_ADDRESS_HEAD:
+                use.setVisibility(View.GONE);
+                title.setText(R.string.member_list_address);
+                break;
+            case MemberItemEntity.TYPE_COUPONS_HEAD:
+                use.setVisibility(View.GONE);
+                title.setText(R.string.member_list_coupons);
+                break;
         }
         add.setOnClickListener(v -> {
-            if (integral) {
-                IntegralAddActivity.start(this, mmbId, REQUEST_CODE_ADD);
-            } else {
-                AddressActivity.start(this, mmbId, REQUEST_CODE_ADD);
+            switch (viewType) {
+                case MemberItemEntity.TYPE_INTEGRAL_HEAD:
+                    IntegralAddActivity.start(this, mmbId, REQUEST_CODE_ADD);
+                    break;
+                case MemberItemEntity.TYPE_ADDRESS_HEAD:
+                    AddressActivity.start(this, mmbId, REQUEST_CODE_ADD);
+                    break;
+                case MemberItemEntity.TYPE_COUPONS_HEAD:
+                    CouponsGrantActivity.start(this, mmbId);
+                    break;
             }
         });
-        use.setOnClickListener(v -> {
-            IntegralUseActivity.start(this, this.mmbId, REQUEST_CODE_INTEGRAL_LIST);
-        });
+        use.setOnClickListener(v -> IntegralUseActivity.start(this, this.mmbId, REQUEST_CODE_INTEGRAL_LIST));
     }
 
     private void refreshIntegral(View root, IntegralBindEntity entity) {
@@ -240,22 +276,69 @@ public class MemberActivity extends BaseActivity {
     private void refreshAddress(View root, AddressEntity address) {
         TextView namePhone = root.findViewById(R.id.memberAddressNamePhone);
         TextView info = root.findViewById(R.id.memberAddressInfo);
-        namePhone.setText(getString(R.string.member_address_name_phone,
-                address.getConsignee(), address.getPhone(), address.getTag()));
-        info.setText(getString(R.string.member_address_info, address.getProvince(),
-                address.getCity(), address.getArea(), address.getTown(), address.getAddress()));
+        namePhone.setText(getString(R.string.member_address_name_phone, address.getConsignee(), address.getPhone(), address.getTag()));
+        info.setText(getString(R.string.member_address_info, address.getProvince(), address.getCity(), address.getArea(), address.getTown(), address.getAddress()));
         root.findViewById(R.id.memberAddressExport).setOnClickListener(v -> {
             Util.copy2Clipboard(this, address.address() + "，" + address.getConsignee() + "，" + address.getPhone());
             showMessage(true, R.string.member_address_export_over);
         });
     }
 
-    private void refreshMore(View root, boolean integral) {
+    private void refreshCoupons(View root, CouponsBindEntity entity) {
+        View amount = root.findViewById(R.id.itemCouponsAmount);
+        TextView amountMember = root.findViewById(R.id.itemCouponsAmountNumber);
+        TextView tag = root.findViewById(R.id.itemCouponsTag);
+        TextView member = root.findViewById(R.id.itemCouponsMember);
+        TextView desc = root.findViewById(R.id.itemCouponsDesc);
+        TextView expiry = root.findViewById(R.id.itemCouponsExpiry);
+        ImageView mark = root.findViewById(R.id.itemCouponsMark);
+        View use = root.findViewById(R.id.itemCouponsUse);
+        amountMember.setText(Util.float2String(entity.getAmount(), 2));
+        if (TextUtils.isEmpty(entity.getTag())) {
+            tag.setText(entity.getTag());
+            tag.setVisibility(View.INVISIBLE);
+        } else {
+            tag.setText(entity.getTag());
+            tag.setVisibility(View.VISIBLE);
+        }
+        member.setText("");
+        member.setVisibility(View.GONE);
+        String descContent = entity.getName() + "  " + entity.getDesc();
+        desc.setText(descContent);
+        expiry.setText(entity.getExpiry(this));
+        mark.setVisibility(View.VISIBLE);
+        use.setVisibility(View.GONE);
+        if (entity.used()) {
+            amount.setBackgroundResource(R.color.lighter_gray);
+            mark.setImageResource(R.mipmap.icon_coupons_used);
+        } else if (entity.overdue()){
+            amount.setBackgroundResource(R.color.lighter_gray);
+            mark.setImageResource(R.mipmap.icon_coupons_overdue);
+        } else if (entity.nearOverDue()) {
+            amount.setBackgroundResource(R.color.colorPrimary);
+            mark.setImageResource(R.mipmap.icon_coupons_near_overdue);
+            use.setVisibility(View.VISIBLE);
+            use.setOnClickListener(v -> ICouponsManager.getInstance().useCoupons(this, entity));
+        } else {
+            amount.setBackgroundResource(R.color.colorPrimary);
+            mark.setVisibility(View.GONE);
+            use.setVisibility(View.VISIBLE);
+            use.setOnClickListener(v -> ICouponsManager.getInstance().useCoupons(this, entity));
+        }
+    }
+
+    private void refreshMore(View root, int viewType) {
         root.setOnClickListener(v -> {
-            if (integral) {
-                IntegralsActivity.start(this, this.mmbId, REQUEST_CODE_INTEGRAL_LIST);
-            } else {
-                AddressesActivity.start(this, this.mmbId, REQUEST_CODE_INTEGRAL_LIST);
+            switch (viewType) {
+                case MemberItemEntity.TYPE_INTEGRAL_MORE:
+                    IntegralsActivity.start(this, this.mmbId, REQUEST_CODE_INTEGRAL_LIST);
+                    break;
+                case MemberItemEntity.TYPE_ADDRESS_MORE:
+                    AddressesActivity.start(this, this.mmbId, REQUEST_CODE_ADDRESS_LIST);
+                    break;
+                case MemberItemEntity.TYPE_COUPONS_MORE:
+                    CouponsActivity.start(this, mmbId, REQUEST_CODE_COUPONS_LIST);
+                    break;
             }
         });
     }
@@ -291,5 +374,16 @@ public class MemberActivity extends BaseActivity {
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
         dialog.show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ICouponsManager.getInstance().unRegister(this);
+    }
+
+    @Override
+    public void onLoadCouponsSuccess() {
+        this.refreshRecycler();
     }
 }

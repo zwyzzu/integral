@@ -122,7 +122,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 .put("couponsBind", SQLCreator.Format.TEXT, false)
                 .put("expiryBind", SQLCreator.Format.TEXT, false)
                 .put("bindName", SQLCreator.Format.TEXT, false)
-                .put("tag", SQLCreator.Format.TEXT, false)
+                .put("tag", SQLCreator.Format.TEXT, true)
                 .build();
 
         SQL_CREATOR_EXPIRY.setPrimaryKey("id", SQLCreator.Format.TEXT)

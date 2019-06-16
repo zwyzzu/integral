@@ -106,7 +106,7 @@ public class SQLCreator {
 
     public String queryWhereAnd(String... wheres) {
         if (Util.isEmpty(wheres)) {
-            this.query();
+            return this.query();
         }
         String where = Util.array2Strings(Arrays.asList(wheres), " AND ");
         return String.format(" %s where %s", this.query(), where);
@@ -114,7 +114,7 @@ public class SQLCreator {
 
     public String queryWhereOr(String... wheres) {
         if (Util.isEmpty(wheres)) {
-            this.query();
+            return this.query();
         }
         String where = Util.array2Strings(Arrays.asList(wheres), " OR ");
         return String.format(" %s where %s", this.query(), where);

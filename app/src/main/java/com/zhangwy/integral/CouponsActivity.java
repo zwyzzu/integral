@@ -12,13 +12,10 @@ import android.view.MenuItem;
 
 import com.yixia.widget.VSTabLayout;
 import com.zhangwy.integral.data.ICouponsManager;
-import com.zhangwy.integral.entity.CouponsBindEntity;
-
-import java.util.List;
 
 import yixia.lib.core.base.BaseActivity;
 
-public class CouponsActivity extends BaseActivity implements VSTabLayout.OnTabClickListener {
+public class CouponsActivity extends BaseActivity implements VSTabLayout.OnTabClickListener, ICouponsManager.OnCouponsDataListener {
 
     private static final String EXTRA_MEMBERID = "extraMemberId";
     public static void start(Activity activity, String memberId, int requestCode) {
@@ -31,6 +28,10 @@ public class CouponsActivity extends BaseActivity implements VSTabLayout.OnTabCl
     private FragmentCoupons fragmentUnused;
     private FragmentCoupons fragmentUsed;
     private FragmentCoupons fragmentOverDue;
+    private int lastPosition = 0;
+    private int lastUseableSize = -1;
+    private int lastUsedSize = -1;
+    private int lastOverDueSize = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class CouponsActivity extends BaseActivity implements VSTabLayout.OnTabCl
             return;
         }
         this.setToolbar();
+        ICouponsManager.getInstance().register(this);
     }
 
     private void setToolbar() {
@@ -67,7 +69,7 @@ public class CouponsActivity extends BaseActivity implements VSTabLayout.OnTabCl
                 finish();
                 break;
             case R.id.couponsAdd:
-                //TODO
+                CouponsGrantActivity.start(this, this.memberId);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -78,20 +80,28 @@ public class CouponsActivity extends BaseActivity implements VSTabLayout.OnTabCl
             return false;
         }
         VSTabLayout tabLayout = this.findViewById(R.id.couponsTopBar);
-        tabLayout.setTabClickListener(this);
-        List<CouponsBindEntity> useable = ICouponsManager.getInstance().getUseable(this.memberId);
-        List<CouponsBindEntity> used = ICouponsManager.getInstance().getUsed(this.memberId);
-        List<CouponsBindEntity> overDue = ICouponsManager.getInstance().getOverDue(this.memberId);
-        String tabUseable = getString(R.string.coupons_unused, useable.size());
-        String tabUsed = getString(R.string.coupons_used, used.size());
-        String tabOverDue = getString(R.string.coupons_overdue, overDue.size());
+        int cUseableSize = ICouponsManager.getInstance().getUseable(this.memberId).size();
+        int cUsedSize = ICouponsManager.getInstance().getUsed(this.memberId).size();
+        int cOverDueSize = ICouponsManager.getInstance().getOverDue(this.memberId).size();
+        if (cOverDueSize == lastOverDueSize && cUsedSize == lastUsedSize && cUseableSize == lastUseableSize) {
+            return true;
+        }
+        this.lastUseableSize = cUseableSize;
+        this.lastUsedSize = cUsedSize;
+        this.lastOverDueSize = cOverDueSize;
+        String tabUseable = getString(R.string.coupons_unused, this.lastUseableSize);
+        String tabUsed = getString(R.string.coupons_used, this.lastUsedSize);
+        String tabOverDue = getString(R.string.coupons_overdue, this.lastOverDueSize);
         tabLayout.setStringTabs(tabUseable, tabUsed, tabOverDue);
+        tabLayout.setTabClickListener(this);
+        tabLayout.setPosition(this.lastPosition);
         return true;
     }
 
     @Override
     public void onClickTab(int position) {
         this.switchFragment(position);
+        this.lastPosition = position;
     }
 
     private void switchFragment(int position) {
@@ -127,5 +137,16 @@ public class CouponsActivity extends BaseActivity implements VSTabLayout.OnTabCl
                 break;
         }
         this.addFragment(fragment, R.id.couponsContent);
+    }
+
+    @Override
+    public void onLoadCouponsSuccess() {
+        this.initTabLayout();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ICouponsManager.getInstance().unRegister(this);
     }
 }

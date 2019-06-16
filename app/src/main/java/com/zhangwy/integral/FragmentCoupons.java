@@ -1,7 +1,9 @@
 package com.zhangwy.integral;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +45,7 @@ public class FragmentCoupons extends BaseFragment implements ICouponsManager.OnC
     private TextView tip;
     private String memberId;
     private CouponsMold mold;
+    private List<String> nearOverDueIds = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -52,6 +55,7 @@ public class FragmentCoupons extends BaseFragment implements ICouponsManager.OnC
     @Override
     protected void init(View view, Bundle saveInstanceState) {
         this.recyclerView = view.findViewById(R.id.couponsRecycler);
+        this.recyclerView.setLinearLayoutManager(VSRecyclerView.VERTICAL, false);
         this.tip = view.findViewById(R.id.couponsTip);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -63,6 +67,7 @@ public class FragmentCoupons extends BaseFragment implements ICouponsManager.OnC
             this.tip.setVisibility(View.VISIBLE);
             this.tip.setText(R.string.error_params_data);
         } else {
+            this.initRecycler();
             this.reload();
         }
         ICouponsManager.getInstance().register(this);
@@ -74,27 +79,8 @@ public class FragmentCoupons extends BaseFragment implements ICouponsManager.OnC
         ICouponsManager.getInstance().unRegister(this);
     }
 
-    public void reload() {
-        List<CouponsBindEntity> array = ICouponsManager.getInstance().getCoupons(this.memberId, this.mold);
-        if (Util.isEmpty(array)) {
-            this.recyclerView.setVisibility(View.GONE);
-            this.tip.setVisibility(View.VISIBLE);
-            this.tip.setText(R.string.error_no_data);
-            return;
-        }
-        this.recyclerView.setVisibility(View.VISIBLE);
-        this.tip.setVisibility(View.GONE);
-        List<String> nearOverDueIds = new ArrayList<>();
-        if (this.mold == CouponsMold.USEABLE) {
-            List<CouponsBindEntity> entities = ICouponsManager.getInstance().getNearOverDue(this.memberId);
-            for (CouponsBindEntity entity : entities) {
-                if (entity != null) {
-                    nearOverDueIds.add(entity.getId());
-                }
-            }
-        }
-
-        this.recyclerView.loadData(array, new RecyclerAdapter.OnItemLoading<CouponsBindEntity>() {
+    private void initRecycler() {
+        this.recyclerView.loadData(new ArrayList<>(), new RecyclerAdapter.OnItemLoading<CouponsBindEntity>() {
             @Override
             public View onCreateView(ViewGroup parent, int viewType) {
                 return LayoutInflater.from(getContext()).inflate(R.layout.view_item_coupons, parent, false);
@@ -113,7 +99,7 @@ public class FragmentCoupons extends BaseFragment implements ICouponsManager.OnC
                 amountMember.setText(Util.float2String(entity.getAmount(), 2));
                 if (TextUtils.isEmpty(entity.getTag())) {
                     tag.setText(entity.getTag());
-                    tag.setVisibility(View.INVISIBLE);
+                    tag.setVisibility(View.GONE);
                 } else {
                     tag.setText(entity.getTag());
                     tag.setVisibility(View.VISIBLE);
@@ -133,6 +119,7 @@ public class FragmentCoupons extends BaseFragment implements ICouponsManager.OnC
                         } else {
                             mark.setVisibility(View.GONE);
                         }
+                        refreshUse(use, entity);
                         break;
                     case USED:
                         amount.setBackgroundResource(R.color.lighter_gray);
@@ -146,13 +133,42 @@ public class FragmentCoupons extends BaseFragment implements ICouponsManager.OnC
                         amount.setBackgroundResource(R.color.colorPrimary);
                         mark.setImageResource(R.mipmap.icon_coupons_near_overdue);
                         if (TextUtils.isEmpty(memberId)) {
-                            member.setText(entity.getBindName());
+                            member.setText(getString(R.string.coupons_member, entity.getBindName()));
+                            member.setAutoLinkMask(Linkify.ALL);
                             member.setVisibility(View.VISIBLE);
+                            root.setOnClickListener(v -> MemberActivity.start(getAppCompatActivity(), entity.getBind(), 0));
                         }
                         break;
                 }
             }
         });
+    }
+
+    private void refreshUse(View use, CouponsBindEntity bindEntity) {
+        use.setVisibility(View.VISIBLE);
+        use.setOnClickListener(v -> ICouponsManager.getInstance().useCoupons(getContext(), bindEntity));
+    }
+
+    public void reload() {
+        List<CouponsBindEntity> array = ICouponsManager.getInstance().getCoupons(this.memberId, this.mold);
+        if (Util.isEmpty(array)) {
+            this.recyclerView.setVisibility(View.GONE);
+            this.tip.setVisibility(View.VISIBLE);
+            this.tip.setText(R.string.error_no_data);
+            return;
+        }
+        this.recyclerView.setVisibility(View.VISIBLE);
+        this.tip.setVisibility(View.GONE);
+        this.nearOverDueIds.clear();
+        if (this.mold == CouponsMold.USEABLE) {
+            List<CouponsBindEntity> entities = ICouponsManager.getInstance().getNearOverDue(this.memberId);
+            for (CouponsBindEntity entity : entities) {
+                if (entity != null) {
+                    this.nearOverDueIds.add(entity.getId());
+                }
+            }
+        }
+        this.recyclerView.reload(array);
     }
 
     private void onClickUse(View view, CouponsBindEntity entity) {

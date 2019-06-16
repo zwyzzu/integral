@@ -28,22 +28,22 @@ import com.zhangwy.integral.data.ITagManager;
 import com.zhangwy.integral.entity.CouponsBindEntity;
 import com.zhangwy.integral.entity.CouponsEntity;
 import com.zhangwy.integral.entity.CouponsExpiryEntity;
+import com.zhangwy.integral.entity.MemberEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import yixia.lib.core.base.BaseActivity;
+import yixia.lib.core.util.KeyboardUtils;
 import yixia.lib.core.util.Util;
 
 public class CouponsGrantActivity extends BaseActivity {
 
     private static final String EXTRA_MEMBERID = "extraMemberId";
-    private static final String EXTRA_MEMBERNAME = "extraMemberName";
 
-    public static void start(Context context, String memberId, String memberName) {
-        Intent intent = new Intent(context, CouponsActivity.class);
+    public static void start(Context context, String memberId) {
+        Intent intent = new Intent(context, CouponsGrantActivity.class);
         intent.putExtra(EXTRA_MEMBERID, memberId);
-        intent.putExtra(EXTRA_MEMBERNAME, memberName);
         context.startActivity(intent);
     }
 
@@ -57,9 +57,9 @@ public class CouponsGrantActivity extends BaseActivity {
     private TextView emptyElement;
     private String tag;
     private String memberId;
-    private String memberName;
     private List<CouponsEntity> couponsEntities;
     private List<CouponsExpiryEntity> expiryEntities;
+    private MemberEntity member;
     private boolean emptyCoupons = false;
     private boolean emptyExpiry = false;
 
@@ -76,14 +76,13 @@ public class CouponsGrantActivity extends BaseActivity {
         this.flowLayout = this.findViewById(R.id.couponsGrantTag);
         this.emptyElement = this.findViewById(R.id.couponsGrantEmpty);
         this.memberId = this.getIntent().getStringExtra(EXTRA_MEMBERID);
-        this.memberName = this.getIntent().getStringExtra(EXTRA_MEMBERNAME);
-        this.donee.setText(this.memberName);
-        this.setToolbar();
+        this.setDonee();
         this.initCoefficient();
         this.initCoupons();
         this.initExpiry();
         this.initTags();
         this.showEmptyRemind();
+        this.setToolbar();
     }
 
     private void setToolbar() {
@@ -107,7 +106,7 @@ public class CouponsGrantActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.integralAddSave:
+            case R.id.couponsGrantSave:
                 if (this.emptyCoupons || this.emptyExpiry) {
                     break;
                 }
@@ -118,6 +117,11 @@ public class CouponsGrantActivity extends BaseActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setDonee() {
+        member = IDataManager.getInstance().getMember(this.memberId);
+        this.donee.setText(this.member.getName());
     }
 
     private void initCoefficient() {
@@ -169,11 +173,12 @@ public class CouponsGrantActivity extends BaseActivity {
             }
             return convertView;
         });
-        this.coupons.setAdapter(adapter);
+        this.expiry.setAdapter(adapter);
     }
 
     private void initTags() {
         List<String> tags = ITagManager.create(this, ITagManager.KEY_TAG_COUPONS).get();
+        tags.add(0, "");
         this.flowLayout.loadData(tags, new FlowLayout.OnItemLoading<String>() {
 
             @Override
@@ -224,6 +229,7 @@ public class CouponsGrantActivity extends BaseActivity {
 
         tagAddImage.setOnClickListener(v -> {
             v.setVisibility(View.GONE);
+            tagAddInput.requestFocus();
             tagAddLayout.setVisibility(View.VISIBLE);
         });
         tagAddInput.addTextChangedListener(new TextWatcher() {
@@ -258,7 +264,7 @@ public class CouponsGrantActivity extends BaseActivity {
 
     private void save() {
         CouponsBindEntity bindEntity = new CouponsBindEntity();
-        bindEntity.setBindName(this.memberName);
+        bindEntity.setBindName(this.member.getName());
         bindEntity.setBind(this.memberId);
         bindEntity.setCreateDate(System.currentTimeMillis());
         final float[] coefficient = {1.0f};
@@ -315,10 +321,11 @@ public class CouponsGrantActivity extends BaseActivity {
 
         IDataManager.getInstance().addMemberCoupons(bindEntity);
         ICouponsManager.getInstance().addCoupons(bindEntity);
+        this.finish();
     }
 
     private void showEmptyRemind() {
-        boolean show = this.emptyCoupons || this.emptyExpiry;
+        boolean show = !this.emptyCoupons && !this.emptyExpiry;
         this.findViewById(R.id.couponsGrantDoneeHead).setVisibility(show ? View.VISIBLE : View.GONE);
         this.findViewById(R.id.couponsGrantCouponsHead).setVisibility(show ? View.VISIBLE : View.GONE);
         this.findViewById(R.id.couponsGrantExpiryHead).setVisibility(show ? View.VISIBLE : View.GONE);
@@ -333,13 +340,13 @@ public class CouponsGrantActivity extends BaseActivity {
         this.message.setVisibility(show ? View.VISIBLE : View.GONE);
         this.flowLayout.setVisibility(show ? View.VISIBLE : View.GONE);
         this.emptyElement.setVisibility(!show ? View.VISIBLE : View.GONE);
-        if (show) {
+        if (!show) {
             List<String> empty = new ArrayList<>();
             if (this.emptyCoupons) {
                 empty.add(getString(R.string.coupons_grant_coupons));
             }
             if (this.emptyExpiry) {
-                empty.add(getString(R.string.coupons_grant_coupons));
+                empty.add(getString(R.string.coupons_grant_expiry));
             }
             String emptyString = Util.array2ArrayString(',', empty);
             this.emptyElement.setText(getString(R.string.coupons_grant_empty_element, emptyString));

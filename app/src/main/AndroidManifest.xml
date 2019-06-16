@@ -22,10 +22,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".CouponsGrantActivity" />
-        <activity android:name=".CouponsConfigActivity" />
-        <activity android:name=".CouponsNearOverdueActivity" />
-
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5cd7d2743fc1952293000a61" />
@@ -36,13 +32,6 @@
             android:name="PGYER_APPID"
             android:value="b345a6a954d01c9598c540b8f22ae352" />
 
-        <activity android:name=".IntegralUseActivity" />
-        <activity android:name=".AddressActivity" />
-        <activity android:name=".AddressesActivity" />
-        <activity android:name=".IntegralsActivity" />
-        <activity android:name=".IntegralAddActivity" />
-        <activity android:name=".IntegralElementActivity" />
-        <activity android:name=".CouponsActivity" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
@@ -59,6 +48,19 @@
         <activity
             android:name=".MemberActivity"
             android:label="@string/page_title_member" />
+        <activity android:name=".IntegralUseActivity" />
+        <activity android:name=".AddressActivity" />
+        <activity android:name=".AddressesActivity" />
+        <activity android:name=".IntegralsActivity" />
+        <activity android:name=".IntegralAddActivity" />
+        <activity android:name=".IntegralElementActivity" />
+        <activity android:name=".CouponsActivity" />
+        <activity
+            android:name=".CouponsGrantActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity android:name=".CouponsConfigActivity" />
+        <activity android:name=".CouponsNearOverdueActivity" />
+
         <activity android:name=".wxapi.WXEntryActivity" />
         <activity android:name=".wxapi.WXPayEntryActivity" />
 

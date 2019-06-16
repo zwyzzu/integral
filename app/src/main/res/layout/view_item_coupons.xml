@@ -2,7 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="88dp"
+    android:layout_height="92dp"
     android:background="@color/white">
 
     <LinearLayout
@@ -12,7 +12,6 @@
         android:background="@color/colorPrimary"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -45,6 +44,7 @@
         android:layout_margin="@dimen/margin_4"
         android:background="@drawable/background_coupons_tag"
         android:gravity="center"
+        android:textColor="@color/white"
         android:text="@string/coupons_label"
         android:textSize="@dimen/widget_fontSize_10"
         app:layout_constraintLeft_toRightOf="@id/itemCouponsAmount"
@@ -57,18 +57,23 @@
         android:layout_height="16dp"
         android:layout_marginStart="@dimen/margin_4"
         android:layout_marginLeft="@dimen/margin_4"
+        android:layout_marginTop="@dimen/margin_4"
         android:gravity="center"
         android:text="@string/app_name"
-        android:textSize="@dimen/widget_fontSize_10"
+        android:autoLink="all"
+        android:textStyle="bold"
+        android:textSize="@dimen/widget_fontSize_12"
         app:layout_constraintLeft_toRightOf="@id/itemCouponsTag"
         app:layout_constraintStart_toEndOf="@id/itemCouponsTag"
-        app:layout_constraintTop_toTopOf="@id/itemCouponsTag" />
+        app:layout_constraintTop_toTopOf="@id/itemCouponsAmount" />
 
     <TextView
         android:id="@+id/itemCouponsUse"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
-        android:layout_margin="@dimen/margin_4"
+        android:layout_marginEnd="@dimen/margin_4"
+        android:layout_marginRight="@dimen/margin_4"
+        android:layout_marginBottom="@dimen/margin_8"
         android:background="@drawable/background_button_use_coupons"
         android:gravity="center"
         android:text="@string/coupons_use"
@@ -81,7 +86,7 @@
         android:id="@+id/itemCouponsExpiry"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_4"
+        android:layout_margin="@dimen/margin_8"
         android:gravity="center_vertical"
         android:lines="1"
         android:singleLine="true"
@@ -120,4 +125,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:background="@color/background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

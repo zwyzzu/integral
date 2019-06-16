@@ -158,16 +158,16 @@ public class CouponsBindEntity extends BaseEntity {
         String time = "";
         switch (expiry.getExpiry()) {
             case DAY:
-                TimeUtil.getFutureDateByDay(create, TimeUtil.PATTERN_DAY4Y, expiry.getCount());
+                time = TimeUtil.getFutureDateByDay(create, TimeUtil.PATTERN_DAY4Y, expiry.getCount());
                 break;
             case WEEK:
-                TimeUtil.getFutureDateByWeek(create, TimeUtil.PATTERN_DAY4Y, expiry.getCount());
+                time = TimeUtil.getFutureDateByWeek(create, TimeUtil.PATTERN_DAY4Y, expiry.getCount());
                 break;
             case MONTH:
-                TimeUtil.getFutureDateByMonth(create, TimeUtil.PATTERN_DAY4Y, expiry.getCount());
+                time = TimeUtil.getFutureDateByMonth(create, TimeUtil.PATTERN_DAY4Y, expiry.getCount());
                 break;
             case YEAR:
-                TimeUtil.getFutureDateByYear(create, TimeUtil.PATTERN_DAY4Y, expiry.getCount());
+                time = TimeUtil.getFutureDateByYear(create, TimeUtil.PATTERN_DAY4Y, expiry.getCount());
                 break;
             case FOREVER:
                 time = "";
@@ -202,7 +202,7 @@ public class CouponsBindEntity extends BaseEntity {
         if (TextUtils.equals(this.getExpiryCode(), Expiry.FOREVER.code)) {
             return false;
         }
-        return System.currentTimeMillis() < this.getExpiryDate();
+        return System.currentTimeMillis() > this.getExpiryDate();
     }
 
     public boolean useable() {
