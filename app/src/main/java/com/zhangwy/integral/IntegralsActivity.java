@@ -108,11 +108,11 @@ public class IntegralsActivity extends BaseActivity {
                 TextView total = root.findViewById(R.id.memberIntegralTotal);
                 TextView used = root.findViewById(R.id.memberIntegralUsed);
                 TextView desc = root.findViewById(R.id.memberIntegralDesc);
-                String create = TimeUtil.dateMilliSecond2String(entity.getCreateDate(), TimeUtil.PATTERN_DAY4Y);
+                String create = TimeUtil.dateMilliSecond2String(entity.getCreateDate(), TimeUtil.PATTERN_DAY4Y2);
                 total.setText(getString(R.string.member_integral_total, Util.float2String(entity.getScore(), 2), create));
                 if (entity.getUsedDate() > entity.getCreateDate()) {
                     used.setVisibility(View.VISIBLE);
-                    String usedTime = TimeUtil.dateMilliSecond2String(entity.getUsedDate(), TimeUtil.PATTERN_DAY4Y);
+                    String usedTime = TimeUtil.dateMilliSecond2String(entity.getUsedDate(), TimeUtil.PATTERN_DAY4Y2);
                     String text = getString(R.string.member_integral_used, Util.float2String(entity.getUsedScore(), 2), usedTime);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         used.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT));

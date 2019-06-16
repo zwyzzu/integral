@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_disclaimer">
+
+    <TextView
+        android:id="@+id/couponsUseTitle"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="center"
+        android:text="@string/coupons_use_label"
+        android:textSize="@dimen/widget_fontSize_18"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/disclaimerTitle" />
+
+    <Button
+        android:id="@+id/couponsUseUnAgreed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_8"
+        android:layout_marginRight="@dimen/margin_8"
+        android:background="@drawable/background_button_red"
+        android:text="@string/cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/couponsUseAgreed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/couponsUseAgreed"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/couponsUseAgreed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_marginLeft="@dimen/margin_8"
+        android:background="@drawable/background_button_blue"
+        android:text="@string/coupons_use"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/couponsUseUnAgreed"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@id/couponsUseUnAgreed" />
+
+    <TextView
+        android:id="@+id/couponsUseOwner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_8"
+        android:text="@string/coupons_use_owner"
+        android:textSize="@dimen/widget_fontSize_14"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/couponsUseTitle" />
+
+    <TextView
+        android:id="@+id/couponsUseAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_8"
+        android:text="@string/coupons_use_amount"
+        android:textSize="@dimen/widget_fontSize_14"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/couponsUseOwner" />
+
+    <TextView
+        android:id="@+id/couponsUseExpiry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_8"
+        android:text="@string/coupons_grant_expiry"
+        android:textSize="@dimen/widget_fontSize_14"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/couponsUseAmount" />
+
+    <TextView
+        android:id="@+id/couponsUseDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_8"
+        android:text="@string/description"
+        android:textSize="@dimen/widget_fontSize_14"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/couponsUseExpiry" />
+
+    <TextView
+        android:id="@+id/couponsUseAmountValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_marginLeft="@dimen/margin_8"
+        android:layout_marginEnd="@dimen/margin_8"
+        android:layout_marginRight="@dimen/margin_8"
+        android:textSize="@dimen/widget_fontSize_14"
+        app:layout_constraintLeft_toRightOf="@id/couponsUseAmount"
+        app:layout_constraintStart_toEndOf="@id/couponsUseAmount"
+        app:layout_constraintTop_toTopOf="@id/couponsUseAmount" />
+
+    <TextView
+        android:id="@+id/couponsUseOwnerValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_8"
+        android:layout_marginRight="@dimen/margin_8"
+        android:textSize="@dimen/widget_fontSize_14"
+        app:layout_constraintLeft_toLeftOf="@id/couponsUseAmountValue"
+        app:layout_constraintStart_toStartOf="@id/couponsUseAmountValue"
+        app:layout_constraintTop_toTopOf="@id/couponsUseOwner" />
+
+    <TextView
+        android:id="@+id/couponsUseExpiryValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_8"
+        android:layout_marginRight="@dimen/margin_8"
+        android:textSize="@dimen/widget_fontSize_14"
+        app:layout_constraintLeft_toLeftOf="@id/couponsUseAmountValue"
+        app:layout_constraintStart_toStartOf="@id/couponsUseAmountValue"
+        app:layout_constraintTop_toTopOf="@id/couponsUseExpiry" />
+
+    <TextView
+        android:id="@+id/couponsUseDescriptionValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_8"
+        android:layout_marginRight="@dimen/margin_8"
+        android:lines="3"
+        android:textSize="@dimen/widget_fontSize_14"
+        app:layout_constraintLeft_toLeftOf="@id/couponsUseAmountValue"
+        app:layout_constraintStart_toStartOf="@id/couponsUseAmountValue"
+        app:layout_constraintBottom_toTopOf="@id/couponsUseUnAgreed"
+        app:layout_constraintTop_toTopOf="@id/couponsUseDescription" />
+</android.support.constraint.ConstraintLayout>

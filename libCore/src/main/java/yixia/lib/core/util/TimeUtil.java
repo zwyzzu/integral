@@ -17,6 +17,7 @@ public class TimeUtil {
     public static final String PATTERN_MONTH = "yyyy-MM";
     public static final String PATTERN_DAY2Y = "yy-MM-dd";
     public static final String PATTERN_DAY4Y = "yyyy-MM-dd";
+    public static final String PATTERN_DAY4Y2 = "yyyy.MM.dd";
     public static final String PATTERN_TIME = "HH:mm:ss";
     public static final String PATTERN_MMSS = "mm:ss";
     public static final String PATTERN_S = "yyyyMMddHHmmss";

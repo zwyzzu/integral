@@ -185,9 +185,9 @@ public class CouponsBindEntity extends BaseEntity {
         if (this.getExpiryDate() < 0) {
             return context == null ? "" : context.getString(Expiry.FOREVER.res);
         }
-        String time = TimeUtil.dateMilliSecond2String(this.getCreateDate(), TimeUtil.PATTERN_DAY4Y);
-        time += "--";
-        time += TimeUtil.dateMilliSecond2String(this.getExpiryDate(), TimeUtil.PATTERN_DAY4Y);
+        String time = TimeUtil.dateMilliSecond2String(this.getCreateDate(), TimeUtil.PATTERN_DAY4Y2);
+        time += "---";
+        time += TimeUtil.dateMilliSecond2String(this.getExpiryDate(), TimeUtil.PATTERN_DAY4Y2);
         return time;
     }
 

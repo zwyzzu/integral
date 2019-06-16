@@ -1,9 +1,13 @@
 package com.zhangwy.integral.data;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zhangwy.integral.R;
@@ -16,6 +20,7 @@ import java.util.List;
 import yixia.lib.core.exception.CodeException;
 import yixia.lib.core.util.Logger;
 import yixia.lib.core.util.Util;
+import yixia.lib.core.util.WindowUtil;
 
 /**
  * Created by zhangwy on 2019/6/6.
@@ -239,10 +244,40 @@ public abstract class ICouponsManager {
 
         @Override
         public void useCoupons(Context context, CouponsBindEntity entity) {
-            if (entity == null) {
+            if (entity == null || context == null) {
                 return;
             }
 
+            View root = LayoutInflater.from(context).inflate(R.layout.dialog_coupons_use, null);
+            TextView owner = root.findViewById(R.id.couponsUseOwnerValue);
+            TextView amount = root.findViewById(R.id.couponsUseAmountValue);
+            TextView expiry = root.findViewById(R.id.couponsUseExpiryValue);
+            TextView description = root.findViewById(R.id.couponsUseDescriptionValue);
+            View unAgreed = root.findViewById(R.id.couponsUseUnAgreed);
+            View agreed = root.findViewById(R.id.couponsUseAgreed);
+            owner.setText(entity.getBindName());
+            amount.setText(Util.float2String(entity.getAmount(), 2));
+            expiry.setText(entity.getExpiry(context));
+            String descContent = entity.getName() + "  " + entity.getDesc();
+            description.setText(descContent);
+            Dialog dialog = WindowUtil.createAlertDialog(context, 0, root, null, null);
+            if (dialog == null) {
+                return;
+            }
+            unAgreed.setOnClickListener(v -> dialog.dismiss());
+            agreed.setOnClickListener(v -> {
+                dialog.dismiss();
+                useCouponsImpl(context, entity);
+            });
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+        }
+
+        private void useCouponsImpl(Context context, CouponsBindEntity entity) {
+            if (entity == null) {
+                return;
+            }
             try {
                 IDataManager.getInstance().useCoupons(entity.getBind(), entity.getId());
                 this.removeItem(entity, this.useable.get(entity.getBind()));

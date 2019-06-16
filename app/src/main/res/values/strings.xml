@@ -191,6 +191,11 @@
     <string name="error_coupons_unselect">请选择优惠券</string>
     <string name="error_expiry_unselect">请选择有效期</string>
 
+    <string name="coupons_use_label">优惠券使用提醒</string>
+    <string name="coupons_use_owner">拥有者</string>
+    <string name="coupons_use_amount">优惠金额</string>
+    <string name="description">描述信息</string>
+
     <string name="permission_read_phone_state">读取电话状态</string>
     <string name="permission_read_external_storage">读取外部存储</string>
     <string name="permission_write_external_storage">写入外部存储</string>
