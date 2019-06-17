@@ -30,6 +30,7 @@ import java.util.List;
 import yixia.lib.core.base.BaseFragment;
 import yixia.lib.core.exception.CodeException;
 import yixia.lib.core.sharePreferences.PreferencesHelper;
+import yixia.lib.core.util.Device;
 import yixia.lib.core.util.Logger;
 import yixia.lib.core.util.Util;
 import yixia.lib.core.util.WindowUtil;
@@ -121,6 +122,9 @@ public class FragmentMine extends BaseFragment implements OnItemClickListener<Fr
                     case 1:
                         layout = R.layout.view_item_mine1;
                         break;
+                    case 2:
+                        layout = R.layout.view_item_mine2;
+                        break;
                 }
                 return LayoutInflater.from(getContext()).inflate(layout, parent, false);
             }
@@ -133,6 +137,9 @@ public class FragmentMine extends BaseFragment implements OnItemClickListener<Fr
                     SwitchCompat switchCompat = root.findViewById(R.id.mineItemSwitch);
                     switchCompat.setChecked(PreferencesHelper.defaultInstance().getBoolean(Common.PFRC_SHOW_MEMBER_AVATAR, true));
                     switchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> PreferencesHelper.defaultInstance().applyBoolean(Common.PFRC_SHOW_MEMBER_AVATAR, isChecked));
+                } else if (viewType == 2) {
+                    TextView value = root.findViewById(R.id.mineItemValue);
+                    value.setText(Device.App.getVersionName(getContext()));
                 }
             }
         });
@@ -160,6 +167,12 @@ public class FragmentMine extends BaseFragment implements OnItemClickListener<Fr
                 break;
             case CouponsNearOverdue:
                 CouponsNearOverdueActivity.start(getContext());
+                break;
+            case ShowMemberAvatar:
+                //独立处理
+                break;
+            case Version:
+                //不做操作
                 break;
         }
     }
@@ -283,6 +296,7 @@ public class FragmentMine extends BaseFragment implements OnItemClickListener<Fr
         Address("address", "导出地址", R.string.mine_address, 0),
         Feedback("Feedback", "问题反馈", R.string.mine_feedback, 0),
         ShowMemberAvatar("showMemberAvatar", "显示成员头像", R.string.mine_show_member_avatar, 1),
+        Version("version", "版本", R.string.mine_app_version, 2),
         ;
         public String code;
         public String name;

@@ -68,6 +68,7 @@
     <string name="mine_address">导出地址</string>
     <string name="mine_feedback">问题反馈</string>
     <string name="mine_show_member_avatar">显示成员头像</string>
+    <string name="mine_app_version">版本</string>
     <string name="mine_nickname">昵称</string>
     <string name="mine_message">这个人很懒，什么也没留下</string>
     <string name="mine_login">微信登录</string>
@@ -200,4 +201,6 @@
     <string name="permission_read_external_storage">读取外部存储</string>
     <string name="permission_write_external_storage">写入外部存储</string>
     <string name="permission_record_audio">录音</string>
+
+    <string name="copyright">Copyright©2018-2019二糖网络科技版权所有</string>
 </resources>
