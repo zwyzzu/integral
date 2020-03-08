@@ -210,7 +210,7 @@ public class CouponsBindEntity extends BaseEntity {
     }
 
     public boolean nearOverDue() {
-        if (!this.useable()) {
+        if (!this.useable() || TextUtils.equals(this.getExpiryCode(), Expiry.FOREVER.code)) {
             return false;
         }
 
