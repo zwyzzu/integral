@@ -2,4 +2,5 @@
 <resources>
     <string name="dialog_address_label">选择地址</string>
     <string name="unCheckedLabel">请选择</string>
+    <string name="unSelected">暂不选择</string>
 </resources>

@@ -65,6 +65,7 @@ public class AreaPickerView extends Dialog {
     private final int colorCheckedTrue = Color.parseColor("#65C15C");
     private final int colorCheckedFalse = Color.parseColor("#444444");
     private final String unCheckedLabel;
+    private final String unSelected;
 
     private final int screenHeight;
     public AreaPickerView(@NonNull Activity activity, int themeResId) {
@@ -73,6 +74,7 @@ public class AreaPickerView extends Dialog {
         this.provinces = JSON.parseArray(json, ProvinceEntity.class);
         this.screenHeight = Screen.getScreenHeight(activity);
         this.unCheckedLabel = activity.getString(R.string.unCheckedLabel);
+        this.unSelected = activity.getString(R.string.unSelected);
     }
 
     @Override
@@ -413,7 +415,7 @@ public class AreaPickerView extends Dialog {
         public void onLoadView(View root, int viewType, T entity, int position) {
             TextView textView = root.findViewById(R.id.textview);
             textView.setText(entity.getName());
-            textView.setTextColor(entity.isChecked() ? colorCheckedTrue : colorCheckedFalse);
+            textView.setTextColor(entity.isChecked() || TextUtils.isEmpty(entity.getCode()) ? colorCheckedTrue : colorCheckedFalse);
         }
     }
 
@@ -474,6 +476,10 @@ public class AreaPickerView extends Dialog {
         if (TextUtils.isEmpty(json)) {
             return new ArrayList<>();
         }
-        return JSON.parseArray(json, AddressEntity.class);
+        AddressEntity unSelectedEntity = new AddressEntity();
+        unSelectedEntity.setName(unSelected);
+        List<AddressEntity> array = JSON.parseArray(json, AddressEntity.class);
+        array.add(unSelectedEntity);
+        return array;
     }
 }

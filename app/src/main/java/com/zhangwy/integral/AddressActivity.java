@@ -78,16 +78,17 @@ public class AddressActivity extends BaseActivity {
             AreaPickerView areaPickerView = new AreaPickerView(this, com.zhangwy.address.R.style.Dialog);
             areaPickerView.setCallback(value -> {
                 this.addresses.clear();
-                StringBuffer buffer = new StringBuffer();
-                boolean first = true;
+                StringBuilder buffer = new StringBuilder();
                 for (AddressEntity address : value) {
                     if (address == null) {
                         break;
                     }
-                    if (!first) {
+                    if (buffer.length() != 0) {
                         buffer.append("  ");
                     }
-                    first = false;
+                    if (TextUtils.isEmpty(address.getCode())) {
+                        address.setName("");
+                    }
                     addresses.add(address);
                     buffer.append(address.getName());
                 }
@@ -221,7 +222,7 @@ public class AddressActivity extends BaseActivity {
             if (this.addresses.size() > 1 && (addressEntity = addresses.get(1)) != null) {
                 address.setCity(addressEntity.getName());
             }
-            if (this.addresses.size() > 2  && (addressEntity = addresses.get(2)) != null) {
+            if (this.addresses.size() > 2 && (addressEntity = addresses.get(2)) != null) {
                 address.setArea(addressEntity.getName());
             }
             if (this.addresses.size() > 3 && (addressEntity = addresses.get(3)) != null) {
