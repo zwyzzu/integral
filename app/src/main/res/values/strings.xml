@@ -61,7 +61,8 @@
     <string name="member_address_export">导出</string>
     <string name="member_address_export_over">地址信息已经复制到粘贴板</string>
     <string name="member_more">更多</string>
-    <string name="member_update_message">修改用户信息</string>
+    <string name="member_update_message">修改客户信息</string>
+    <string name="member_delete">确定删除\"%1$s\"信息吗？</string>
     <string name="mine_integral">积分项</string>
     <string name="mine_coupons">优惠券配置</string>
     <string name="mine_coupons_near_overdue">临期优惠券</string>
@@ -105,6 +106,7 @@
     <string name="save">保存</string>
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
+    <string name="delete">删除</string>
     <string name="add_integral_label">赠送积分</string>
     <string name="add_address_label">新建收件人</string>
     <string name="add_integral_spinner_second">积分:%1$s\t\t%2$s</string>

@@ -462,9 +462,9 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
      * @param id 成员ID
      */
     @Override
-    public void dldMember(String id) {
+    public boolean dldMember(String id) {
         if (TextUtils.isEmpty(id) || this.emptyHelper()) {
-            return;
+            return false;
         }
         SQLiteDatabase database = null;
         try {
@@ -477,8 +477,10 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 database.delete(TABLE_NAME_INTEGRAL_BIND, SQL_WHERECLAUSE_BIND, whereArgs);
             }
             database.setTransactionSuccessful();
+            return true;
         } catch (Exception e) {
             Logger.d("dldMember", e);
+            return false;
         } finally {
             this.endTransaction(database);
         }

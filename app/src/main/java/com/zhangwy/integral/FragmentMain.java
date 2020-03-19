@@ -1,6 +1,7 @@
 package com.zhangwy.integral;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
@@ -126,7 +127,7 @@ public class FragmentMain extends BaseFragment {
         }
         Resources resources = activity.getResources();
         int[] avatars = resources.getIntArray(R.array.avatar);
-        if (avatars == null || avatars.length <= 0) {
+        if (Util.arrayEmpty(avatars)) {
             return R.drawable.avatar_ff8c00;
         }
         int maxIndex = avatars.length - 1;
@@ -135,5 +136,13 @@ public class FragmentMain extends BaseFragment {
             index = maxIndex;
         }
         return resources.obtainTypedArray(R.array.avatar).getResourceId(index, 0);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_MEMBER) {
+            this.reloadData();
+        }
     }
 }

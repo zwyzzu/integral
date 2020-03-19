@@ -2,6 +2,7 @@ package com.zhangwy.integral;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import yixia.lib.core.base.BaseActivity;
+import yixia.lib.core.util.FileUtil;
 import yixia.lib.core.util.TimeUtil;
 import yixia.lib.core.util.Util;
 import yixia.lib.core.util.WindowUtil;
@@ -109,10 +112,19 @@ public class MemberActivity extends BaseActivity implements ICouponsManager.OnCo
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_member, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                break;
+            case R.id.memberDelete:
+                this.deleteMember();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -147,29 +159,21 @@ public class MemberActivity extends BaseActivity implements ICouponsManager.OnCo
                 int layout = -1;
                 switch (viewType) {
                     case MemberItemEntity.TYPE_INTEGRAL_HEAD:
+                    case MemberItemEntity.TYPE_ADDRESS_HEAD:
+                    case MemberItemEntity.TYPE_COUPONS_HEAD:
                         layout = R.layout.view_item_member_title;
                         break;
                     case MemberItemEntity.TYPE_INTEGRAL:
                         layout = R.layout.view_item_member_integral;
                         break;
-                    case MemberItemEntity.TYPE_INTEGRAL_MORE:
-                        layout = R.layout.view_item_member_more;
-                        break;
-                    case MemberItemEntity.TYPE_ADDRESS_HEAD:
-                        layout = R.layout.view_item_member_title;
-                        break;
                     case MemberItemEntity.TYPE_ADDRESS:
                         layout = R.layout.view_item_member_address;
-                        break;
-                    case MemberItemEntity.TYPE_ADDRESS_MORE:
-                        layout = R.layout.view_item_member_more;
-                        break;
-                    case MemberItemEntity.TYPE_COUPONS_HEAD:
-                        layout = R.layout.view_item_member_title;
                         break;
                     case MemberItemEntity.TYPE_COUPONS:
                         layout = R.layout.view_item_coupons;
                         break;
+                    case MemberItemEntity.TYPE_INTEGRAL_MORE:
+                    case MemberItemEntity.TYPE_ADDRESS_MORE:
                     case MemberItemEntity.TYPE_COUPONS_MORE:
                         layout = R.layout.view_item_member_more;
                         break;
@@ -181,29 +185,21 @@ public class MemberActivity extends BaseActivity implements ICouponsManager.OnCo
             public void onLoadView(View root, int viewType, MemberItemEntity entity, int position) {
                 switch (viewType) {
                     case MemberItemEntity.TYPE_INTEGRAL_HEAD:
+                    case MemberItemEntity.TYPE_ADDRESS_HEAD:
+                    case MemberItemEntity.TYPE_COUPONS_HEAD:
                         refreshHead(root, viewType);
                         break;
                     case MemberItemEntity.TYPE_INTEGRAL:
                         refreshIntegral(root, (IntegralBindEntity) entity.data);
                         break;
-                    case MemberItemEntity.TYPE_INTEGRAL_MORE:
-                        refreshMore(root, viewType);
-                        break;
-                    case MemberItemEntity.TYPE_ADDRESS_HEAD:
-                        refreshHead(root, viewType);
-                        break;
                     case MemberItemEntity.TYPE_ADDRESS:
                         refreshAddress(root, (AddressEntity) entity.data);
-                        break;
-                    case MemberItemEntity.TYPE_ADDRESS_MORE:
-                        refreshMore(root, viewType);
-                        break;
-                    case MemberItemEntity.TYPE_COUPONS_HEAD:
-                        refreshHead(root, viewType);
                         break;
                     case MemberItemEntity.TYPE_COUPONS:
                         refreshCoupons(root, (CouponsBindEntity) entity.data);
                         break;
+                    case MemberItemEntity.TYPE_INTEGRAL_MORE:
+                    case MemberItemEntity.TYPE_ADDRESS_MORE:
                     case MemberItemEntity.TYPE_COUPONS_MORE:
                         refreshMore(root, viewType);
                         break;
@@ -311,7 +307,7 @@ public class MemberActivity extends BaseActivity implements ICouponsManager.OnCo
         if (entity.used()) {
             amount.setBackgroundResource(R.color.lighter_gray);
             mark.setImageResource(R.mipmap.icon_coupons_used);
-        } else if (entity.overdue()){
+        } else if (entity.overdue()) {
             amount.setBackgroundResource(R.color.lighter_gray);
             mark.setImageResource(R.mipmap.icon_coupons_overdue);
         } else if (entity.nearOverDue()) {
@@ -385,5 +381,21 @@ public class MemberActivity extends BaseActivity implements ICouponsManager.OnCo
     @Override
     public void onLoadCouponsSuccess() {
         this.refreshRecycler();
+    }
+
+    private void deleteMember() {
+        String title = "";
+        String message = getString(R.string.member_delete, member.getName());
+        DialogInterface.OnClickListener okListener = (dialog, which) -> {
+            if (IDataManager.getInstance().dldMember(mmbId)) {
+                if (!TextUtils.isEmpty(member.getIcon())) {
+                    FileUtil.deleteFile(member.getIcon());
+                }
+                finish();
+            }
+        };
+        WindowUtil.createAlertDialog(this, title, message,
+                getString(R.string.ok), okListener,
+                getString(R.string.cancel), (dialog, which) -> dialog.dismiss()).show();
     }
 }

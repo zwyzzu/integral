@@ -161,6 +161,7 @@ public class FragmentAdd extends BaseFragment implements View.OnClickListener {
     }
 
     private void clearInput() {
+        this.avatarUri = null;
         this.avatar.setImageResource(R.mipmap.icon_avatar);
         this.addNameInput.getText().clear();
         this.addPhoneInput.getText().clear();

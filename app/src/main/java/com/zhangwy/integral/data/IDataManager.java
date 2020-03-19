@@ -77,7 +77,7 @@ public abstract class IDataManager {
      *
      * @param id 成员ID
      */
-    public abstract void dldMember(String id);
+    public abstract boolean dldMember(String id);
 
     /**
      * 修改成员描述信息
