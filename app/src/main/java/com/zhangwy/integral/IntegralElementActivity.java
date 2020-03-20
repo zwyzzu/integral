@@ -2,11 +2,13 @@ package com.zhangwy.integral;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,17 +20,20 @@ import android.widget.TextView;
 
 import com.yixia.widget.recycler.RecyclerAdapter;
 import com.yixia.widget.recycler.RecyclerDivider;
+import com.yixia.widget.recycler.RecyclerTouchHelper;
 import com.yixia.widget.recycler.VSRecyclerView;
 import com.zhangwy.integral.data.IDataManager;
 import com.zhangwy.integral.entity.IntegralEntity;
 
 import java.util.List;
+import java.util.Locale;
 
 import yixia.lib.core.base.BaseActivity;
+import yixia.lib.core.util.Logger;
 import yixia.lib.core.util.Util;
 import yixia.lib.core.util.WindowUtil;
 
-public class IntegralElementActivity extends BaseActivity {
+public class IntegralElementActivity extends BaseActivity implements RecyclerTouchHelper.OnSwipedListener {
 
     public static void start(Context context) {
         if (context == null)
@@ -42,8 +47,6 @@ public class IntegralElementActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_integral_element);
-        Toolbar toolbar = this.findViewById(R.id.integralElementToolbar);
-        setSupportActionBar(toolbar);
         this.initRecycler();
         this.reload();
         this.setToolbar();
@@ -69,7 +72,7 @@ public class IntegralElementActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.integralElementAdd:
-                this.add(null);
+                this.add(0, null);
                 return true;
             case android.R.id.home:
                 this.finish();
@@ -99,7 +102,9 @@ public class IntegralElementActivity extends BaseActivity {
                 message.setText(getString(R.string.element_item_message, entity.getDesc()));
             }
         });
-        this.recyclerView.setOnItemClickListener((view, viewType, entity, position) -> add(entity));
+        this.recyclerView.setOnItemClickListener((view, viewType, entity, position) -> add(position, entity));
+        ItemTouchHelper touchHelper = new ItemTouchHelper(new RecyclerTouchHelper(this));
+        touchHelper.attachToRecyclerView(this.recyclerView);
     }
 
     private void reload() {
@@ -107,7 +112,7 @@ public class IntegralElementActivity extends BaseActivity {
         this.recyclerView.reload(array);
     }
 
-    private void add(IntegralEntity oldEntity) {
+    private void add(int position, IntegralEntity oldEntity) {
         View root = getLayoutInflater().inflate(R.layout.dialog_integral_element, this.recyclerView, false);
         final EditText score = root.findViewById(R.id.elementAddScore);
         final EditText title = root.findViewById(R.id.elementAddTitle);
@@ -136,11 +141,12 @@ public class IntegralElementActivity extends BaseActivity {
             entity.setCheckCoefficient(checkBox.isChecked());
             if (oldEntity == null) {
                 IDataManager.getInstance().addIntegral(entity);
+                recyclerView.add(entity, 0);
             } else {
                 entity.setId(oldEntity.getId());
                 IDataManager.getInstance().updateIntegral(entity);
+                recyclerView.replace(entity, position);
             }
-            reload();
         });
         cancel.setOnClickListener(v -> {
             if (dialog != null) {
@@ -154,5 +160,29 @@ public class IntegralElementActivity extends BaseActivity {
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
         }
+    }
+
+
+    @Override
+    public void onSwiped(int position, int direction) {
+        Logger.d(String.format(Locale.getDefault(), "onSwiped(%d, %d)", position, direction));
+        this.recyclerView.notifyItemChanged(position);
+        this.delete(position, this.recyclerView.getData(position));
+    }
+
+    private void delete(int position, IntegralEntity entity) {
+        if (entity == null) {
+            return;
+        }
+        String title = "";
+        String message = getString(R.string.integral_element_delete, entity.getName());
+        DialogInterface.OnClickListener okListener = (dialog, which) -> {
+            if (IDataManager.getInstance().dldBooking(entity.getId())) {
+                recyclerView.remove(position);
+            }
+        };
+        WindowUtil.createAlertDialog(this, title, message,
+                getString(R.string.ok), okListener,
+                getString(R.string.cancel), (dialog, which) -> dialog.dismiss()).show();
     }
 }
