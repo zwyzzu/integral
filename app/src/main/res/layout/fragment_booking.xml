@@ -6,33 +6,31 @@
     android:background="@color/background">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/integralElementToolbar"
+        android:id="@+id/bookingToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/background_bar"
         android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/icon_widget_back">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/integral_element_label" />
+            android:text="@string/main_bottom_booking" />
     </android.support.v7.widget.Toolbar>
 
     <com.yixia.widget.recycler.VSRecyclerView
-        android:id="@+id/integralElementRecyclerView"
-        android:layout_width="0dip"
+        android:id="@+id/bookingRecycler"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_margin="@dimen/margin_8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/integralElementToolbar" />
+        app:layout_constraintTop_toBottomOf="@id/bookingToolbar" />
 
 </android.support.constraint.ConstraintLayout>

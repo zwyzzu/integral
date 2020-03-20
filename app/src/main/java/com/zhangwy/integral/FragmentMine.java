@@ -168,6 +168,9 @@ public class FragmentMine extends BaseFragment implements OnItemClickListener<Fr
             case CouponsNearOverdue:
                 CouponsNearOverdueActivity.start(getContext());
                 break;
+            case Booking:
+                BookingElementActivity.start(getContext());
+                break;
             case ShowMemberAvatar:
                 //独立处理
                 break;
@@ -293,6 +296,7 @@ public class FragmentMine extends BaseFragment implements OnItemClickListener<Fr
         Integral("integral", "积分项", R.string.mine_integral, 0),
         Coupons("coupons", "优惠券配置", R.string.mine_coupons, 0),
         CouponsNearOverdue("couponsNearOverdue", "临期优惠券", R.string.mine_coupons_near_overdue, 0),
+        Booking("booking", "预订项", R.string.mine_booking, 0),
         Address("address", "导出地址", R.string.mine_address, 0),
         Feedback("Feedback", "问题反馈", R.string.mine_feedback, 0),
         ShowMemberAvatar("showMemberAvatar", "显示成员头像", R.string.mine_show_member_avatar, 1),

@@ -16,12 +16,13 @@ import java.util.List;
  * Description RecyclerView 的适配器
  */
 @SuppressWarnings("unused")
-public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder>
-        implements View.OnClickListener, RefreshAdapterCallBack<T> {
+public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder> implements View.OnClickListener, RefreshAdapterCallBack<T> {
     private static final int ADD_END = -1;
     private List<T> array = new ArrayList<>();
     private OnItemClickListener<T> itemClickListener;
     private OnItemLoading<T> itemLoading;
+    private long lastClickTime = 0;
+    private final long CLICK_INTERVAL = 1000;
 
     public RecyclerAdapter(List<T> array, OnItemLoading<T> itemLoading) {
         super();
@@ -50,7 +51,11 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Rec
     @Override
     public void add(T t, int position) {
         this.addItem(t, position);
-        this.notifyDataSetChanged();
+        if (this.addLast(position)) {
+            this.notifyItemInserted(getItemCount());
+        } else {
+            this.notifyItemInserted(position);
+        }
     }
 
     @Override
@@ -77,14 +82,23 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Rec
 
     @Override
     public void remove(T t) {
+        int position = this.array.indexOf(t);
+        if (position < 0 || position >= this.array.size()) {
+            return;
+        }
         this.array.remove(t);
-        this.notifyDataSetChanged();
+        this.notifyItemRemoved(position);
     }
 
     @Override
     public void remove(int position) {
+        final int count = getItemCount();
         this.removeItem(position);
-        this.notifyDataSetChanged();
+        if (position >= 0 && position < count) {
+            this.notifyItemRemoved(position);
+        } else {
+            this.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -98,7 +112,7 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Rec
     @Override
     public void replace(T t, int position) {
         this.replaceItem(t, position);
-        this.notifyDataSetChanged();
+        this.notifyItemChanged(position);
     }
 
     @Override
@@ -190,8 +204,7 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Rec
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         holder.bindPosition(position);
-        itemLoading.onLoadView(holder.itemView, holder.getItemViewType(), getItem(position),
-                position);
+        itemLoading.onLoadView(holder.itemView, holder.getItemViewType(), getItem(position), position);
     }
 
     @Override
@@ -214,6 +227,10 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Rec
     public void onClick(View v) {
         if (itemClickListener == null)
             return;
+        if (System.currentTimeMillis() - this.lastClickTime < CLICK_INTERVAL) {
+            return;
+        }
+        this.lastClickTime = System.currentTimeMillis();
         int position = (int) v.getTag();
         T entity = getItem(position);
         itemClickListener.onItemClick(v, getItemViewType(position), entity, position);

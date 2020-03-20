@@ -2,18 +2,19 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="84dp"
-    android:background="@color/white">
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingStart="@dimen/padding_16"
+    android:paddingLeft="@dimen/padding_16"
+    android:paddingTop="@dimen/padding_8"
+    android:paddingEnd="@dimen/padding_16"
+    android:paddingRight="@dimen/padding_16"
+    android:paddingBottom="@dimen/padding_8">
 
     <TextView
-        android:id="@+id/integralElementItemScore"
+        android:id="@+id/bookingElementItemText"
         android:layout_width="0dip"
         android:layout_height="20dip"
-        android:layout_marginStart="@dimen/margin_16"
-        android:layout_marginLeft="@dimen/margin_16"
-        android:layout_marginTop="@dimen/margin_8"
-        android:layout_marginEnd="@dimen/margin_16"
-        android:layout_marginRight="@dimen/margin_16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -21,32 +22,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/integralElementItemTitle"
+        android:id="@+id/bookingElementItemDesc"
         android:layout_width="0dip"
         android:layout_height="20dip"
-        android:layout_marginStart="@dimen/margin_16"
-        android:layout_marginLeft="@dimen/margin_16"
         android:layout_marginTop="@dimen/margin_4"
-        android:layout_marginEnd="@dimen/margin_16"
-        android:layout_marginRight="@dimen/margin_16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/integralElementItemScore" />
+        app:layout_constraintTop_toBottomOf="@id/bookingElementItemText" />
 
     <TextView
-        android:id="@+id/integralElementItemMessage"
+        android:id="@+id/bookingElementItemDate"
         android:layout_width="0dip"
         android:layout_height="20dip"
-        android:layout_marginStart="@dimen/margin_16"
-        android:layout_marginLeft="@dimen/margin_16"
         android:layout_marginTop="@dimen/margin_4"
-        android:layout_marginEnd="@dimen/margin_16"
-        android:layout_marginRight="@dimen/margin_16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/integralElementItemTitle" />
+        app:layout_constraintTop_toBottomOf="@id/bookingElementItemDesc" />
 </android.support.constraint.ConstraintLayout>

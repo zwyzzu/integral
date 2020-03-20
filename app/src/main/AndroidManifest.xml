@@ -54,10 +54,9 @@
         <activity android:name=".IntegralsActivity" />
         <activity android:name=".IntegralAddActivity" />
         <activity android:name=".IntegralElementActivity" />
+        <activity android:name=".BookingElementActivity" />
         <activity android:name=".CouponsActivity" />
-        <activity
-            android:name=".CouponsGrantActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity android:name=".CouponsGrantActivity" android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity android:name=".CouponsConfigActivity" />
         <activity android:name=".CouponsNearOverdueActivity" />
 

@@ -15,6 +15,8 @@ import yixia.lib.core.base.BaseActivity;
 public class CouponsNearOverdueActivity extends BaseActivity {
 
     public static void start(Context context) {
+        if (context == null)
+            return;
         context.startActivity(new Intent(context, CouponsNearOverdueActivity.class));
     }
 

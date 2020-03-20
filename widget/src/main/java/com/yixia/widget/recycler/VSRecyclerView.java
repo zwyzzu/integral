@@ -102,6 +102,11 @@ public class VSRecyclerView<T> extends RecyclerView {
             this.adapter.remove(t);
     }
 
+    public void remove(int position) {
+        if (adapter != null)
+            this.adapter.remove(position);
+    }
+
     public void add(T t) {
         if (adapter != null)
             adapter.add(t);
@@ -155,5 +160,12 @@ public class VSRecyclerView<T> extends RecyclerView {
         if (adapter != null)
             return this.adapter.getData();
         return new ArrayList<>();
+    }
+
+    public T getData(int position) {
+        if (adapter != null) {
+            return this.adapter.getItem(position);
+        }
+        return null;
     }
 }

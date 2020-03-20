@@ -26,12 +26,14 @@ import yixia.lib.core.util.VSPermission;
 public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, OnRequestPermission {
 
     private FragmentMain fragmentMain;
+    private FragmentBooking fragmentBooking;
     private FragmentAdd fragmentAdd;
     private FragmentMine fragmentMine;
     private final String PRFKEY_SHOW_DISCLAIMER = "showDisclaimer";
     private boolean first = false;
     private final int REQUESTCODE_PERMISSION = 100;
     private VSPermission permission;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,8 +104,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         if (requestCode == Util.REQUEST_CODE_APP_INSTALL && resultCode == RESULT_OK) {
             Upgrade upgrade = Upgrade.newInstance(this, true);
             upgrade.check(false, false, true);
-        } else if (requestCode == REQUESTCODE_PERMISSION) {
-            //TODO
+//        } else if (requestCode == REQUESTCODE_PERMISSION) {
         }
     }
 
@@ -116,6 +117,13 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 }
                 fragment = this.fragmentMain;
                 this.showMessage(false, true, "main");
+                break;
+            case R.id.mainBottomBarBooking:
+                if (this.fragmentBooking == null) {
+                    this.fragmentBooking = FragmentBooking.newInstance();
+                }
+                fragment = this.fragmentBooking;
+                this.showMessage(false, true, "booking");
                 break;
             case R.id.mainBottomBarAdd:
                 if (this.fragmentAdd == null) {

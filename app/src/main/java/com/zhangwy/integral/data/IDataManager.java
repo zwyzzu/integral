@@ -3,6 +3,7 @@ package com.zhangwy.integral.data;
 import android.content.Context;
 
 import com.zhangwy.integral.entity.AddressEntity;
+import com.zhangwy.integral.entity.BookingEntity;
 import com.zhangwy.integral.entity.CouponsBindEntity;
 import com.zhangwy.integral.entity.CouponsEntity;
 import com.zhangwy.integral.entity.CouponsExpiryEntity;
@@ -63,19 +64,20 @@ public abstract class IDataManager {
      *
      * @param member 成员对象
      */
-    public abstract void addMember(MemberEntity member);
+    public abstract boolean addMember(MemberEntity member);
 
     /**
      * 更新成员
      *
      * @param member 成员对象
      */
-    public abstract void updateMember(MemberEntity member);
+    public abstract boolean updateMember(MemberEntity member);
 
     /**
      * 删除成员
      *
      * @param id 成员ID
+     * @return true dld success
      */
     public abstract boolean dldMember(String id);
 
@@ -85,35 +87,36 @@ public abstract class IDataManager {
      * @param mmId    成员ID
      * @param message 成员描述信息
      */
-    public abstract void updateMessage(String mmId, String message);
+    public abstract boolean updateMessage(String mmId, String message);
 
     /**
      * 添加成员地址
      *
      * @param address 地址
      */
-    public abstract void addAddress(AddressEntity address);
+    public abstract boolean addAddress(AddressEntity address);
 
     /**
      * 更新地址
      *
      * @param address 地址
      */
-    public abstract void updateAddress(AddressEntity address);
+    public abstract boolean updateAddress(AddressEntity address);
 
     /**
      * 删除地址
      *
      * @param id 地址ID
+     * @return true dld success
      */
-    public abstract void dldAddress(String id);
+    public abstract boolean dldAddress(String id);
 
     /**
      * 情况成员地址
      *
      * @param memberId 成员ID
      */
-    public abstract void clearAddress(String memberId);
+    public abstract boolean clearAddress(String memberId);
 
     /**
      * 获取用户地址列表
@@ -143,35 +146,36 @@ public abstract class IDataManager {
      *
      * @param integral 积分
      */
-    public abstract void addIntegral(IntegralEntity integral);
+    public abstract boolean addIntegral(IntegralEntity integral);
 
     /**
      * 更新积分项
      *
      * @param integral 积分
      */
-    public abstract void updateIntegral(IntegralEntity integral);
+    public abstract boolean updateIntegral(IntegralEntity integral);
 
     /**
-     * 添加积分项
+     * 删除积分项
      *
      * @param id 积分ID
+     * @return true dld success
      */
-    public abstract void dldIntegral(String id);
+    public abstract boolean dldIntegral(String id);
 
     /**
      * 添加用户积分
      *
      * @param integralBind 用户积分
      */
-    public abstract void addMemberIntegral(IntegralBindEntity integralBind);
+    public abstract boolean addMemberIntegral(IntegralBindEntity integralBind);
 
     /**
      * 修改用户积分
      *
      * @param integralBind 用户积分
      */
-    public abstract void updateMemberIntegral(IntegralBindEntity integralBind);
+    public abstract boolean updateMemberIntegral(IntegralBindEntity integralBind);
 
     /**
      * 获取用户积分列表
@@ -203,14 +207,15 @@ public abstract class IDataManager {
      * @param expiry 有效期对象
      * @throws CodeException 抛异常
      */
-    public abstract void addExpiry(CouponsExpiryEntity expiry) throws CodeException;
+    public abstract boolean addExpiry(CouponsExpiryEntity expiry) throws CodeException;
 
     /**
      * 删除有效期配置
      *
      * @param expiryId 有效期ID
+     * @return true dld success
      */
-    public abstract void dldExpiry(String expiryId);
+    public abstract boolean dldExpiry(String expiryId);
 
     /**
      * 获取所有的有效期列表
@@ -224,21 +229,22 @@ public abstract class IDataManager {
      *
      * @param coupons 优惠券实体类
      */
-    public abstract void addCoupons(CouponsEntity coupons);
+    public abstract boolean addCoupons(CouponsEntity coupons);
 
     /**
      * 修改优惠券项
      *
      * @param coupons 优惠券实体类
      */
-    public abstract void updateCoupons(CouponsEntity coupons);
+    public abstract boolean updateCoupons(CouponsEntity coupons);
 
     /**
      * 删除优惠券项
      *
      * @param couponsId 优惠券ID
+     * @return true dld success
      */
-    public abstract void dldCoupons(String couponsId);
+    public abstract boolean dldCoupons(String couponsId);
 
     /**
      * 获取优惠券项
@@ -252,14 +258,14 @@ public abstract class IDataManager {
      *
      * @param coupons 优惠券对象
      */
-    public abstract void addMemberCoupons(CouponsBindEntity coupons);
+    public abstract boolean addMemberCoupons(CouponsBindEntity coupons);
 
     /**
      * 修改成员优惠券
      *
      * @param coupons 优惠券对象
      */
-    public abstract void updateMemberCoupons(CouponsBindEntity coupons);
+    public abstract boolean updateMemberCoupons(CouponsBindEntity coupons);
 
     /**
      * 获取成员优惠券
@@ -277,7 +283,7 @@ public abstract class IDataManager {
      * @param couponsId 优惠券ID
      * @throws CodeException 使用优惠券期间出现异常
      */
-    public abstract void useCoupons(String memberId, String couponsId) throws CodeException;
+    public abstract boolean useCoupons(String memberId, String couponsId) throws CodeException;
 
     /**
      * 获取成员优惠券列表
@@ -286,4 +292,43 @@ public abstract class IDataManager {
      * @return 成员优惠券列表
      */
     public abstract List<CouponsBindEntity> getMemberCoupons(String memberId);
+
+    /**
+     * 获取预订项
+     *
+     * @return 预订项列表
+     */
+    public abstract List<BookingEntity> getBookings();
+
+    /**
+     * 获取预订项
+     *
+     * @param bookingId 预订项ID
+     * @return 积分项
+     */
+    public abstract BookingEntity getBooking(String bookingId);
+
+    /**
+     * 添加预订项
+     *
+     * @param booking 预订项
+     * @return true add success
+     */
+    public abstract boolean addBooking(BookingEntity booking);
+
+    /**
+     * 更新预订项
+     *
+     * @param booking 预订项
+     * @return true update success
+     */
+    public abstract boolean updateBooking(BookingEntity booking);
+
+    /**
+     * 删除预订项
+     *
+     * @param id 预订ID
+     * @return true dld success
+     */
+    public abstract boolean dldBooking(String id);
 }

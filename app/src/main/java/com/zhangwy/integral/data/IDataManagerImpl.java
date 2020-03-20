@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.zhangwy.integral.entity.AddressEntity;
+import com.zhangwy.integral.entity.BookingEntity;
 import com.zhangwy.integral.entity.CouponsBindEntity;
 import com.zhangwy.integral.entity.CouponsEntity;
 import com.zhangwy.integral.entity.CouponsExpiryEntity;
@@ -17,6 +18,7 @@ import com.zhangwy.integral.entity.MemberEntity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import yixia.lib.core.db.DatabaseHelper;
 import yixia.lib.core.db.DatabaseHelper.DatabaseConfig;
@@ -35,7 +37,8 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
     private final int DATABASE_VERSION_1 = 1;
     private final int DATABASE_VERSION_2 = 2;
     private final int DATABASE_VERSION_3 = 3;
-    private final int DATABASE_VERSION = DATABASE_VERSION_3;
+    private final int DATABASE_VERSION_4 = 4;
+    private final int DATABASE_VERSION = DATABASE_VERSION_4;
 
     private final String TABLE_NAME_MEMBER = "member_data";
     private final String TABLE_NAME_INTEGRAL = "integral_data";
@@ -44,6 +47,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
     private final String TABLE_NAME_COUPONS = "coupons_data";
     private final String TABLE_NAME_COUPONS_BIND = "coupons_bind_data";
     private final String TABLE_NAME_EXPIRY = "expiry_data";
+    private final String TABLE_NAME_BOOKING = "booking_data";
 
     private final String SQL_WHERECLAUSE_BIND = " bind = ? ";
     private final String SQL_WHERECLAUSE_ID = " id = ? ";
@@ -55,6 +59,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
     private final SQLCreator SQL_CREATOR_COUPONS = SQLCreator.newInstance(this.TABLE_NAME_COUPONS);
     private final SQLCreator SQL_CREATOR_COUPONS_BIND = SQLCreator.newInstance(this.TABLE_NAME_COUPONS_BIND);
     private final SQLCreator SQL_CREATOR_EXPIRY = SQLCreator.newInstance(this.TABLE_NAME_EXPIRY);
+    private final SQLCreator SQL_CREATOR_BOOKING = SQLCreator.newInstance(this.TABLE_NAME_BOOKING);
 
     {//
         SQL_CREATOR_MEMBER.setPrimaryKey("id", SQLCreator.Format.TEXT)
@@ -129,6 +134,11 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 .put("count", SQLCreator.Format.INTEGER, false)
                 .put("expiryCode", SQLCreator.Format.TEXT, false)
                 .build();
+
+        SQL_CREATOR_BOOKING.setPrimaryKey("id", SQLCreator.Format.TEXT)
+                .put("text", SQLCreator.Format.TEXT, false)
+                .put("desc", SQLCreator.Format.TEXT, false)
+                .put("lastUseTime", SQLCreator.Format.LONG, false);
     }
 
     private Context mContext;
@@ -168,6 +178,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             database.execSQL(this.SQL_CREATOR_EXPIRY.create());
             database.execSQL(this.SQL_CREATOR_COUPONS.create());
             database.execSQL(this.SQL_CREATOR_COUPONS_BIND.create());
+            database.execSQL(this.SQL_CREATOR_BOOKING.create());
         }
     }
 
@@ -184,11 +195,22 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 database.execSQL(this.SQL_CREATOR_COUPONS.create());
                 database.execSQL(this.SQL_CREATOR_COUPONS_BIND.create());
             case DATABASE_VERSION_3:
+                database.execSQL(this.SQL_CREATOR_BOOKING.create());
+            case DATABASE_VERSION_4:
         }
     }
 
     @Override
     public void onDowngrade(SQLiteDatabase database, int oldVersion, int newVersion) {
+        if (!this.openDatabase(database)) {
+            return;
+        }
+        switch (oldVersion) {
+            case DATABASE_VERSION_1:
+            case DATABASE_VERSION_2:
+            case DATABASE_VERSION_3:
+            case DATABASE_VERSION_4:
+        }
     }
 
     /**
@@ -273,7 +295,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         member.setDaughterCount(cursor.getInt(columnIndex++));
         member.setCreated(cursor.getLong(columnIndex++));
         member.setModified(cursor.getLong(columnIndex++));
-        Logger.d(String.format("the table's column count is %s", columnIndex + ""));
+        Logger.d(String.format(Locale.getDefault(), "the table %s's column count is %d", TABLE_NAME_MEMBER, columnIndex));
         member.setAddress(this.queryAddress(database, member.getId()));
         member.setIntegrals(this.queryMemberIntegral(database, member.getId()));
         return member;
@@ -309,7 +331,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         address.setDesc(cursor.getString(columnIndex++));
         address.setBind(cursor.getString(columnIndex++));
         address.setPosition(cursor.getInt(columnIndex++));
-        Logger.d(String.format("the table's column count is %s", columnIndex + ""));
+        Logger.d(String.format(Locale.getDefault(), "the table %s's column count is %d", TABLE_NAME_ADDRESS, columnIndex));
         return address;
     }
 
@@ -339,7 +361,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         integral.setUsedScore(cursor.getFloat(columnIndex++));
         integral.setCreateDate(cursor.getLong(columnIndex++));
         integral.setUsedDate(cursor.getLong(columnIndex++));
-        Logger.d(String.format("the table's column count is %s", columnIndex + ""));
+        Logger.d(String.format(Locale.getDefault(), "the table %s's column count is %d", TABLE_NAME_INTEGRAL_BIND, columnIndex));
         return integral;
     }
 
@@ -349,16 +371,15 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
      * @param member 成员对象
      */
     @Override
-    public void addMember(MemberEntity member) {
+    public boolean addMember(MemberEntity member) {
         if (member == null || this.emptyHelper()) {
-            return;
+            return false;
         }
         SQLiteDatabase database = null;
         try {
             database = this.helper.open();
             if (this.hasMember(database, member.getId())) {
-                this.updateMember(member);
-                return;
+                return this.updateMember(member);
             }
             database.beginTransaction();
             ContentValues values = new ContentValues();
@@ -377,12 +398,14 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             values.put("modified", System.currentTimeMillis());
             long raw = database.insertWithOnConflict(TABLE_NAME_MEMBER, null, values, SQLiteDatabase.CONFLICT_REPLACE);
             if (raw < 0) {
-                return;
+                return false;
             }
             this.updateMemberData(database, member);
             database.setTransactionSuccessful();
+            return true;
         } catch (Exception e) {
             Logger.d("addMember", e);
+            return false;
         } finally {
             this.endTransaction(database);
         }
@@ -394,16 +417,15 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
      * @param member 成员对象
      */
     @Override
-    public void updateMember(MemberEntity member) {
+    public boolean updateMember(MemberEntity member) {
         if (member == null || this.emptyHelper()) {
-            return;
+            return false;
         }
         SQLiteDatabase database = null;
         try {
             database = this.helper.open();
             if (!this.hasMember(database, member.getId())) {
-                this.addMember(member);
-                return;
+                return this.addMember(member);
             }
             database.beginTransaction();
             ContentValues values = new ContentValues();
@@ -420,12 +442,14 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             values.put("modified", System.currentTimeMillis());
             long raw = database.update(TABLE_NAME_MEMBER, values, SQL_WHERECLAUSE_ID, new String[]{member.getId()});
             if (raw < 0) {
-                return;
+                return false;
             }
             this.updateMemberData(database, member);
             database.setTransactionSuccessful();
+            return true;
         } catch (Exception e) {
             Logger.d("addMember", e);
+            return false;
         } finally {
             this.endTransaction(database);
         }
@@ -487,9 +511,9 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
     }
 
     @Override
-    public void updateMessage(String mmId, String message) {
+    public boolean updateMessage(String mmId, String message) {
         if (TextUtils.isEmpty(mmId) || this.emptyHelper()) {
-            return;
+            return false;
         }
 
         SQLiteDatabase database = null;
@@ -504,8 +528,10 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 database.update(TABLE_NAME_MEMBER, values, SQL_WHERECLAUSE_ID, whereArgs);
             }
             database.setTransactionSuccessful();
+            return true;
         } catch (Exception e) {
             Logger.d("dldMember", e);
+            return false;
         } finally {
             this.endTransaction(database);
         }
@@ -517,11 +543,11 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
      * @param address 地址
      */
     @Override
-    public void addAddress(AddressEntity address) {
+    public boolean addAddress(AddressEntity address) {
         if (this.emptyHelper() || address == null || TextUtils.isEmpty(address.getBind())) {
-            return;
+            return false;
         }
-        this.addAddress(true, address);
+        return this.addAddress(true, address);
     }
 
     private boolean addAddress(boolean beginTransaction, AddressEntity address) {
@@ -571,9 +597,9 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
      * @param address 地址
      */
     @Override
-    public void updateAddress(AddressEntity address) {
+    public boolean updateAddress(AddressEntity address) {
         if (this.emptyHelper() || address == null || TextUtils.isEmpty(address.getBind())) {
-            return;
+            return false;
         }
         SQLiteDatabase database = null;
         try {
@@ -582,8 +608,9 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             if (!this.has(database, TABLE_NAME_ADDRESS, "id", address.getId())) {
                 if (this.addAddress(false, address)) {
                     database.setTransactionSuccessful();
+                    return true;
                 }
-                return;
+                return false;
             }
             ContentValues values = new ContentValues();
             values.put("tag", address.getTag());
@@ -602,8 +629,10 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 this.updateModified(database, address.getBind());
                 database.setTransactionSuccessful();
             }
+            return raw >= 0;
         } catch (Exception e) {
             Logger.d("updateAddress", e);
+            return false;
         } finally {
             this.endTransaction(database);
         }
@@ -615,15 +644,17 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
      * @param id 地址ID
      */
     @Override
-    public void dldAddress(String id) {
+    public boolean dldAddress(String id) {
         if (TextUtils.isEmpty(id) || this.emptyHelper()) {
-            return;
+            return false;
         }
         try {
             SQLiteDatabase database = this.helper.open();
-            database.delete(TABLE_NAME_ADDRESS, SQL_WHERECLAUSE_ID, new String[]{id});
+            int number = database.delete(TABLE_NAME_ADDRESS, SQL_WHERECLAUSE_ID, new String[]{id});
+            return number > 0;
         } catch (Exception e) {
             Logger.d("clearAddress", e);
+            return false;
         }
     }
 
@@ -633,9 +664,9 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
      * @param memberId 成员ID
      */
     @Override
-    public void clearAddress(String memberId) {
+    public boolean clearAddress(String memberId) {
         if (TextUtils.isEmpty(memberId) || this.emptyHelper()) {
-            return;
+            return false;
         }
         SQLiteDatabase database = null;
         try {
@@ -645,8 +676,10 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 database.delete(TABLE_NAME_ADDRESS, SQL_WHERECLAUSE_BIND, new String[]{memberId});
             }
             database.setTransactionSuccessful();
+            return true;
         } catch (Exception e) {
             Logger.d("clearAddress", e);
+            return false;
         } finally {
             this.endTransaction(database);
         }
@@ -730,7 +763,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         entity.setDesc(cursor.getString(columnIndex++));
         entity.setScore(cursor.getFloat(columnIndex++));
         entity.setCheckCoefficient(cursor.getInt(columnIndex++) == 1);
-        Logger.d(String.format("the table's column count is %s", columnIndex + ""));
+        Logger.d(String.format(Locale.getDefault(), "the table %s's column count is %d", TABLE_NAME_INTEGRAL, columnIndex));
         return entity;
     }
 
@@ -740,11 +773,11 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
      * @param integral 积分
      */
     @Override
-    public void addIntegral(IntegralEntity integral) {
+    public boolean addIntegral(IntegralEntity integral) {
         if (this.emptyHelper() || integral == null) {
-            return;
+            return false;
         }
-        this.addIntegral(true, integral);
+        return this.addIntegral(true, integral);
     }
 
     private boolean addIntegral(boolean beginTransaction, IntegralEntity integral) {
@@ -781,9 +814,9 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
      * @param integral 积分
      */
     @Override
-    public void updateIntegral(IntegralEntity integral) {
+    public boolean updateIntegral(IntegralEntity integral) {
         if (this.emptyHelper() || integral == null) {
-            return;
+            return false;
         }
         SQLiteDatabase database = null;
         try {
@@ -792,8 +825,9 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             if (!this.has(database, TABLE_NAME_INTEGRAL, "id", integral.getId())) {
                 if (this.addIntegral(false, integral)) {
                     database.setTransactionSuccessful();
+                    return true;
                 }
-                return;
+                return false;
             }
             ContentValues values = new ContentValues();
             values.put("name", integral.getName());
@@ -804,8 +838,10 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             if (raw >= 0) {
                 database.setTransactionSuccessful();
             }
+            return raw >= 0;
         } catch (Exception e) {
             Logger.d("updateIntegral", e);
+            return false;
         } finally {
             this.endTransaction(database);
         }
@@ -817,15 +853,17 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
      * @param id 积分ID
      */
     @Override
-    public void dldIntegral(String id) {
+    public boolean dldIntegral(String id) {
         if (TextUtils.isEmpty(id) || this.emptyHelper()) {
-            return;
+            return false;
         }
         try {
             SQLiteDatabase database = this.helper.open();
-            database.delete(TABLE_NAME_INTEGRAL, SQL_WHERECLAUSE_ID, new String[]{id});
+            int number = database.delete(TABLE_NAME_INTEGRAL, SQL_WHERECLAUSE_ID, new String[]{id});
+            return number > 0;
         } catch (Exception e) {
             Logger.d("dldIntegral", e);
+            return false;
         }
     }
 
@@ -835,14 +873,14 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
      * @param integral 用户积分
      */
     @Override
-    public void addMemberIntegral(IntegralBindEntity integral) {
+    public boolean addMemberIntegral(IntegralBindEntity integral) {
         if (integral == null || this.emptyHelper() || TextUtils.isEmpty(integral.getBind())) {
-            return;
+            return false;
         }
-        this.addMemberIntegral(true, integral);
+        return this.addMemberIntegral(true, integral);
     }
 
-    private void addMemberIntegral(boolean beginTransaction, IntegralBindEntity integral) {
+    private boolean addMemberIntegral(boolean beginTransaction, IntegralBindEntity integral) {
         SQLiteDatabase database = null;
         try {
             database = this.helper.open();
@@ -850,7 +888,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 database.beginTransaction();
             }
             if (!this.hasMember(database, integral.getBind())) {
-                return;
+                return false;
             }
             ContentValues values = new ContentValues();
             values.put("id", integral.getId());
@@ -868,8 +906,10 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                     database.setTransactionSuccessful();
                 }
             }
+            return raw >= 0;
         } catch (Exception e) {
             Logger.d("addMemberIntegral", e);
+            return false;
         } finally {
             if (beginTransaction) {
                 this.endTransaction(database);
@@ -883,14 +923,14 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
      * @param integral 用户积分
      */
     @Override
-    public void updateMemberIntegral(IntegralBindEntity integral) {
+    public boolean updateMemberIntegral(IntegralBindEntity integral) {
         if (integral == null || this.emptyHelper() || TextUtils.isEmpty(integral.getBind())) {
-            return;
+            return false;
         }
-        this.updateMemberIntegral(true, true, integral);
+        return this.updateMemberIntegral(true, true, integral);
     }
 
-    private void updateMemberIntegral(boolean beginTransaction, boolean modifiedMember, IntegralBindEntity integral) {
+    private boolean updateMemberIntegral(boolean beginTransaction, boolean modifiedMember, IntegralBindEntity integral) {
         SQLiteDatabase database = null;
         try {
             database = this.helper.open();
@@ -898,7 +938,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 database.beginTransaction();
             }
             if (!this.hasMember(database, integral.getBind())) {
-                return;
+                return false;
             }
             ContentValues values = new ContentValues();
             values.put("bind", integral.getBind());
@@ -909,7 +949,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             values.put("usedDate", integral.getUsedDate());
             long raw = database.update(TABLE_NAME_INTEGRAL_BIND, values, SQL_WHERECLAUSE_ID, new String[]{integral.getId()});
             if (raw < 0) {
-                return;
+                return false;
             }
             if (modifiedMember) {
                 this.updateModified(database, integral.getBind());
@@ -917,8 +957,10 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             if (beginTransaction) {
                 database.setTransactionSuccessful();
             }
+            return true;
         } catch (Exception e) {
             Logger.d("updateMemberIntegral", e);
+            return false;
         } finally {
             if (beginTransaction) {
                 this.endTransaction(database);
@@ -1049,9 +1091,9 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
      * @throws CodeException "
      */
     @Override
-    public void addExpiry(CouponsExpiryEntity expiry) throws CodeException {
+    public boolean addExpiry(CouponsExpiryEntity expiry) throws CodeException {
         if (expiry == null || TextUtils.isEmpty(expiry.getExpiryCode())) {
-            return;
+            return false;
         }
         if (this.emptyHelper()) {
             throw new CodeException(IDataCode.DATABASE_UNINITIALIZED);
@@ -1066,24 +1108,28 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             values.put("id", expiry.getId());
             values.put("count", expiry.getCount());
             values.put("expiryCode", expiry.getExpiryCode());
-            database.insertWithOnConflict(TABLE_NAME_EXPIRY, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            long raw = database.insertWithOnConflict(TABLE_NAME_EXPIRY, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            return raw >= 0;
         } catch (CodeException e) {
             throw e;
         } catch (Exception e) {
             Logger.d("addExpiry", e);
+            return false;
         }
     }
 
     @Override
-    public void dldExpiry(String expiryId) {
+    public boolean dldExpiry(String expiryId) {
         if (this.emptyHelper() || TextUtils.isEmpty(expiryId)) {
-            return;
+            return false;
         }
         try {
             SQLiteDatabase database = this.helper.open();
-            database.delete(TABLE_NAME_EXPIRY, SQL_WHERECLAUSE_ID, new String[]{expiryId});
+            int number = database.delete(TABLE_NAME_EXPIRY, SQL_WHERECLAUSE_ID, new String[]{expiryId});
+            return number > 0;
         } catch (Exception e) {
             Logger.d("clearAddress", e);
+            return false;
         }
     }
 
@@ -1122,17 +1168,17 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         entity.setId(cursor.getString(columnIndex++));
         entity.setCount(cursor.getInt(columnIndex++));
         entity.setExpiryCode(cursor.getString(columnIndex++));
-        Logger.d(String.format("the table's column count is %s", columnIndex + ""));
+        Logger.d(String.format(Locale.getDefault(), "the table %s's column count is %d", TABLE_NAME_EXPIRY, columnIndex));
         return entity;
     }
 
     @Override
-    public void addCoupons(CouponsEntity coupons) {
+    public boolean addCoupons(CouponsEntity coupons) {
         if (this.emptyHelper() || coupons == null) {
-            return;
+            return false;
         }
 
-        this.addCoupons(true, coupons);
+        return this.addCoupons(true, coupons);
     }
 
     private boolean addCoupons(boolean beginTransaction, CouponsEntity coupons) {
@@ -1164,9 +1210,9 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
     }
 
     @Override
-    public void updateCoupons(CouponsEntity coupons) {
+    public boolean updateCoupons(CouponsEntity coupons) {
         if (this.emptyHelper() || coupons == null) {
-            return;
+            return false;
         }
         SQLiteDatabase database = null;
         try {
@@ -1175,8 +1221,9 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             if (!this.has(database, TABLE_NAME_COUPONS, "id", coupons.getId())) {
                 if (this.addCoupons(false, coupons)) {
                     database.setTransactionSuccessful();
+                    return true;
                 }
-                return;
+                return false;
             }
             ContentValues values = new ContentValues();
             values.put("amount", coupons.getAmount());
@@ -1187,23 +1234,27 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             if (raw >= 0) {
                 database.setTransactionSuccessful();
             }
+            return raw >= 0;
         } catch (Exception e) {
             Logger.d("updateCoupons", e);
+            return false;
         } finally {
             this.endTransaction(database);
         }
     }
 
     @Override
-    public void dldCoupons(String couponsId) {
+    public boolean dldCoupons(String couponsId) {
         if (TextUtils.isEmpty(couponsId) || this.emptyHelper()) {
-            return;
+            return false;
         }
         try {
             SQLiteDatabase database = this.helper.open();
-            database.delete(TABLE_NAME_COUPONS, SQL_WHERECLAUSE_ID, new String[]{couponsId});
+            int number = database.delete(TABLE_NAME_COUPONS, SQL_WHERECLAUSE_ID, new String[]{couponsId});
+            return number > 0;
         } catch (Exception e) {
             Logger.d("dldIntegral", e);
+            return false;
         }
     }
 
@@ -1244,19 +1295,19 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         entity.setName(cursor.getString(columnIndex++));
         entity.setDesc(cursor.getString(columnIndex++));
         entity.setCheckCoefficient(cursor.getInt(columnIndex++) == 1);
-        Logger.d(String.format("the table's column count is %s", columnIndex + ""));
+        Logger.d(String.format(Locale.getDefault(), "the table %s's column count is %d", TABLE_NAME_COUPONS, columnIndex));
         return entity;
     }
 
     @Override
-    public void addMemberCoupons(CouponsBindEntity coupons) {
+    public boolean addMemberCoupons(CouponsBindEntity coupons) {
         if (coupons == null || this.emptyHelper() || TextUtils.isEmpty(coupons.getBind())) {
-            return;
+            return false;
         }
-        this.addMemberCoupons(true, coupons);
+        return this.addMemberCoupons(true, coupons);
     }
 
-    private void addMemberCoupons(boolean beginTransaction, CouponsBindEntity coupons) {
+    private boolean addMemberCoupons(boolean beginTransaction, CouponsBindEntity coupons) {
         SQLiteDatabase database = null;
         try {
             database = this.helper.open();
@@ -1264,7 +1315,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 database.beginTransaction();
             }
             if (!this.hasMember(database, coupons.getBind())) {
-                return;
+                return false;
             }
             ContentValues values = new ContentValues();
             values.put("id", coupons.getId());
@@ -1287,8 +1338,10 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                     database.setTransactionSuccessful();
                 }
             }
+            return raw >= 0;
         } catch (Exception e) {
             Logger.d("addMemberCoupons", e);
+            return false;
         } finally {
             if (beginTransaction) {
                 this.endTransaction(database);
@@ -1297,14 +1350,14 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
     }
 
     @Override
-    public void updateMemberCoupons(CouponsBindEntity coupons) {
+    public boolean updateMemberCoupons(CouponsBindEntity coupons) {
         if (coupons == null || this.emptyHelper() || TextUtils.isEmpty(coupons.getBind())) {
-            return;
+            return false;
         }
-        this.updateMemberCoupons(true, coupons);
+        return this.updateMemberCoupons(true, coupons);
     }
 
-    private void updateMemberCoupons(boolean beginTransaction, CouponsBindEntity coupons) {
+    private boolean updateMemberCoupons(boolean beginTransaction, CouponsBindEntity coupons) {
         SQLiteDatabase database = null;
         try {
             database = this.helper.open();
@@ -1312,7 +1365,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 database.beginTransaction();
             }
             if (!this.hasMember(database, coupons.getBind())) {
-                return;
+                return false;
             }
             ContentValues values = new ContentValues();
             values.put("amount", coupons.getAmount());
@@ -1329,14 +1382,16 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             values.put("tag", coupons.getTag());
             long raw = database.update(TABLE_NAME_COUPONS_BIND, values, SQL_WHERECLAUSE_ID, new String[]{coupons.getId()});
             if (raw < 0) {
-                return;
+                return false;
             }
             this.updateModified(database, coupons.getBind());
             if (beginTransaction) {
                 database.setTransactionSuccessful();
             }
+            return true;
         } catch (Exception e) {
             Logger.d("updateMemberCoupons", e);
+            return false;
         } finally {
             if (beginTransaction) {
                 this.endTransaction(database);
@@ -1383,12 +1438,12 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         coupons.setExpiryBind(cursor.getString(columnIndex++));
         coupons.setBindName(cursor.getString(columnIndex++));
         coupons.setTag(cursor.getString(columnIndex++));
-        Logger.d(String.format("the table's column count is %s", columnIndex + ""));
+        Logger.d(String.format(Locale.getDefault(), "the table %s's column count is %d", TABLE_NAME_COUPONS_BIND, columnIndex));
         return coupons;
     }
 
     @Override
-    public void useCoupons(String memberId, String couponsId) throws CodeException {
+    public boolean useCoupons(String memberId, String couponsId) throws CodeException {
         if (TextUtils.isEmpty(couponsId) || TextUtils.isEmpty(memberId)) {
             throw new CodeException(IDataCode.PARAMETER_UNUSABLE);
         }
@@ -1414,10 +1469,12 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             } else {
                 throw new CodeException(IDataCode.COUPONS_UNAVAILABLE);
             }
+            return true;
         } catch (CodeException e) {
             throw e;
         } catch (Exception e) {
             Logger.d("useIntegral", e);
+            return false;
         } finally {
             this.endTransaction(database);
         }
@@ -1439,6 +1496,152 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             this.endTransaction(database);
         }
         return new ArrayList<>();
+    }
+
+    @Override
+    public List<BookingEntity> getBookings() {
+        List<BookingEntity> array = new ArrayList<>();
+        if (this.emptyHelper()) {
+            return array;
+        }
+
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            database.beginTransaction();
+            String query = SQL_CREATOR_BOOKING.query();
+            Cursor cursor = database.rawQuery(query, null);
+            if (cursor == null) {
+                return null;
+            }
+            while (cursor.moveToNext()) {
+                BookingEntity entity = this.cursor2Booking(cursor);
+                array.add(entity);
+            }
+            cursor.close();
+        } catch (Exception e) {
+            Logger.d("getBookings", e);
+        } finally {
+            this.endTransaction(database);
+        }
+        return array;
+    }
+
+    @Override
+    public BookingEntity getBooking(String bookingId) {
+        if (this.emptyHelper() || TextUtils.isEmpty(bookingId)) {
+            return null;
+        }
+        BookingEntity entity = null;
+        try {
+            SQLiteDatabase database = this.helper.open();
+            String query = SQL_CREATOR_BOOKING.queryWhereAnd(this.SQL_WHERECLAUSE_ID);
+            Cursor cursor = database.rawQuery(query, new String[]{bookingId});
+            if (cursor == null) {
+                return null;
+            }
+            if (cursor.moveToNext()) {
+                entity = this.cursor2Booking(cursor);
+            }
+            cursor.close();
+        } catch (Exception e) {
+            Logger.d("getBooking", e);
+        }
+        return entity;
+    }
+
+    private BookingEntity cursor2Booking(Cursor cursor) {
+        int columnIndex = 0;
+        BookingEntity entity = new BookingEntity();
+        entity.setId(cursor.getString(columnIndex++));
+        entity.setText(cursor.getString(columnIndex++));
+        entity.setDesc(cursor.getString(columnIndex++));
+        entity.setLastUseTime(cursor.getLong(columnIndex++));
+        Logger.d(String.format(Locale.getDefault(), "the table %s's column count is %d", TABLE_NAME_BOOKING, columnIndex));
+        return entity;
+    }
+
+    @Override
+    public boolean addBooking(BookingEntity booking) {
+        if (this.emptyHelper() || booking == null) {
+            return false;
+        }
+        return this.addBooking(true, booking);
+    }
+
+    private boolean addBooking(boolean beginTransaction, BookingEntity booking) {
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            if (beginTransaction) {
+                database.beginTransaction();
+            }
+            ContentValues values = new ContentValues();
+            values.put("id", booking.getId());
+            values.put("text", booking.getText());
+            values.put("desc", booking.getDesc());
+            values.put("lastUseTime", booking.getLastUseTime());
+            long raw = database.insertWithOnConflict(TABLE_NAME_BOOKING, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            if (raw >= 0 && beginTransaction) {
+                database.setTransactionSuccessful();
+            }
+            return raw >= 0;
+        } catch (Exception e) {
+            Logger.d("addBooking", e);
+        } finally {
+            if (beginTransaction) {
+                this.endTransaction(database);
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateBooking(BookingEntity booking) {
+        if (this.emptyHelper() || booking == null) {
+            return false;
+        }
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            database.beginTransaction();
+            if (!this.has(database, TABLE_NAME_BOOKING, "id", booking.getId())) {
+                if (this.addBooking(false, booking)) {
+                    database.setTransactionSuccessful();
+                    return true;
+                }
+                return false;
+            }
+            ContentValues values = new ContentValues();
+            values.put("text", booking.getText());
+            values.put("desc", booking.getDesc());
+            values.put("lastUseTime", booking.getLastUseTime());
+            long raw = database.update(TABLE_NAME_BOOKING, values, SQL_WHERECLAUSE_ID, new String[]{booking.getId()});
+            if (raw >= 0) {
+                database.setTransactionSuccessful();
+            }
+            return raw >= 0;
+        } catch (Exception e) {
+            Logger.d("updateBooking", e);
+            return false;
+        } finally {
+            this.endTransaction(database);
+        }
+    }
+
+    @Override
+    public boolean dldBooking(String id) {
+        if (TextUtils.isEmpty(id) || this.emptyHelper()) {
+            return false;
+        }
+        try {
+            SQLiteDatabase database = this.helper.open();
+            int number = database.delete(TABLE_NAME_BOOKING, SQL_WHERECLAUSE_ID, new String[]{id});
+            return number > 0;
+        } catch (Exception e) {
+            Logger.d("dldBooking", e);
+            return false;
+        }
     }
 
     private List<CouponsBindEntity> queryMemberCoupons(SQLiteDatabase database, String bindId) {

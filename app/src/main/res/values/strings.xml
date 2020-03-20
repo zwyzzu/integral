@@ -10,6 +10,7 @@
     <string name="marital_widowed">丧偶</string>
     <string name="marital_divorce">离异</string>
     <string name="main_bottom_main">首页</string>
+    <string name="main_bottom_booking">预订</string>
     <string name="main_bottom_add">添加</string>
     <string name="main_bottom_mine">我的</string>
     <string name="add_hint_name">请输入姓名</string>
@@ -66,6 +67,7 @@
     <string name="mine_integral">积分项</string>
     <string name="mine_coupons">优惠券配置</string>
     <string name="mine_coupons_near_overdue">临期优惠券</string>
+    <string name="mine_booking">预订项</string>
     <string name="mine_address">导出地址</string>
     <string name="mine_feedback">问题反馈</string>
     <string name="mine_show_member_avatar">显示成员头像</string>
@@ -77,16 +79,19 @@
     <string name="off">关</string>
     <string name="error_message_logout">您尚未登录，请先登录</string>
     <string name="integral_element_label">积分项</string>
+    <string name="booking_element_label">预订项</string>
     <string name="element_item_score">分数：%1$s</string>
     <string name="element_item_amount">面值：%1$s</string>
     <string name="element_item_title">标题：%1$s</string>
     <string name="element_item_message">描述：%1$s</string>
     <string name="element_item_number">数值：%1$s</string>
     <string name="element_item_type">类型：%1$s</string>
+    <string name="element_item_date">最后使用日期：%1$s</string>
     <string name="add">添加</string>
     <string name="use">使用</string>
-    <string name="element_add_label">添加积分项</string>
+    <string name="element_add_integral_label">添加积分项</string>
     <string name="element_add_coupons_label">添加优惠券</string>
+    <string name="element_add_booking_label">添加预订项</string>
     <string name="element_add_coupons_expiry_label">添加有效期</string>
     <string name="element_add_score">请输入分数,最多支持两位小数点</string>
     <string name="element_add_amount">请输入面值,最多支持两位小数点</string>
@@ -133,6 +138,7 @@
     <string name="integral_use_usable">可用积分</string>
     <string name="integral_use_want">欲用积分</string>
     <string name="integral_use_want_hint">请输入欲用积分数字</string>
+    <string name="integral_element_delete">确定删除\"%1$s\"积分项吗？</string>
     <string name="error_uninput">您尚未输入</string>
     <string name="error_invalid_number">您未输入有效数字</string>
     <string name="error_integral_insufficient">积分余额不足以消费</string>
@@ -193,6 +199,9 @@
     <string name="coupons_grant_empty_element">您还没有%1$s\n请到\"首页\-我的\-优惠券配置\"中添加</string>
     <string name="error_coupons_unselect">请选择优惠券</string>
     <string name="error_expiry_unselect">请选择有效期</string>
+    <string name="coupons_element_delete">确定删除\"%1$s\"积分项吗？</string>
+
+    <string name="booking_element_delete">确定删除\"%1$s\"预订项吗？\n将同时删除预订信息</string>
 
     <string name="coupons_use_label">优惠券使用提醒</string>
     <string name="coupons_use_owner">拥有者</string>

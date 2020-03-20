@@ -33,6 +33,17 @@
             android:textColor="@drawable/textcolor_main_bottombar" />
 
         <RadioButton
+            android:id="@+id/mainBottomBarBooking"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/icon_main_bottombar_booking"
+            android:gravity="center"
+            android:text="@string/main_bottom_booking"
+            android:textColor="@drawable/textcolor_main_bottombar" />
+
+        <RadioButton
             android:id="@+id/mainBottomBarAdd"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

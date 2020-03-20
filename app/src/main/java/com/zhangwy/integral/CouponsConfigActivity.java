@@ -16,6 +16,9 @@ import yixia.lib.core.base.BaseActivity;
 public class CouponsConfigActivity extends BaseActivity implements VSTabLayout.OnTabClickListener {
 
     public static void start(Context context) {
+        if (context == null) {
+            return;
+        }
         context.startActivity(new Intent(context, CouponsConfigActivity.class));
     }
     private Fragment fragment;
