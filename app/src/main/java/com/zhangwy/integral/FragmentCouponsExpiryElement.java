@@ -1,8 +1,10 @@
 package com.zhangwy.integral;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +15,18 @@ import android.widget.TextView;
 
 import com.yixia.widget.recycler.RecyclerAdapter;
 import com.yixia.widget.recycler.RecyclerDivider;
+import com.yixia.widget.recycler.RecyclerTouchHelper;
 import com.yixia.widget.recycler.VSRecyclerView;
 import com.zhangwy.integral.data.IDataCode;
 import com.zhangwy.integral.data.IDataManager;
 import com.zhangwy.integral.entity.CouponsExpiryEntity;
 
 import java.util.List;
+import java.util.Locale;
 
 import yixia.lib.core.base.BaseFragment;
 import yixia.lib.core.exception.CodeException;
+import yixia.lib.core.util.Logger;
 import yixia.lib.core.util.WindowUtil;
 
 /**
@@ -30,7 +35,7 @@ import yixia.lib.core.util.WindowUtil;
  * Description
  */
 @SuppressWarnings("unused")
-public class FragmentCouponsExpiryElement extends BaseFragment {
+public class FragmentCouponsExpiryElement extends BaseFragment implements RecyclerTouchHelper.OnSwipedListener {
 
     public static FragmentCouponsExpiryElement newInstance() {
         return new FragmentCouponsExpiryElement();
@@ -68,6 +73,8 @@ public class FragmentCouponsExpiryElement extends BaseFragment {
                 type.setText(getString(R.string.element_item_type, entity.getExpiry().getName(getContext())));
             }
         });
+        ItemTouchHelper touchHelper = new ItemTouchHelper(new RecyclerTouchHelper(this));
+        touchHelper.attachToRecyclerView(this.recyclerView);
     }
 
     private void reload() {
@@ -75,7 +82,11 @@ public class FragmentCouponsExpiryElement extends BaseFragment {
         this.recyclerView.reload(array);
     }
 
-    public void add(CouponsExpiryEntity oldEntity) {
+    public void add() {
+        this.add(0, null);
+    }
+
+    public void add(int position, CouponsExpiryEntity oldEntity) {
         View root = getLayoutInflater().inflate(R.layout.dialog_coupons_expiry_element, this.recyclerView, false);
         final EditText number = root.findViewById(R.id.elementAddNumber);
         final Spinner type = root.findViewById(R.id.elementAddType);
@@ -107,6 +118,7 @@ public class FragmentCouponsExpiryElement extends BaseFragment {
             if (oldEntity == null) {
                 try {
                     IDataManager.getInstance().addExpiry(entity);
+                    recyclerView.add(entity);
                 } catch (CodeException e) {
                     if (e.code == IDataCode.DATABASE_HAS_EXPIRY) {
                         showMessage(true, R.string.error_has_expiry);
@@ -117,7 +129,6 @@ public class FragmentCouponsExpiryElement extends BaseFragment {
             if (dialog != null) {
                 dialog.dismiss();
             }
-            reload();
         });
         cancel.setOnClickListener(v -> {
             if (dialog != null) {
@@ -131,5 +142,29 @@ public class FragmentCouponsExpiryElement extends BaseFragment {
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
         }
+    }
+
+    @Override
+    public void onSwiped(int position, int direction) {
+        Logger.d(String.format(Locale.getDefault(), "onSwiped(%d, %d)", position, direction));
+        this.recyclerView.notifyItemChanged(position);
+        this.delete(position, this.recyclerView.getData(position));
+    }
+
+    private void delete(int position, CouponsExpiryEntity entity) {
+        if (entity == null) {
+            return;
+        }
+        String title = "";
+        String expiryName = getString(entity.getExpiry().res);
+        String message = getString(R.string.coupons_expiry_element_delete, entity.getCount(), expiryName);
+        DialogInterface.OnClickListener okListener = (dialog, which) -> {
+            if (IDataManager.getInstance().dldExpiry(entity.getId())) {
+                recyclerView.remove(position);
+            }
+        };
+        WindowUtil.createAlertDialog(this.getContext(), title, message,
+                getString(R.string.ok), okListener,
+                getString(R.string.cancel), (dialog, which) -> dialog.dismiss()).show();
     }
 }

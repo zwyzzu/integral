@@ -171,6 +171,8 @@
     <string name="coupons_expiry_year">年</string>
     <string name="coupons_expiry_forever">长期</string>
     <string name="coupons_member">%1$s ></string>
+    <string name="coupons_element_delete">确定删除\"%1$s\"优惠券项吗？</string>
+    <string name="coupons_expiry_element_delete">确定删除\"%1$d%2$s\"有效期项吗？</string>
 
     <string name="error_params_data">数据有误请退出重新进入</string>
     <string name="error_no_data">还没有相关数据</string>
@@ -199,7 +201,6 @@
     <string name="coupons_grant_empty_element">您还没有%1$s\n请到\"首页\-我的\-优惠券配置\"中添加</string>
     <string name="error_coupons_unselect">请选择优惠券</string>
     <string name="error_expiry_unselect">请选择有效期</string>
-    <string name="coupons_element_delete">确定删除\"%1$s\"积分项吗？</string>
 
     <string name="booking_element_delete">确定删除\"%1$s\"预订项吗？\n将同时删除预订信息</string>
 

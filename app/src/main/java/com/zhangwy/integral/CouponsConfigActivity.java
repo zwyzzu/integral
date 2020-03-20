@@ -58,9 +58,9 @@ public class CouponsConfigActivity extends BaseActivity implements VSTabLayout.O
                 if (fragment == null) {
                     break;
                 } else if (fragment instanceof FragmentCouponsElement) {
-                    ((FragmentCouponsElement) fragment).add(null);
+                    ((FragmentCouponsElement) fragment).add();
                 } else if (fragment instanceof FragmentCouponsExpiryElement) {
-                    ((FragmentCouponsExpiryElement) fragment).add(null);
+                    ((FragmentCouponsExpiryElement) fragment).add();
                 }
                 break;
         }

@@ -141,7 +141,7 @@ public class IntegralElementActivity extends BaseActivity implements RecyclerTou
             entity.setCheckCoefficient(checkBox.isChecked());
             if (oldEntity == null) {
                 IDataManager.getInstance().addIntegral(entity);
-                recyclerView.add(entity, 0);
+                recyclerView.add(entity);
             } else {
                 entity.setId(oldEntity.getId());
                 IDataManager.getInstance().updateIntegral(entity);
@@ -177,7 +177,7 @@ public class IntegralElementActivity extends BaseActivity implements RecyclerTou
         String title = "";
         String message = getString(R.string.integral_element_delete, entity.getName());
         DialogInterface.OnClickListener okListener = (dialog, which) -> {
-            if (IDataManager.getInstance().dldBooking(entity.getId())) {
+            if (IDataManager.getInstance().dldIntegral(entity.getId())) {
                 recyclerView.remove(position);
             }
         };

@@ -1,8 +1,10 @@
 package com.zhangwy.integral;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -12,13 +14,16 @@ import android.widget.TextView;
 
 import com.yixia.widget.recycler.RecyclerAdapter;
 import com.yixia.widget.recycler.RecyclerDivider;
+import com.yixia.widget.recycler.RecyclerTouchHelper;
 import com.yixia.widget.recycler.VSRecyclerView;
 import com.zhangwy.integral.data.IDataManager;
 import com.zhangwy.integral.entity.CouponsEntity;
 
 import java.util.List;
+import java.util.Locale;
 
 import yixia.lib.core.base.BaseFragment;
+import yixia.lib.core.util.Logger;
 import yixia.lib.core.util.Util;
 import yixia.lib.core.util.WindowUtil;
 
@@ -28,7 +33,7 @@ import yixia.lib.core.util.WindowUtil;
  * Description
  */
 @SuppressWarnings("unused")
-public class FragmentCouponsElement extends BaseFragment {
+public class FragmentCouponsElement extends BaseFragment implements RecyclerTouchHelper.OnSwipedListener {
 
     public static FragmentCouponsElement newInstance() {
         return new FragmentCouponsElement();
@@ -68,7 +73,9 @@ public class FragmentCouponsElement extends BaseFragment {
                 message.setText(getString(R.string.element_item_message, entity.getDesc()));
             }
         });
-        this.recyclerView.setOnItemClickListener((view, viewType, entity, position) -> add(entity));
+        this.recyclerView.setOnItemClickListener((view, viewType, entity, position) -> add(position, entity));
+        ItemTouchHelper touchHelper = new ItemTouchHelper(new RecyclerTouchHelper(this));
+        touchHelper.attachToRecyclerView(this.recyclerView);
     }
 
     private void reload() {
@@ -76,7 +83,11 @@ public class FragmentCouponsElement extends BaseFragment {
         this.recyclerView.reload(array);
     }
 
-    public void add(CouponsEntity oldEntity) {
+    public void add() {
+        this.add(0, null);
+    }
+
+    public void add(int position, CouponsEntity oldEntity) {
         View root = getLayoutInflater().inflate(R.layout.dialog_coupons_element, this.recyclerView, false);
         final EditText amount = root.findViewById(R.id.elementAddAmount);
         final EditText title = root.findViewById(R.id.elementAddTitle);
@@ -105,11 +116,12 @@ public class FragmentCouponsElement extends BaseFragment {
             entity.setCheckCoefficient(checkBox.isChecked());
             if (oldEntity == null) {
                 IDataManager.getInstance().addCoupons(entity);
+                recyclerView.add(entity);
             } else {
                 entity.setId(oldEntity.getId());
                 IDataManager.getInstance().updateCoupons(entity);
+                recyclerView.replace(entity, position);
             }
-            reload();
         });
         cancel.setOnClickListener(v -> {
             if (dialog != null) {
@@ -123,5 +135,28 @@ public class FragmentCouponsElement extends BaseFragment {
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
         }
+    }
+
+    @Override
+    public void onSwiped(int position, int direction) {
+        Logger.d(String.format(Locale.getDefault(), "onSwiped(%d, %d)", position, direction));
+        this.recyclerView.notifyItemChanged(position);
+        this.delete(position, this.recyclerView.getData(position));
+    }
+
+    private void delete(int position, CouponsEntity entity) {
+        if (entity == null) {
+            return;
+        }
+        String title = "";
+        String message = getString(R.string.coupons_element_delete, entity.getName());
+        DialogInterface.OnClickListener okListener = (dialog, which) -> {
+            if (IDataManager.getInstance().dldCoupons(entity.getId())) {
+                recyclerView.remove(position);
+            }
+        };
+        WindowUtil.createAlertDialog(this.getContext(), title, message,
+                getString(R.string.ok), okListener,
+                getString(R.string.cancel), (dialog, which) -> dialog.dismiss()).show();
     }
 }
