@@ -35,6 +35,10 @@ public class MemberItemEntity {
     public static final int TYPE_COUPONS = 7;
     public static final int TYPE_COUPONS_MORE = 8;
 
+    public static final int TYPE_BOOKING_HEAD = 9;
+    public static final int TYPE_BOOKING = 10;
+    public static final int TYPE_BOOKING_MORE = 11;
+
     public static List<MemberItemEntity> createMembers(MemberEntity member) {
         if (member == null) {
             return new ArrayList<>();
@@ -85,6 +89,22 @@ public class MemberItemEntity {
         }
         if ((array.size() - start) == 2 && bindEntities.size() > 2) {
             entity = new MemberItemEntity(TYPE_COUPONS_MORE);
+            array.add(entity);
+        }
+
+        entity = new MemberItemEntity(TYPE_BOOKING_HEAD);
+        array.add(entity);
+        start = array.size();
+        List<BookingBindEntity> bookingEntities = IDataManager.getInstance().getMemberBookings(member.getId());
+        for (int i = bookingEntities.size() - 1; i >= bookingEntities.size() - 2 && i >= 0; i--) {
+            BookingBindEntity bookingBindEntity = bookingEntities.get(i);
+            if (bookingBindEntity != null) {
+                MemberItemEntity coupons = new MemberItemEntity(TYPE_BOOKING, bookingBindEntity);
+                array.add(coupons);
+            }
+        }
+        if ((array.size() - start) == 2 && bookingEntities.size() > 2) {
+            entity = new MemberItemEntity(TYPE_BOOKING_MORE);
             array.add(entity);
         }
         return array;

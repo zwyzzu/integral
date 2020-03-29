@@ -3,6 +3,7 @@ package com.zhangwy.integral.data;
 import android.content.Context;
 
 import com.zhangwy.integral.entity.AddressEntity;
+import com.zhangwy.integral.entity.BookingBindEntity;
 import com.zhangwy.integral.entity.BookingEntity;
 import com.zhangwy.integral.entity.CouponsBindEntity;
 import com.zhangwy.integral.entity.CouponsEntity;
@@ -331,4 +332,60 @@ public abstract class IDataManager {
      * @return true dld success
      */
     public abstract boolean dldBooking(String id);
+
+    /**
+     * 添加成员预订
+     *
+     * @param bookingBindEntity 预订对象
+     */
+    public abstract boolean addMemberBooking(BookingBindEntity bookingBindEntity);
+
+    /**
+     * 修改成员预订
+     *
+     * @param bookingBindEntity 预订对象
+     */
+    public abstract boolean updateMemberBooking(BookingBindEntity bookingBindEntity);
+
+    /**
+     * 获取成员预订
+     *
+     * @param memberId  成员ID
+     * @param bookingId 预订ID
+     * @return 预订对象
+     */
+    public abstract BookingBindEntity getMemberBooking(String memberId, String bookingId);
+
+    /**
+     * 使用优惠券
+     *
+     * @param memberId  成员ID 不得为空
+     * @param bookingId 预订ID 为空时将设置该成员下所有预订项为下单
+     * @throws CodeException 下单预订时出现异常
+     */
+    public abstract boolean orderBooking(String memberId, String bookingId) throws CodeException;
+
+    /**
+     * 使用优惠券
+     *
+     * @param bookingBindId 预订项ID 为空时将设置该成员下所有预订项为下单
+     * @throws CodeException 下单预订时出现异常
+     */
+    public abstract boolean orderBooking(String bookingBindId) throws CodeException;
+
+    /**
+     * 获取成员预订列表
+     *
+     * @return 成员预订列表
+     */
+    public abstract List<BookingBindEntity> getMemberBookings();
+
+    /**
+     * 获取成员预订列表
+     *
+     * @param memberId 成员ID 为空时将返回全部成员的预订列表
+     * @return 成员预订列表
+     */
+    public abstract List<BookingBindEntity> getMemberBookings(String memberId);
+
 }

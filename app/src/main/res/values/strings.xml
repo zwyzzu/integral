@@ -54,6 +54,7 @@
     <string name="member_list_integral">积分列表</string>
     <string name="member_list_address">地址列表</string>
     <string name="member_list_coupons">优惠券列表</string>
+    <string name="member_list_booking">预订列表</string>
     <string name="member_integral_total">总积分:%1$s\t\t%2$s</string>
     <string name="member_integral_used"><Data><![CDATA[已使用:<s>%1$s</s>\t\t%2$s]]></Data></string>
     <string name="member_integral_desc">%1$s\t%2$s</string>
@@ -202,7 +203,13 @@
     <string name="error_coupons_unselect">请选择优惠券</string>
     <string name="error_expiry_unselect">请选择有效期</string>
 
+    <string name="booking_order_label">预订下单提醒</string>
+    <string name="booking_label">预订</string>
     <string name="booking_element_delete">确定删除\"%1$s\"预订项吗？\n将同时删除预订信息</string>
+    <string name="number">x %d</string>
+    <string name="booking_order_bookers">预订者</string>
+    <string name="booking_order_time">预订时间</string>
+    <string name="booking_order_address">预订地址</string>
 
     <string name="coupons_use_label">优惠券使用提醒</string>
     <string name="coupons_use_owner">拥有者</string>
@@ -213,6 +220,9 @@
     <string name="permission_read_external_storage">读取外部存储</string>
     <string name="permission_write_external_storage">写入外部存储</string>
     <string name="permission_record_audio">录音</string>
+
+    <string name="immediate_use">立即使用</string>
+    <string name="immediate_order">立即下单</string>
 
     <string name="copyright">Copyright©2018-2019二糖网络科技版权所有</string>
 </resources>

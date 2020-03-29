@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.zhangwy.integral.entity.AddressEntity;
+import com.zhangwy.integral.entity.BookingBindEntity;
 import com.zhangwy.integral.entity.BookingEntity;
 import com.zhangwy.integral.entity.CouponsBindEntity;
 import com.zhangwy.integral.entity.CouponsEntity;
@@ -1642,6 +1643,41 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             Logger.d("dldBooking", e);
             return false;
         }
+    }
+
+    @Override
+    public boolean addMemberBooking(BookingBindEntity bookingBindEntity) {
+        return false;//TODO
+    }
+
+    @Override
+    public boolean updateMemberBooking(BookingBindEntity bookingBindEntity) {
+        return false;//TODO
+    }
+
+    @Override
+    public BookingBindEntity getMemberBooking(String memberId, String bookingId) {
+        return new BookingBindEntity();//TODO
+    }
+
+    @Override
+    public boolean orderBooking(String memberId, String bookingId) throws CodeException {
+        return false;//TODO
+    }
+
+    @Override
+    public boolean orderBooking(String bookingBindId) throws CodeException {
+        return false;//TODO
+    }
+
+    @Override
+    public List<BookingBindEntity> getMemberBookings() {
+        return new ArrayList<>();//TODO
+    }
+
+    @Override
+    public List<BookingBindEntity> getMemberBookings(String memberId) {
+        return new ArrayList<>();//TODO
     }
 
     private List<CouponsBindEntity> queryMemberCoupons(SQLiteDatabase database, String bindId) {

@@ -24,9 +24,11 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.yixia.widget.recycler.RecyclerAdapter;
 import com.yixia.widget.recycler.VSRecyclerView;
+import com.zhangwy.integral.data.IBookingManager;
 import com.zhangwy.integral.data.ICouponsManager;
 import com.zhangwy.integral.data.IDataManager;
 import com.zhangwy.integral.entity.AddressEntity;
+import com.zhangwy.integral.entity.BookingBindEntity;
 import com.zhangwy.integral.entity.CouponsBindEntity;
 import com.zhangwy.integral.entity.IntegralBindEntity;
 import com.zhangwy.integral.entity.MemberEntity;
@@ -161,6 +163,7 @@ public class MemberActivity extends BaseActivity implements ICouponsManager.OnCo
                     case MemberItemEntity.TYPE_INTEGRAL_HEAD:
                     case MemberItemEntity.TYPE_ADDRESS_HEAD:
                     case MemberItemEntity.TYPE_COUPONS_HEAD:
+                    case MemberItemEntity.TYPE_BOOKING_HEAD:
                         layout = R.layout.view_item_member_title;
                         break;
                     case MemberItemEntity.TYPE_INTEGRAL:
@@ -172,9 +175,13 @@ public class MemberActivity extends BaseActivity implements ICouponsManager.OnCo
                     case MemberItemEntity.TYPE_COUPONS:
                         layout = R.layout.view_item_coupons;
                         break;
+                    case MemberItemEntity.TYPE_BOOKING:
+                        layout = R.layout.view_item_member_booking;
+                        break;
                     case MemberItemEntity.TYPE_INTEGRAL_MORE:
                     case MemberItemEntity.TYPE_ADDRESS_MORE:
                     case MemberItemEntity.TYPE_COUPONS_MORE:
+                    case MemberItemEntity.TYPE_BOOKING_MORE:
                         layout = R.layout.view_item_member_more;
                         break;
                 }
@@ -187,6 +194,7 @@ public class MemberActivity extends BaseActivity implements ICouponsManager.OnCo
                     case MemberItemEntity.TYPE_INTEGRAL_HEAD:
                     case MemberItemEntity.TYPE_ADDRESS_HEAD:
                     case MemberItemEntity.TYPE_COUPONS_HEAD:
+                    case MemberItemEntity.TYPE_BOOKING_HEAD:
                         refreshHead(root, viewType);
                         break;
                     case MemberItemEntity.TYPE_INTEGRAL:
@@ -198,9 +206,13 @@ public class MemberActivity extends BaseActivity implements ICouponsManager.OnCo
                     case MemberItemEntity.TYPE_COUPONS:
                         refreshCoupons(root, (CouponsBindEntity) entity.data);
                         break;
+                    case MemberItemEntity.TYPE_BOOKING:
+                        refreshBooking(root, (BookingBindEntity) entity.data);
+                        break;
                     case MemberItemEntity.TYPE_INTEGRAL_MORE:
                     case MemberItemEntity.TYPE_ADDRESS_MORE:
                     case MemberItemEntity.TYPE_COUPONS_MORE:
+                    case MemberItemEntity.TYPE_BOOKING_MORE:
                         refreshMore(root, viewType);
                         break;
                 }
@@ -231,6 +243,10 @@ public class MemberActivity extends BaseActivity implements ICouponsManager.OnCo
                 use.setVisibility(View.GONE);
                 title.setText(R.string.member_list_coupons);
                 break;
+            case MemberItemEntity.TYPE_BOOKING_HEAD:
+                use.setVisibility(View.GONE);
+                title.setText(R.string.member_list_booking);
+                break;
         }
         add.setOnClickListener(v -> {
             switch (viewType) {
@@ -242,6 +258,9 @@ public class MemberActivity extends BaseActivity implements ICouponsManager.OnCo
                     break;
                 case MemberItemEntity.TYPE_COUPONS_HEAD:
                     CouponsGrantActivity.start(this, mmbId);
+                    break;
+                case MemberItemEntity.TYPE_BOOKING_HEAD:
+                    //TODO
                     break;
             }
         });
@@ -319,7 +338,31 @@ public class MemberActivity extends BaseActivity implements ICouponsManager.OnCo
             amount.setBackgroundResource(R.color.colorPrimary);
             mark.setVisibility(View.GONE);
             use.setVisibility(View.VISIBLE);
-            use.setOnClickListener(v -> ICouponsManager.getInstance().useCoupons(this, entity));
+            use.setOnClickListener(v -> ICouponsManager.getInstance().useCoupons(MemberActivity.this, entity));
+        }
+    }
+
+    private void refreshBooking(View root, BookingBindEntity entity) {
+        TextView bookingText = root.findViewById(R.id.itemMemberBookingText);
+        TextView bookingDesc = root.findViewById(R.id.itemMemberBookingDesc);
+        TextView bookingNumber = root.findViewById(R.id.itemMemberBookingNumber);
+        TextView bookingAddress = root.findViewById(R.id.itemMemberBookingAddress);
+        TextView bookingCreateTime = root.findViewById(R.id.itemMemberBookingCreateTime);
+        TextView bookingOrderTime = root.findViewById(R.id.itemMemberBookingOrderTime);
+        TextView bookingOrder = root.findViewById(R.id.itemMemberBookingOrder);
+        ImageView mark = root.findViewById(R.id.itemMemberBookingMark);
+        bookingText.setText(entity.getText());
+        bookingDesc.setText(entity.getDesc());
+        bookingNumber.setText(getString(R.string.number, entity.getCount()));
+        bookingAddress.setText(entity.getAddressText());
+        bookingCreateTime.setText(TimeUtil.dateMilliSecond2String(entity.getCreateTime(), TimeUtil.PATTERN_DAY4Y2));
+        bookingOrderTime.setText(TimeUtil.dateMilliSecond2String(entity.getOrderTime(), TimeUtil.PATTERN_DAY4Y2));
+        bookingOrderTime.setVisibility(entity.getOrderTime() < entity.getCreateTime() ? View.GONE : View.VISIBLE);
+        mark.setVisibility(View.VISIBLE);
+        if (!entity.isOrdered()) {
+            mark.setVisibility(View.GONE);
+            bookingOrder.setVisibility(View.VISIBLE);
+            bookingOrder.setOnClickListener(v -> IBookingManager.getInstance().order(this, entity));
         }
     }
 
@@ -334,6 +377,9 @@ public class MemberActivity extends BaseActivity implements ICouponsManager.OnCo
                     break;
                 case MemberItemEntity.TYPE_COUPONS_MORE:
                     CouponsActivity.start(this, mmbId, REQUEST_CODE_COUPONS_LIST);
+                    break;
+                case MemberItemEntity.TYPE_BOOKING_MORE:
+                    //TODO
                     break;
             }
         });
