@@ -10,4 +10,5 @@
     <color name="tabLayout_state_selected_true">#ff384b</color>
     <color name="tabLayout_state_selected_false">#A2A3A5</color>
     <color name="font_color_A2A3A5">#A2A3A5</color>
+    <color name="font_color_2C2C2C">#2C2C2C</color>
 </resources>
