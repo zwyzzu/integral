@@ -66,7 +66,10 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Rec
     @Override
     public void addAll(List<T> list, int position) {
         this.addItems(list, position);
-        this.notifyDataSetChanged();
+        if (this.addLast(position)) {
+            position = this.array.size() - list.size();
+        }
+        this.notifyItemRangeInserted(position, list.size());
     }
 
     @Override
@@ -107,6 +110,23 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Rec
             return;
         this.array.removeAll(list);
         this.notifyDataSetChanged();
+    }
+
+    @Override
+    public void remove(int formPosition, int count) {
+        if (formPosition < 0) {
+            formPosition = 0;
+        }
+        if (formPosition >= this.array.size() || count <= 0) {
+            return;
+        }
+        if (formPosition + count >= this.array.size()) {
+            count = this.array.size() - formPosition;
+        }
+        for (int i = 0; i < count; i++) {
+            this.array.remove(formPosition);
+        }
+        this.notifyItemRangeRemoved(formPosition, count);
     }
 
     @Override
@@ -198,13 +218,13 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Rec
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RecyclerViewHolder(itemLoading.onCreateView(parent, viewType), this);
+        return itemLoading.onCreateViewHolder(itemLoading.onCreateView(parent, viewType), viewType).setOnClick(this);
     }
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         holder.bindPosition(position);
-        itemLoading.onLoadView(holder.itemView, holder.getItemViewType(), getItem(position), position);
+        itemLoading.onBind(holder, getItemViewType(position), getItem(position), position);
     }
 
     @Override
@@ -243,7 +263,16 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Rec
 
         public abstract View onCreateView(ViewGroup parent, int viewType);
 
-        public abstract void onLoadView(View root, int viewType, E entity, int position);
+        public RecyclerViewHolder onCreateViewHolder(View root, int viewType) {
+            return new RecyclerViewHolder(root);
+        }
+
+        public void onBind(RecyclerViewHolder holder, int viewType, E entity, int position) {
+            this.onLoadView(holder.itemView, holder.getItemViewType(), entity, position);
+        }
+
+        public void onLoadView(View root, int viewType, E entity, int position) {
+        }
     }
 
     public interface OnItemClickListener<E> {
@@ -263,9 +292,14 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Rec
     }
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
-        public RecyclerViewHolder(View view, View.OnClickListener listener) {
+        private View.OnClickListener listener;
+        public RecyclerViewHolder(View view) {
             super(view);
-            itemView.setOnClickListener(listener);
+        }
+
+        public RecyclerViewHolder setOnClick(View.OnClickListener listener) {
+            this.itemView.setOnClickListener(listener);
+            return this;
         }
 
         public void bindPosition(int position) {

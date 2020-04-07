@@ -85,6 +85,23 @@ public class BaseAdapter<T> extends android.widget.BaseAdapter implements Refres
     }
 
     @Override
+    public void remove(int formPosition, int count) {
+        if (formPosition < 0) {
+            formPosition = 0;
+        }
+        if (formPosition >= this.mItems.size() || count <= 0) {
+            return;
+        }
+        if (formPosition + count >= this.mItems.size()) {
+            count = this.mItems.size() - formPosition;
+        }
+        for (int i = 0; i < count; i++) {
+            this.mItems.remove(formPosition);
+        }
+        this.notifyDataSetChanged();
+    }
+
+    @Override
     public void replace(T t, int position) {
         this.replaceItem(t, position);
         this.notifyDataSetChanged();

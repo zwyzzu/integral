@@ -28,6 +28,8 @@ public interface RefreshAdapterCallBack<T> {
 
     void remove(List<T> list);
 
+    void remove(int formPosition, int count);
+
     void replace(T entity, int position);
 
     void replaceCurrents(List<Current<T>> list);

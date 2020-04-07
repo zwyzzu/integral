@@ -66,21 +66,22 @@ public class VSRecyclerView<T> extends RecyclerView {
     }
 
     public void loadData(List<T> array, RecyclerAdapter.OnItemLoading<T> itemLoading) {
-        adapter = new RecyclerAdapter<>(array, itemLoading);
-        adapter.setOnItemClickListener(itemClickListener);
-        this.setAdapter(adapter);
+        this.adapter = new RecyclerAdapter<>(array, itemLoading);
+        this.adapter.setOnItemClickListener(itemClickListener);
+        this.setAdapter(this.adapter);
     }
 
     public void setOnItemClickListener(RecyclerAdapter.OnItemClickListener<T> listener) {
         this.itemClickListener = listener;
-        if (adapter != null) {
-            adapter.setOnItemClickListener(listener);
+        if (this.adapter != null) {
+            this.adapter.setOnItemClickListener(listener);
         }
     }
 
     public void notifyDataSetChanged() {
-        if (adapter != null)
-            adapter.notifyDataSetChanged();
+        if (this.adapter != null) {
+            this.adapter.notifyDataSetChanged();
+        }
     }
 
     public boolean has(T entity) {
@@ -88,82 +89,108 @@ public class VSRecyclerView<T> extends RecyclerView {
     }
 
     public void reload(T entity) {
-        if (adapter != null)
-            adapter.reload(entity);
+        if (this.adapter != null) {
+            this.adapter.reload(entity);
+        }
     }
 
     public void reload(List<T> items) {
-        if (adapter != null)
-            adapter.reload(items);
+        if (this.adapter != null) {
+            this.adapter.reload(items);
+        }
     }
 
     public void remove(T t) {
-        if (adapter != null)
+        if (this.adapter != null) {
             this.adapter.remove(t);
+        }
     }
 
     public void remove(int position) {
-        if (adapter != null)
+        if (this.adapter != null) {
             this.adapter.remove(position);
+        }
+    }
+
+    public void remove(List<T> items) {
+        if (this.adapter != null) {
+            this.adapter.remove(items);
+        }
+    }
+
+    public void remove(int formPosition, int count) {
+        if (this.adapter != null) {
+            this.adapter.remove(formPosition, count);
+        }
     }
 
     public void add(T t) {
-        if (adapter != null)
-            adapter.add(t);
+        if (this.adapter != null) {
+            this.adapter.add(t);
+        }
     }
 
     public void add(T t, int position) {
-        if (adapter != null)
-            adapter.add(t, position);
+        if (this.adapter != null) {
+            this.adapter.add(t, position);
+        }
     }
 
     public void addAll(List<T> items) {
-        if (adapter != null)
-            adapter.addAll(items);
+        if (this.adapter != null) {
+            this.adapter.addAll(items);
+        }
     }
 
     public void addAll(List<T> items, int position) {
-        if (adapter != null)
-            adapter.addAll(items, position);
+        if (this.adapter != null) {
+            this.adapter.addAll(items, position);
+        }
     }
 
     public void addCurrents(List<RefreshAdapterCallBack.Current<T>> list) {
-        if (adapter != null)
-            adapter.addCurrents(list);
+        if (this.adapter != null) {
+            this.adapter.addCurrents(list);
+        }
     }
 
     public void replace(T t, int position) {
-        if (adapter != null)
-            adapter.replace(t, position);
+        if (this.adapter != null) {
+            this.adapter.replace(t, position);
+        }
     }
 
     public void replace(List<RefreshAdapterCallBack.Current<T>> list) {
-        if (adapter != null)
-            adapter.replaceCurrents(list);
+        if (this.adapter != null) {
+            this.adapter.replaceCurrents(list);
+        }
     }
 
     public int getCount() {
-        return adapter == null ? 0 : adapter.getItemCount();
+        return this.adapter == null ? 0 : this.adapter.getItemCount();
     }
 
     public void notifyItemChanged(int position) {
-        if (adapter != null)
+        if (this.adapter != null) {
             this.adapter.notifyItemChanged(position);
+        }
     }
 
     public void notifyItemMoved(int fromPosition, int toPosition) {
-        if (adapter != null)
+        if (this.adapter != null) {
             this.adapter.notifyItemMoved(fromPosition, toPosition);
+        }
     }
 
     public List<T> getData() {
-        if (adapter != null)
+        if (this.adapter != null) {
             return this.adapter.getData();
+        }
         return new ArrayList<>();
     }
 
     public T getData(int position) {
-        if (adapter != null) {
+        if (this.adapter != null) {
             return this.adapter.getItem(position);
         }
         return null;
