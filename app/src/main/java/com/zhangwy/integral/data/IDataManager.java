@@ -21,7 +21,7 @@ import yixia.lib.core.exception.CodeException;
  * Updated by zhangwy on 2019/06/05 上午21:58.
  * Description
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused"})
 public abstract class IDataManager {
 
     public static IDataManager initialize(Context context) {
@@ -357,7 +357,7 @@ public abstract class IDataManager {
     public abstract BookingBindEntity getMemberBooking(String memberId, String bookingId);
 
     /**
-     * 使用优惠券
+     * 下单预订订单
      *
      * @param memberId  成员ID 不得为空
      * @param bookingId 预订ID 为空时将设置该成员下所有预订项为下单
@@ -366,12 +366,29 @@ public abstract class IDataManager {
     public abstract boolean orderBooking(String memberId, String bookingId) throws CodeException;
 
     /**
-     * 使用优惠券
+     * 下单预订订单
      *
      * @param bookingBindId 预订项ID 为空时将设置该成员下所有预订项为下单
      * @throws CodeException 下单预订时出现异常
      */
     public abstract boolean orderBooking(String bookingBindId) throws CodeException;
+
+    /**
+     * 作废预订订单
+     *
+     * @param memberId  成员ID 不得为空
+     * @param bookingId 预订ID 为空时将设置该成员下所有预订项为下单
+     * @throws CodeException 下单预订时出现异常
+     */
+    public abstract boolean invalidBooking(String memberId, String bookingId) throws CodeException;
+
+    /**
+     * 作废预订订单
+     *
+     * @param bookingBindId 预订项ID 为空时将设置该成员下所有预订项为下单
+     * @throws CodeException 下单预订时出现异常
+     */
+    public abstract boolean invalidBooking(String bookingBindId) throws CodeException;
 
     /**
      * 获取成员预订列表

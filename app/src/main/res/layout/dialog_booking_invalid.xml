@@ -6,11 +6,11 @@
     android:background="@drawable/background_disclaimer">
 
     <TextView
-        android:id="@+id/bookingOrderTitle"
+        android:id="@+id/bookingInvalidTitle"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
         android:gravity="center"
-        android:text="@string/booking_order_label"
+        android:text="@string/booking_invalid_label"
         android:textSize="@dimen/widget_fontSize_18"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,10 +26,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bookingOrderTitle" />
+        app:layout_constraintTop_toBottomOf="@id/bookingInvalidTitle" />
 
     <Button
-        android:id="@+id/bookingOrderUnAgreed"
+        android:id="@+id/bookingInvalidUnAgreed"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_8"
@@ -37,60 +37,60 @@
         android:background="@drawable/background_button_red"
         android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/bookingOrderAgreed"
+        app:layout_constraintEnd_toStartOf="@+id/bookingInvalidAgreed"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/bookingOrderAgreed"
+        app:layout_constraintRight_toLeftOf="@+id/bookingInvalidAgreed"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/bookingOrderAgreed"
+        android:id="@+id/bookingInvalidAgreed"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_8"
         android:layout_marginLeft="@dimen/margin_8"
         android:background="@drawable/background_button_blue"
-        android:text="@string/immediate_order"
+        android:text="@string/immediate_invalid"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/bookingOrderUnAgreed"
+        app:layout_constraintLeft_toRightOf="@id/bookingInvalidUnAgreed"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@id/bookingOrderUnAgreed" />
+        app:layout_constraintStart_toEndOf="@id/bookingInvalidUnAgreed" />
 
     <TextView
-        android:id="@+id/bookingOrderBookers"
+        android:id="@+id/bookingInvalidBookers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_8"
-        android:text="@string/booking_order_bookers"
+        android:text="@string/booking_invalid_bookers"
         android:textSize="@dimen/widget_fontSize_14"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bookingOrderTitle" />
+        app:layout_constraintTop_toBottomOf="@id/bookingInvalidTitle" />
 
     <TextView
-        android:id="@+id/bookingOrderCreateTime"
+        android:id="@+id/bookingInvalidCreateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_8"
-        android:text="@string/booking_order_time"
+        android:text="@string/booking_invalid_time"
         android:textSize="@dimen/widget_fontSize_14"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bookingOrderBookers" />
+        app:layout_constraintTop_toBottomOf="@id/bookingInvalidBookers" />
 
     <TextView
-        android:id="@+id/bookingOrderAddress"
+        android:id="@+id/bookingInvalidAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_8"
-        android:text="@string/booking_order_address"
+        android:text="@string/booking_invalid_address"
         android:textSize="@dimen/widget_fontSize_14"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bookingOrderCreateTime" />
+        app:layout_constraintTop_toBottomOf="@id/bookingInvalidCreateTime" />
 
     <TextView
-        android:id="@+id/bookingOrderDescription"
+        android:id="@+id/bookingInvalidDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_8"
@@ -98,58 +98,58 @@
         android:textSize="@dimen/widget_fontSize_14"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bookingOrderAddress" />
+        app:layout_constraintTop_toBottomOf="@id/bookingInvalidAddress" />
 
     <TextView
-        android:id="@+id/bookingOrderCreateTimeValue"
+        android:id="@+id/bookingInvalidCreateTimeValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_8"
         android:layout_marginLeft="@dimen/margin_8"
         android:layout_marginEnd="@dimen/margin_8"
         android:layout_marginRight="@dimen/margin_8"
-        android:text="@string/booking_order_time"
+        android:text="@string/booking_invalid_time"
         android:textSize="@dimen/widget_fontSize_14"
-        app:layout_constraintLeft_toRightOf="@id/bookingOrderCreateTime"
-        app:layout_constraintStart_toEndOf="@id/bookingOrderCreateTime"
-        app:layout_constraintTop_toTopOf="@id/bookingOrderCreateTime" />
+        app:layout_constraintLeft_toRightOf="@id/bookingInvalidCreateTime"
+        app:layout_constraintStart_toEndOf="@id/bookingInvalidCreateTime"
+        app:layout_constraintTop_toTopOf="@id/bookingInvalidCreateTime" />
 
     <TextView
-        android:id="@+id/bookingOrderBookersValue"
+        android:id="@+id/bookingInvalidBookersValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_8"
         android:layout_marginRight="@dimen/margin_8"
         android:text="@string/booking_order_bookers"
         android:textSize="@dimen/widget_fontSize_14"
-        app:layout_constraintLeft_toLeftOf="@id/bookingOrderCreateTimeValue"
-        app:layout_constraintStart_toStartOf="@id/bookingOrderCreateTimeValue"
-        app:layout_constraintTop_toTopOf="@id/bookingOrderBookers" />
+        app:layout_constraintLeft_toLeftOf="@id/bookingInvalidCreateTimeValue"
+        app:layout_constraintStart_toStartOf="@id/bookingInvalidCreateTimeValue"
+        app:layout_constraintTop_toTopOf="@id/bookingInvalidBookers" />
 
     <TextView
-        android:id="@+id/bookingOrderAddressValue"
+        android:id="@+id/bookingInvalidAddressValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_8"
         android:layout_marginRight="@dimen/margin_8"
-        android:text="@string/booking_order_address"
+        android:text="@string/booking_invalid_address"
         android:textSize="@dimen/widget_fontSize_14"
-        app:layout_constraintLeft_toLeftOf="@id/bookingOrderCreateTimeValue"
-        app:layout_constraintStart_toStartOf="@id/bookingOrderCreateTimeValue"
-        app:layout_constraintTop_toTopOf="@id/bookingOrderAddress" />
+        app:layout_constraintLeft_toLeftOf="@id/bookingInvalidCreateTimeValue"
+        app:layout_constraintStart_toStartOf="@id/bookingInvalidCreateTimeValue"
+        app:layout_constraintTop_toTopOf="@id/bookingInvalidAddress" />
 
     <TextView
-        android:id="@+id/bookingOrderDescriptionValue"
+        android:id="@+id/bookingInvalidDescriptionValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_8"
         android:layout_marginRight="@dimen/margin_8"
-        android:gravity="start|top"
         android:maxLines="3"
-        android:text="@string/description"
+        android:gravity="start|top"
         android:textSize="@dimen/widget_fontSize_14"
-        app:layout_constraintBottom_toTopOf="@id/bookingOrderUnAgreed"
-        app:layout_constraintLeft_toLeftOf="@id/bookingOrderCreateTimeValue"
-        app:layout_constraintStart_toStartOf="@id/bookingOrderCreateTimeValue"
-        app:layout_constraintTop_toTopOf="@id/bookingOrderDescription" />
+        android:text="@string/description"
+        app:layout_constraintBottom_toTopOf="@id/bookingInvalidUnAgreed"
+        app:layout_constraintLeft_toLeftOf="@id/bookingInvalidCreateTimeValue"
+        app:layout_constraintStart_toStartOf="@id/bookingInvalidCreateTimeValue"
+        app:layout_constraintTop_toTopOf="@id/bookingInvalidDescription" />
 </android.support.constraint.ConstraintLayout>

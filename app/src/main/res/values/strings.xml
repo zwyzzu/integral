@@ -211,6 +211,15 @@
     <string name="booking_order_time">预订时间</string>
     <string name="booking_order_address">预订地址</string>
 
+    <string name="booking_invalid_label">作废预订下单提醒</string>
+    <string name="booking_invalid_bookers">预订者</string>
+    <string name="booking_invalid_time">预订时间</string>
+    <string name="booking_invalid_address">预订地址</string>
+
+    <string name="booking_element_created">预订：%1$s</string>
+    <string name="booking_element_ordered">下单：%1$s</string>
+    <string name="booking_element_invalid">作废：%1$s</string>
+
     <string name="coupons_use_label">优惠券使用提醒</string>
     <string name="coupons_use_owner">拥有者</string>
     <string name="coupons_use_amount">优惠金额</string>
@@ -223,6 +232,7 @@
 
     <string name="immediate_use">立即使用</string>
     <string name="immediate_order">立即下单</string>
+    <string name="immediate_invalid">立即作废</string>
 
     <string name="copyright">Copyright©2018-2019二糖网络科技版权所有</string>
 </resources>

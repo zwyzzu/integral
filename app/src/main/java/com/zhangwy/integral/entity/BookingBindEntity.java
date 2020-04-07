@@ -19,10 +19,12 @@ public class BookingBindEntity extends BaseEntity {
     private String addressId;//地址ID
     private String bindName;
     private String bindIcon;
-    private int count;
+    private int count;//下单份数
     private long createTime;//创建时间
     private long orderTime;//下单时间
-    private boolean ordered = false;
+    private long invalidTime;//作废时间
+    private boolean ordered = false;//是否已下单
+    private boolean invalid = false;//是否已作废
     private AddressEntity address;
 
     public BookingBindEntity() {
@@ -113,12 +115,28 @@ public class BookingBindEntity extends BaseEntity {
         this.orderTime = orderTime;
     }
 
+    public long getInvalidTime() {
+        return invalidTime;
+    }
+
+    public void setInvalidTime(long invalidTime) {
+        this.invalidTime = invalidTime;
+    }
+
     public boolean isOrdered() {
         return ordered;
     }
 
     public void setOrdered(boolean ordered) {
         this.ordered = ordered;
+    }
+
+    public boolean isInvalid() {
+        return invalid;
+    }
+
+    public void setInvalid(boolean invalid) {
+        this.invalid = invalid;
     }
 
     public AddressEntity getAddress() {
@@ -144,8 +162,10 @@ public class BookingBindEntity extends BaseEntity {
         this.setBindIcon(in.readString());
         this.setCreateTime(in.readLong());
         this.setOrderTime(in.readLong());
+        this.setInvalidTime(in.readLong());
         this.setCount(in.readInt());
         this.setOrdered(in.readInt() == 1);
+        this.setInvalid(in.readInt() == 1);
         this.setAddress(in.readParcelable(AddressEntity.class.getClassLoader()));
     }
 
@@ -160,8 +180,10 @@ public class BookingBindEntity extends BaseEntity {
         dest.writeString(this.getBindIcon());
         dest.writeLong(this.getCreateTime());
         dest.writeLong(this.getOrderTime());
+        dest.writeLong(this.getInvalidTime());
         dest.writeInt(this.getCount());
         dest.writeInt(this.isOrdered() ? 1 : 0);
+        dest.writeInt(this.isInvalid() ? 1 : 0);
         dest.writeParcelable(this.getAddress(), flags);
     }
 

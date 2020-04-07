@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,15 +52,21 @@ public abstract class IBookingManager {
 
     public abstract List<BookingBindEntity> getUnOrder(String memberId);
 
+    public abstract List<BookingBindEntity> getInvalid(String memberId);
+
     public abstract void addBooking(BookingBindEntity entity);
 
     public abstract void order(Context context, BookingBindEntity entity);
 
+    public abstract void invalid(Context context, BookingBindEntity entity);
+
     private static final class IBookingManagerImpl extends IBookingManager {
         private boolean loadDataEnd = false;
+        private ViewGroup root = null;
         private List<OnBookingDataListener> listeners = new ArrayList<>();
         private BookingCollection unOrderBookings = new BookingCollection();
         private BookingCollection orderedBookings = new BookingCollection();
+        private BookingCollection invalidBookings = new BookingCollection();
 
         private IBookingManagerImpl() {
             this.loadData();
@@ -102,7 +109,9 @@ public abstract class IBookingManager {
             if (booking == null) {
                 return false;
             }
-            if (booking.isOrdered()) {
+            if (booking.isInvalid()) {
+                this.invalidBookings.put(booking.getBind(), booking);
+            } else if (booking.isOrdered()) {
                 this.orderedBookings.put(booking.getBind(), booking);
             } else {
                 this.unOrderBookings.put(booking.getBind(), booking);
@@ -131,18 +140,27 @@ public abstract class IBookingManager {
 
         @Override
         public List<BookingBindEntity> getOrdered(String memberId) {
-            if (TextUtils.isEmpty(memberId) || !this.loadDataEnd || !this.orderedBookings.containsKey(memberId)) {
-                return new ArrayList<>();
-            }
-            return this.orderedBookings.get(memberId);
+            return this.getBookingsByMember(this.orderedBookings, memberId);
         }
 
         @Override
         public List<BookingBindEntity> getUnOrder(String memberId) {
-            if (TextUtils.isEmpty(memberId) || !this.loadDataEnd || !this.unOrderBookings.containsKey(memberId)) {
+            return this.getBookingsByMember(this.unOrderBookings, memberId);
+        }
+
+        @Override
+        public List<BookingBindEntity> getInvalid(String memberId) {
+            return this.getBookingsByMember(this.invalidBookings, memberId);
+        }
+
+        private List<BookingBindEntity> getBookingsByMember(BookingCollection collection, String memberId) {
+            if (!this.loadDataEnd || collection == null) {
                 return new ArrayList<>();
             }
-            return this.unOrderBookings.get(memberId);
+            if (!TextUtils.isEmpty(memberId) && collection.containsKey(memberId)) {
+                return collection.get(memberId);
+            }
+            return collection.getAll();
         }
 
         @Override
@@ -158,7 +176,7 @@ public abstract class IBookingManager {
                 return;
             }
 
-            View root = LayoutInflater.from(context).inflate(R.layout.dialog_booking_order, null);
+            View root = LayoutInflater.from(context).inflate(R.layout.dialog_booking_order, this.root);
             TextView bookers = root.findViewById(R.id.bookingOrderBookersValue);
             TextView created = root.findViewById(R.id.bookingOrderCreateTimeValue);
             TextView address = root.findViewById(R.id.bookingOrderAddressValue);
@@ -186,10 +204,73 @@ public abstract class IBookingManager {
 
         private void orderImpl(Context context, BookingBindEntity entity) {
             try {
-                IDataManager.getInstance().orderBooking(entity.getBind(), entity.getId());
-                this.removeItem(entity, this.unOrderBookings.get(entity.getBind()));
-                this.orderedBookings.put(entity.getBind(), entity);
-                this.notifyObserver(entity.getBind());
+                if (IDataManager.getInstance().orderBooking(entity.getBind(), entity.getId())) {
+                    this.removeItem(entity, this.unOrderBookings.get(entity.getBind()));
+                    this.orderedBookings.put(entity.getBind(), entity);
+                    this.notifyObserver(entity.getBind());
+                }
+            } catch (CodeException e) {
+                Logger.d("useCoupons", e);
+                int res;
+                switch (e.code) {
+                    case IDataCode.MEMBER_NOFOUND:
+                        res = R.string.error_nofound_member;
+                        break;
+                    case IDataCode.COUPONS_NOFOUND:
+                        res = R.string.error_nofound_coupons;
+                        break;
+                    case IDataCode.COUPONS_UNAVAILABLE:
+                        res = R.string.error_unavailable_coupons;
+                        break;
+                    default:
+                        res = R.string.error_use_coupons;
+                        break;
+                }
+                if (context != null) {
+                    Toast.makeText(context, res, Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+
+        @Override
+        public void invalid(Context context, BookingBindEntity entity) {
+            if (entity == null || context == null) {
+                return;
+            }
+
+            View root = LayoutInflater.from(context).inflate(R.layout.dialog_booking_invalid, this.root);
+            TextView bookers = root.findViewById(R.id.bookingInvalidBookersValue);
+            TextView created = root.findViewById(R.id.bookingInvalidCreateTimeValue);
+            TextView address = root.findViewById(R.id.bookingInvalidAddressValue);
+            TextView description = root.findViewById(R.id.bookingInvalidDescriptionValue);
+            View unAgreed = root.findViewById(R.id.bookingInvalidUnAgreed);
+            View agreed = root.findViewById(R.id.bookingInvalidAgreed);
+            bookers.setText(entity.getBindName());
+            created.setText(TimeUtil.dateMilliSecond2String(entity.getCreateTime(), TimeUtil.PATTERN_DATE));
+            address.setText(entity.getAddressText());
+            String descContent = entity.getText() + "  " + entity.getDesc();
+            description.setText(descContent);
+            Dialog dialog = WindowUtil.createAlertDialog(context, 0, root, null, null);
+            if (dialog == null) {
+                return;
+            }
+            unAgreed.setOnClickListener(v -> dialog.dismiss());
+            agreed.setOnClickListener(v -> {
+                dialog.dismiss();
+                invalidImpl(context, entity);
+            });
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+        }
+
+        private void invalidImpl(Context context, BookingBindEntity entity) {
+            try {
+                if (IDataManager.getInstance().invalidBooking(entity.getBind(), entity.getId())) {
+                    this.removeItem(entity, this.unOrderBookings.get(entity.getBind()));
+                    this.invalidBookings.put(entity.getBind(), entity);
+                    this.notifyObserver(entity.getBind());
+                }
             } catch (CodeException e) {
                 Logger.d("useCoupons", e);
                 int res;
@@ -244,7 +325,7 @@ public abstract class IBookingManager {
         void onBookingDataChanged(String memberId);
     }
 
-    private static class BookingCollection extends HashMap<String, List<BookingBindEntity>> {
+    public static class BookingCollection extends HashMap<String, List<BookingBindEntity>> {
         private static final long serialVersionUID = -4475954540859586969L;
 
         public void put(String key, BookingBindEntity coupons) {
@@ -257,6 +338,17 @@ public abstract class IBookingManager {
                 return;
             }
             array.add(coupons);
+        }
+
+        public List<BookingBindEntity> getAll() {
+            List<BookingBindEntity> entities = new ArrayList<>();
+            for (List<BookingBindEntity> array : this.values()) {
+                if (Util.isEmpty(array)) {
+                    continue;
+                }
+                entities.addAll(array);
+            }
+            return entities;
         }
     }
 }
