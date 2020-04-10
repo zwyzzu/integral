@@ -39,7 +39,8 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
     private final int DATABASE_VERSION_2 = 2;
     private final int DATABASE_VERSION_3 = 3;
     private final int DATABASE_VERSION_4 = 4;
-    private final int DATABASE_VERSION = DATABASE_VERSION_4;
+    private final int DATABASE_VERSION_5 = 5;
+    private final int DATABASE_VERSION = DATABASE_VERSION_5;
 
     private final String TABLE_NAME_MEMBER = "member_data";
     private final String TABLE_NAME_INTEGRAL = "integral_data";
@@ -49,6 +50,11 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
     private final String TABLE_NAME_COUPONS_BIND = "coupons_bind_data";
     private final String TABLE_NAME_EXPIRY = "expiry_data";
     private final String TABLE_NAME_BOOKING = "booking_data";
+    private final String TABLE_NAME_BOOKING_BIND = "booking_data_bind";
+
+    private final String COLUMN_ID = "id";
+    private final boolean BEGIN_TRANSACTION_TRUE = true;
+    private final boolean BEGIN_TRANSACTION_FALSE = false;
 
     private final String SQL_WHERECLAUSE_BIND = " bind = ? ";
     private final String SQL_WHERECLAUSE_ID = " id = ? ";
@@ -61,9 +67,10 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
     private final SQLCreator SQL_CREATOR_COUPONS_BIND = SQLCreator.newInstance(this.TABLE_NAME_COUPONS_BIND);
     private final SQLCreator SQL_CREATOR_EXPIRY = SQLCreator.newInstance(this.TABLE_NAME_EXPIRY);
     private final SQLCreator SQL_CREATOR_BOOKING = SQLCreator.newInstance(this.TABLE_NAME_BOOKING);
+    private final SQLCreator SQL_CREATOR_BOOKING_BIND = SQLCreator.newInstance(this.TABLE_NAME_BOOKING_BIND);
 
     {//
-        SQL_CREATOR_MEMBER.setPrimaryKey("id", SQLCreator.Format.TEXT)
+        SQL_CREATOR_MEMBER.setPrimaryKey(this.COLUMN_ID, SQLCreator.Format.TEXT)
                 .put("name", SQLCreator.Format.TEXT, false)
                 .put("icon", SQLCreator.Format.TEXT, false)
                 .put("desc", SQLCreator.Format.TEXT, true)
@@ -78,14 +85,14 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 .put("modified", SQLCreator.Format.LONG, false)
                 .build();
 
-        SQL_CREATOR_INTEGRAL.setPrimaryKey("id", SQLCreator.Format.TEXT)
+        SQL_CREATOR_INTEGRAL.setPrimaryKey(this.COLUMN_ID, SQLCreator.Format.TEXT)
                 .put("name", SQLCreator.Format.TEXT, false)
                 .put("desc", SQLCreator.Format.TEXT, false)
                 .put("score", SQLCreator.Format.FLOAT, false)
                 .put("checkCoefficient", SQLCreator.Format.INTEGER, false)
                 .build();
 
-        SQL_CREATOR_ADDRESS.setPrimaryKey("id", SQLCreator.Format.TEXT)
+        SQL_CREATOR_ADDRESS.setPrimaryKey(this.COLUMN_ID, SQLCreator.Format.TEXT)
                 .put("tag", SQLCreator.Format.TEXT, true)
                 .put("phone", SQLCreator.Format.TEXT, false)
                 .put("consignee", SQLCreator.Format.TEXT, false)
@@ -99,7 +106,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 .put("position", SQLCreator.Format.INTEGER, true)
                 .build();
 
-        SQL_CREATOR_INTEGRAL_BIND.setPrimaryKey("id", SQLCreator.Format.TEXT)
+        SQL_CREATOR_INTEGRAL_BIND.setPrimaryKey(this.COLUMN_ID, SQLCreator.Format.TEXT)
                 .put("bind", SQLCreator.Format.TEXT, false)
                 .put("desc", SQLCreator.Format.TEXT, true)
                 .put("scoreBind", SQLCreator.Format.TEXT, true)
@@ -109,14 +116,14 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 .put("usedDate", SQLCreator.Format.LONG, true)
                 .build();
 
-        SQL_CREATOR_COUPONS.setPrimaryKey("id", SQLCreator.Format.TEXT)
+        SQL_CREATOR_COUPONS.setPrimaryKey(this.COLUMN_ID, SQLCreator.Format.TEXT)
                 .put("amount", SQLCreator.Format.FLOAT, false)
                 .put("name", SQLCreator.Format.TEXT, false)
                 .put("desc", SQLCreator.Format.TEXT, true)
                 .put("checkCoefficient", SQLCreator.Format.INTEGER, false)
                 .build();
 
-        SQL_CREATOR_COUPONS_BIND.setPrimaryKey("id", SQLCreator.Format.TEXT)
+        SQL_CREATOR_COUPONS_BIND.setPrimaryKey(this.COLUMN_ID, SQLCreator.Format.TEXT)
                 .put("amount", SQLCreator.Format.FLOAT, false)
                 .put("createDate", SQLCreator.Format.LONG, false)
                 .put("expiryDate", SQLCreator.Format.LONG, false)
@@ -131,15 +138,28 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 .put("tag", SQLCreator.Format.TEXT, true)
                 .build();
 
-        SQL_CREATOR_EXPIRY.setPrimaryKey("id", SQLCreator.Format.TEXT)
+        SQL_CREATOR_EXPIRY.setPrimaryKey(this.COLUMN_ID, SQLCreator.Format.TEXT)
                 .put("count", SQLCreator.Format.INTEGER, false)
                 .put("expiryCode", SQLCreator.Format.TEXT, false)
                 .build();
 
-        SQL_CREATOR_BOOKING.setPrimaryKey("id", SQLCreator.Format.TEXT)
+        SQL_CREATOR_BOOKING.setPrimaryKey(this.COLUMN_ID, SQLCreator.Format.TEXT)
                 .put("text", SQLCreator.Format.TEXT, false)
                 .put("desc", SQLCreator.Format.TEXT, false)
                 .put("lastUseTime", SQLCreator.Format.LONG, false);
+
+        SQL_CREATOR_BOOKING_BIND.setPrimaryKey(this.COLUMN_ID, SQLCreator.Format.TEXT)
+                .put("bookingId", SQLCreator.Format.TEXT, false)
+                .put("text", SQLCreator.Format.TEXT, false)
+                .put("desc", SQLCreator.Format.TEXT, false)
+                .put("bind", SQLCreator.Format.TEXT, false)
+                .put("bindName", SQLCreator.Format.TEXT, false)
+                .put("bindIcon", SQLCreator.Format.TEXT, false)
+                .put("addressId", SQLCreator.Format.TEXT, false)
+                .put("count", SQLCreator.Format.INTEGER, false)
+                .put("createTime", SQLCreator.Format.LONG, false)
+                .put("orderTime", SQLCreator.Format.LONG, false)
+                .put("invalidTime", SQLCreator.Format.LONG, false);
     }
 
     private Context mContext;
@@ -172,6 +192,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
     @Override
     public void onCreate(SQLiteDatabase database) {
         if (this.openDatabase(database)) {
+            Logger.d(String.format(Locale.getDefault(), "database version is %d", DATABASE_VERSION));
             database.execSQL(this.SQL_CREATOR_MEMBER.create());
             database.execSQL(this.SQL_CREATOR_INTEGRAL.create());
             database.execSQL(this.SQL_CREATOR_ADDRESS.create());
@@ -180,6 +201,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             database.execSQL(this.SQL_CREATOR_COUPONS.create());
             database.execSQL(this.SQL_CREATOR_COUPONS_BIND.create());
             database.execSQL(this.SQL_CREATOR_BOOKING.create());
+            database.execSQL(this.SQL_CREATOR_BOOKING_BIND.create());
         }
     }
 
@@ -188,6 +210,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         if (!this.openDatabase(database)) {
             return;
         }
+        Logger.d(String.format(Locale.getDefault(), "database version is %d", DATABASE_VERSION));
         switch (oldVersion) {
             case DATABASE_VERSION_1:
                 this.SQL_CREATOR_INTEGRAL.addColumn(database, "checkCoefficient", SQLCreator.Format.INTEGER);
@@ -198,6 +221,9 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             case DATABASE_VERSION_3:
                 database.execSQL(this.SQL_CREATOR_BOOKING.create());
             case DATABASE_VERSION_4:
+                database.execSQL(this.SQL_CREATOR_BOOKING_BIND.create());
+            case DATABASE_VERSION_5:
+                break;
         }
     }
 
@@ -211,6 +237,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             case DATABASE_VERSION_2:
             case DATABASE_VERSION_3:
             case DATABASE_VERSION_4:
+            case DATABASE_VERSION_5:
         }
     }
 
@@ -268,10 +295,12 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             if (cursor == null) {
                 return null;
             }
+            MemberEntity member = null;
             if (cursor.moveToNext()) {
-                return this.cursor2Member(database, cursor);
+                member = this.cursor2Member(database, cursor);
             }
             cursor.close();
+            return member;
         } catch (Exception e) {
             Logger.d("getMember", e);
         } finally {
@@ -297,12 +326,12 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         member.setCreated(cursor.getLong(columnIndex++));
         member.setModified(cursor.getLong(columnIndex++));
         Logger.d(String.format(Locale.getDefault(), "the table %s's column count is %d", TABLE_NAME_MEMBER, columnIndex));
-        member.setAddress(this.queryAddress(database, member.getId()));
+        member.setAddress(this.queryAddresses(database, member.getId()));
         member.setIntegrals(this.queryMemberIntegral(database, member.getId()));
         return member;
     }
 
-    private List<AddressEntity> queryAddress(SQLiteDatabase database, String bindId) {
+    private List<AddressEntity> queryAddresses(SQLiteDatabase database, String bindId) {
         List<AddressEntity> array = new ArrayList<>();
         String query = SQL_CREATOR_ADDRESS.queryWhereAnd(SQL_WHERECLAUSE_BIND);
         Cursor cursor = database.rawQuery(query, new String[]{bindId});
@@ -315,6 +344,20 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         }
         cursor.close();
         return array;
+    }
+
+    private AddressEntity queryAddress(SQLiteDatabase database, String addressId) {
+        String query = SQL_CREATOR_ADDRESS.queryWhereAnd(SQL_WHERECLAUSE_ID);
+        Cursor cursor = database.rawQuery(query, new String[]{addressId});
+        if (cursor == null) {
+            return null;
+        }
+        AddressEntity address = null;
+        if (cursor.moveToNext()) {
+            address = this.cursor2Address(cursor);
+        }
+        cursor.close();
+        return address;
     }
 
     private AddressEntity cursor2Address(Cursor cursor) {
@@ -384,7 +427,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             }
             database.beginTransaction();
             ContentValues values = new ContentValues();
-            values.put("id", member.getId());
+            values.put(this.COLUMN_ID, member.getId());
             values.put("name", member.getName());
             values.put("icon", member.getDBIcon());
             values.put("desc", member.getDesc());
@@ -467,7 +510,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 if (address == null) {
                     continue;
                 }
-                this.addAddress(false, address);
+                this.addAddress(this.BEGIN_TRANSACTION_FALSE, address);
             }
         }
         database.delete(TABLE_NAME_INTEGRAL_BIND, SQL_WHERECLAUSE_BIND, whereArgs);
@@ -476,7 +519,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 if (integral == null) {
                     continue;
                 }
-                this.addMemberIntegral(false, integral);
+                this.addMemberIntegral(this.BEGIN_TRANSACTION_FALSE, integral);
             }
         }
     }
@@ -548,13 +591,16 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         if (this.emptyHelper() || address == null || TextUtils.isEmpty(address.getBind())) {
             return false;
         }
-        return this.addAddress(true, address);
+        return this.addAddress(this.BEGIN_TRANSACTION_TRUE, address);
     }
 
     private boolean addAddress(boolean beginTransaction, AddressEntity address) {
         SQLiteDatabase database = null;
         try {
             database = this.helper.open();
+            if (this.hasAddress(database, address.getId())) {
+                return this.updateAddress(address);
+            }
             if (beginTransaction) {
                 database.beginTransaction();
             }
@@ -562,7 +608,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 return false;
             }
             ContentValues values = new ContentValues();
-            values.put("id", address.getId());
+            values.put(this.COLUMN_ID, address.getId());
             values.put("tag", address.getTag());
             values.put("phone", address.getPhone());
             values.put("consignee", address.getConsignee());
@@ -606,8 +652,8 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         try {
             database = this.helper.open();
             database.beginTransaction();
-            if (!this.has(database, TABLE_NAME_ADDRESS, "id", address.getId())) {
-                if (this.addAddress(false, address)) {
+            if (!this.hasAddress(database, address.getId())) {
+                if (this.addAddress(this.BEGIN_TRANSACTION_FALSE, address)) {
                     database.setTransactionSuccessful();
                     return true;
                 }
@@ -695,7 +741,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         try {
             database = this.helper.open();
             database.beginTransaction();
-            return this.queryAddress(database, memberId);
+            return this.queryAddresses(database, memberId);
         } catch (Exception e) {
             Logger.d("getMember", e);
         } finally {
@@ -778,7 +824,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         if (this.emptyHelper() || integral == null) {
             return false;
         }
-        return this.addIntegral(true, integral);
+        return this.addIntegral(this.BEGIN_TRANSACTION_TRUE, integral);
     }
 
     private boolean addIntegral(boolean beginTransaction, IntegralEntity integral) {
@@ -789,7 +835,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 database.beginTransaction();
             }
             ContentValues values = new ContentValues();
-            values.put("id", integral.getId());
+            values.put(this.COLUMN_ID, integral.getId());
             values.put("name", integral.getName());
             values.put("desc", integral.getDesc());
             values.put("score", integral.getScore());
@@ -823,8 +869,8 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         try {
             database = this.helper.open();
             database.beginTransaction();
-            if (!this.has(database, TABLE_NAME_INTEGRAL, "id", integral.getId())) {
-                if (this.addIntegral(false, integral)) {
+            if (!this.has(database, TABLE_NAME_INTEGRAL, this.COLUMN_ID, integral.getId())) {
+                if (this.addIntegral(this.BEGIN_TRANSACTION_FALSE, integral)) {
                     database.setTransactionSuccessful();
                     return true;
                 }
@@ -878,7 +924,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         if (integral == null || this.emptyHelper() || TextUtils.isEmpty(integral.getBind())) {
             return false;
         }
-        return this.addMemberIntegral(true, integral);
+        return this.addMemberIntegral(this.BEGIN_TRANSACTION_TRUE, integral);
     }
 
     private boolean addMemberIntegral(boolean beginTransaction, IntegralBindEntity integral) {
@@ -892,7 +938,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 return false;
             }
             ContentValues values = new ContentValues();
-            values.put("id", integral.getId());
+            values.put(this.COLUMN_ID, integral.getId());
             values.put("bind", integral.getBind());
             values.put("desc", integral.getDesc());
             values.put("scoreBind", integral.getScoreBind());
@@ -928,7 +974,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         if (integral == null || this.emptyHelper() || TextUtils.isEmpty(integral.getBind())) {
             return false;
         }
-        return this.updateMemberIntegral(true, true, integral);
+        return this.updateMemberIntegral(this.BEGIN_TRANSACTION_TRUE, true, integral);
     }
 
     private boolean updateMemberIntegral(boolean beginTransaction, boolean modifiedMember, IntegralBindEntity integral) {
@@ -1027,7 +1073,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                         entity.setUsedScore(entity.getUsedScore() + useScore);
                         entity.setUsedDate(System.currentTimeMillis());
                     }
-                    this.updateMemberIntegral(false, false, entity);
+                    this.updateMemberIntegral(this.BEGIN_TRANSACTION_FALSE, false, entity);
                     useScore -= useable;
                 }
             }
@@ -1073,17 +1119,12 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
     }
 
     private boolean hasExpiry(SQLiteDatabase database, CouponsExpiryEntity expiry) {
-        Cursor cursor = null;
         String query = SQL_CREATOR_EXPIRY.queryWhereAnd("count = ? ", "expiryCode = ? ");
-        try {
-            cursor = database.rawQuery(query, new String[]{String.valueOf(expiry.getCount()), expiry.getExpiryCode()});
+        String[] args = new String[]{String.valueOf(expiry.getCount()), expiry.getExpiryCode()};
+        try (Cursor cursor = database.rawQuery(query, args)) {
             return cursor != null && cursor.moveToNext();
         } catch (Exception e) {
             return false;
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
         }
     }
 
@@ -1106,7 +1147,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 throw new CodeException(IDataCode.DATABASE_HAS_EXPIRY);
             }
             ContentValues values = new ContentValues();
-            values.put("id", expiry.getId());
+            values.put(this.COLUMN_ID, expiry.getId());
             values.put("count", expiry.getCount());
             values.put("expiryCode", expiry.getExpiryCode());
             long raw = database.insertWithOnConflict(TABLE_NAME_EXPIRY, null, values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -1179,7 +1220,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
             return false;
         }
 
-        return this.addCoupons(true, coupons);
+        return this.addCoupons(this.BEGIN_TRANSACTION_TRUE, coupons);
     }
 
     private boolean addCoupons(boolean beginTransaction, CouponsEntity coupons) {
@@ -1190,7 +1231,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 database.beginTransaction();
             }
             ContentValues values = new ContentValues();
-            values.put("id", coupons.getId());
+            values.put(this.COLUMN_ID, coupons.getId());
             values.put("amount", coupons.getAmount());
             values.put("name", coupons.getName());
             values.put("desc", coupons.getDesc());
@@ -1219,8 +1260,8 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         try {
             database = this.helper.open();
             database.beginTransaction();
-            if (!this.has(database, TABLE_NAME_COUPONS, "id", coupons.getId())) {
-                if (this.addCoupons(false, coupons)) {
+            if (!this.has(database, TABLE_NAME_COUPONS, this.COLUMN_ID, coupons.getId())) {
+                if (this.addCoupons(this.BEGIN_TRANSACTION_FALSE, coupons)) {
                     database.setTransactionSuccessful();
                     return true;
                 }
@@ -1305,7 +1346,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         if (coupons == null || this.emptyHelper() || TextUtils.isEmpty(coupons.getBind())) {
             return false;
         }
-        return this.addMemberCoupons(true, coupons);
+        return this.addMemberCoupons(this.BEGIN_TRANSACTION_TRUE, coupons);
     }
 
     private boolean addMemberCoupons(boolean beginTransaction, CouponsBindEntity coupons) {
@@ -1319,7 +1360,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 return false;
             }
             ContentValues values = new ContentValues();
-            values.put("id", coupons.getId());
+            values.put(this.COLUMN_ID, coupons.getId());
             values.put("amount", coupons.getAmount());
             values.put("createDate", coupons.getCreateDate());
             values.put("expiryDate", coupons.getExpiryDate());
@@ -1355,7 +1396,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         if (coupons == null || this.emptyHelper() || TextUtils.isEmpty(coupons.getBind())) {
             return false;
         }
-        return this.updateMemberCoupons(true, coupons);
+        return this.updateMemberCoupons(this.BEGIN_TRANSACTION_TRUE, coupons);
     }
 
     private boolean updateMemberCoupons(boolean beginTransaction, CouponsBindEntity coupons) {
@@ -1412,6 +1453,27 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         }
     }
 
+    private List<CouponsBindEntity> queryMemberCoupons(SQLiteDatabase database, String bindId) {
+        List<CouponsBindEntity> array = new ArrayList<>();
+        Cursor cursor;
+        if (TextUtils.isEmpty(bindId)) {
+            String query = SQL_CREATOR_COUPONS_BIND.queryWhereAnd();
+            cursor = database.rawQuery(query, null);
+        } else {
+            String query = SQL_CREATOR_COUPONS_BIND.queryWhereAnd(SQL_WHERECLAUSE_BIND);
+            cursor = database.rawQuery(query, new String[]{bindId});
+        }
+        if (cursor == null) {
+            return array;
+        }
+        while (cursor.moveToNext()) {
+            CouponsBindEntity address = this.cursor2MemberCoupons(cursor);
+            array.add(address);
+        }
+        cursor.close();
+        return array;
+    }
+
     private CouponsBindEntity queryMemberCoupons(SQLiteDatabase database, String memberId, String couponsId) {
         String query = SQL_CREATOR_COUPONS_BIND.queryWhereAnd(SQL_WHERECLAUSE_ID, SQL_WHERECLAUSE_BIND);
         Cursor cursor = database.rawQuery(query, new String[]{couponsId, memberId});
@@ -1465,7 +1527,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
 
             if (coupons.useable()) {
                 coupons.setUsedDate(System.currentTimeMillis());
-                this.updateMemberCoupons(false, coupons);
+                this.updateMemberCoupons(this.BEGIN_TRANSACTION_FALSE, coupons);
                 database.setTransactionSuccessful();
             } else {
                 throw new CodeException(IDataCode.COUPONS_UNAVAILABLE);
@@ -1567,7 +1629,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         if (this.emptyHelper() || booking == null) {
             return false;
         }
-        return this.addBooking(true, booking);
+        return this.addBooking(this.BEGIN_TRANSACTION_TRUE, booking);
     }
 
     private boolean addBooking(boolean beginTransaction, BookingEntity booking) {
@@ -1578,7 +1640,7 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
                 database.beginTransaction();
             }
             ContentValues values = new ContentValues();
-            values.put("id", booking.getId());
+            values.put(this.COLUMN_ID, booking.getId());
             values.put("text", booking.getText());
             values.put("desc", booking.getDesc());
             values.put("lastUseTime", booking.getLastUseTime());
@@ -1606,8 +1668,8 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
         try {
             database = this.helper.open();
             database.beginTransaction();
-            if (!this.has(database, TABLE_NAME_BOOKING, "id", booking.getId())) {
-                if (this.addBooking(false, booking)) {
+            if (!this.has(database, TABLE_NAME_BOOKING, this.COLUMN_ID, booking.getId())) {
+                if (this.addBooking(this.BEGIN_TRANSACTION_FALSE, booking)) {
                     database.setTransactionSuccessful();
                     return true;
                 }
@@ -1647,58 +1709,382 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
 
     @Override
     public boolean addMemberBooking(BookingBindEntity bookingBindEntity) {
-        return false;//TODO
+        if (bookingBindEntity == null || this.emptyHelper() || TextUtils.isEmpty(bookingBindEntity.getBind())) {
+            return false;
+        }
+        return this.addMemberBooking(this.BEGIN_TRANSACTION_TRUE, bookingBindEntity);
+    }
+
+    private boolean addMemberBooking(boolean beginTransaction, BookingBindEntity bindEntity) {
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            if (this.hasMemberBooking(database, bindEntity.getId())) {
+                return this.updateMemberBooking(this.BEGIN_TRANSACTION_TRUE, bindEntity);
+            }
+            if (beginTransaction) {
+                database.beginTransaction();
+            }
+            if (!this.hasMember(database, bindEntity.getBind())) {
+                return false;
+            }
+            if (!this.hasAddress(database, bindEntity.getAddressId())) {
+                return false;
+            }
+            ContentValues values = new ContentValues();
+            values.put(this.COLUMN_ID, bindEntity.getId());
+            values.put("bookingId", bindEntity.getBookingId());
+            values.put("text", bindEntity.getText());
+            values.put("desc", bindEntity.getDesc());
+            values.put("bind", bindEntity.getBind());
+            values.put("bindName", bindEntity.getBindName());
+            values.put("bindIcon", bindEntity.getBindIcon());
+            values.put("addressId", bindEntity.getAddressId());
+            values.put("count", bindEntity.getCount());
+            values.put("createTime", bindEntity.getCreateTime());
+            values.put("orderTime", bindEntity.getOrderTime());
+            values.put("invalidTime", bindEntity.getInvalidTime());
+            long raw = database.insertWithOnConflict(TABLE_NAME_BOOKING_BIND, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            if (raw >= 0) {
+                this.updateModified(database, bindEntity.getBind());
+                if (beginTransaction) {
+                    database.setTransactionSuccessful();
+                }
+            }
+            return raw >= 0;
+        } catch (Exception e) {
+            Logger.d("addMemberCoupons", e);
+            return false;
+        } finally {
+            if (beginTransaction) {
+                this.endTransaction(database);
+            }
+        }
     }
 
     @Override
-    public boolean updateMemberBooking(BookingBindEntity bookingBindEntity) {
-        return false;//TODO
+    public boolean updateMemberBooking(BookingBindEntity bindEntity) {
+        if (bindEntity == null || this.emptyHelper() || TextUtils.isEmpty(bindEntity.getBind())) {
+            return false;
+        }
+        return this.updateMemberBooking(this.BEGIN_TRANSACTION_TRUE, bindEntity);
+    }
+
+    private boolean updateMemberBooking(boolean beginTransaction, BookingBindEntity bindEntity) {
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            if (!this.hasMemberBooking(database, bindEntity.getId())) {
+                return this.addMemberBooking(this.BEGIN_TRANSACTION_TRUE, bindEntity);
+            }
+            if (beginTransaction) {
+                database.beginTransaction();
+            }
+            if (!this.hasMember(database, bindEntity.getBind())) {
+                return false;
+            }
+            if (!this.hasAddress(database, bindEntity.getAddressId())) {
+                return false;
+            }
+            ContentValues values = new ContentValues();
+            values.put("bookingId", bindEntity.getBookingId());
+            values.put("text", bindEntity.getText());
+            values.put("desc", bindEntity.getDesc());
+            values.put("bind", bindEntity.getBind());
+            values.put("bindName", bindEntity.getBindName());
+            values.put("bindIcon", bindEntity.getBindIcon());
+            values.put("addressId", bindEntity.getAddressId());
+            values.put("count", bindEntity.getCount());
+            values.put("createTime", bindEntity.getCreateTime());
+            values.put("orderTime", bindEntity.getOrderTime());
+            values.put("invalidTime", bindEntity.getInvalidTime());
+            long raw = database.update(TABLE_NAME_BOOKING_BIND, values, SQL_WHERECLAUSE_ID, new String[]{bindEntity.getId()});
+            if (raw < 0) {
+                return false;
+            }
+            this.updateModified(database, bindEntity.getBind());
+            if (beginTransaction) {
+                database.setTransactionSuccessful();
+            }
+            return true;
+        } catch (Exception e) {
+            Logger.d("updateMemberCoupons", e);
+            return false;
+        } finally {
+            if (beginTransaction) {
+                this.endTransaction(database);
+            }
+        }
     }
 
     @Override
     public BookingBindEntity getMemberBooking(String memberId, String bookingId) {
-        return new BookingBindEntity();//TODO
+        if (this.emptyHelper() || TextUtils.isEmpty(memberId) || TextUtils.isEmpty(bookingId)) {
+            return null;
+        }
+        try {
+            return this.queryMemberBooking(this.helper.open(), memberId, bookingId);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
-    @Override
-    public boolean orderBooking(String memberId, String bookingId) throws CodeException {
-        return false;//TODO
+    private BookingBindEntity queryMemberBooking(SQLiteDatabase database, String memberId, String bookingId) {
+        String query = SQL_CREATOR_BOOKING_BIND.queryWhereAnd(SQL_WHERECLAUSE_ID, SQL_WHERECLAUSE_BIND);
+        Cursor cursor = database.rawQuery(query, new String[]{bookingId, memberId});
+        if (cursor == null) {
+            return null;
+        }
+        BookingBindEntity bindEntity = null;
+        if (cursor.moveToNext()) {
+            bindEntity = this.cursor2MemberBooking(database, cursor);
+        }
+        cursor.close();
+        return bindEntity;
     }
 
-    @Override
-    public boolean orderBooking(String bookingBindId) throws CodeException {
-        return false;//TODO
+    private BookingBindEntity queryMemberBooking(SQLiteDatabase database, String bookingId) {
+        String query = SQL_CREATOR_BOOKING_BIND.queryWhereAnd(SQL_WHERECLAUSE_ID);
+        Cursor cursor = database.rawQuery(query, new String[]{bookingId});
+        if (cursor == null) {
+            return null;
+        }
+        BookingBindEntity bindEntity = null;
+        if (cursor.moveToNext()) {
+            bindEntity = this.cursor2MemberBooking(database, cursor);
+        }
+        cursor.close();
+        return bindEntity;
     }
 
-    @Override
-    public List<BookingBindEntity> getMemberBookings() {
-        return new ArrayList<>();//TODO
-    }
-
-    @Override
-    public List<BookingBindEntity> getMemberBookings(String memberId) {
-        return new ArrayList<>();//TODO
-    }
-
-    private List<CouponsBindEntity> queryMemberCoupons(SQLiteDatabase database, String bindId) {
-        List<CouponsBindEntity> array = new ArrayList<>();
+    private List<BookingBindEntity> queryMemberBookings(SQLiteDatabase database, String memberId) {
+        List<BookingBindEntity> array = new ArrayList<>();
         Cursor cursor;
-        if (TextUtils.isEmpty(bindId)) {
-            String query = SQL_CREATOR_COUPONS_BIND.queryWhereAnd();
+        if (TextUtils.isEmpty(memberId)) {
+            String query = SQL_CREATOR_BOOKING_BIND.queryWhereAnd();
             cursor = database.rawQuery(query, null);
         } else {
-            String query = SQL_CREATOR_COUPONS_BIND.queryWhereAnd(SQL_WHERECLAUSE_BIND);
-            cursor = database.rawQuery(query, new String[]{bindId});
+            String query = SQL_CREATOR_BOOKING_BIND.queryWhereAnd(SQL_WHERECLAUSE_BIND);
+            cursor = database.rawQuery(query, new String[]{memberId});
         }
         if (cursor == null) {
             return array;
         }
         while (cursor.moveToNext()) {
-            CouponsBindEntity address = this.cursor2MemberCoupons(cursor);
-            array.add(address);
+            BookingBindEntity bindEntity = this.cursor2MemberBooking(database, cursor);
+            array.add(bindEntity);
         }
         cursor.close();
         return array;
+    }
+
+    private BookingBindEntity cursor2MemberBooking(SQLiteDatabase database, Cursor cursor) {
+        int columnIndex = 0;
+        BookingBindEntity bindEntity = new BookingBindEntity();
+        bindEntity.setId(cursor.getString(columnIndex++));
+        bindEntity.setBookingId(cursor.getString(columnIndex++));
+        bindEntity.setText(cursor.getString(columnIndex++));
+        bindEntity.setDesc(cursor.getString(columnIndex++));
+        bindEntity.setBind(cursor.getString(columnIndex++));
+        bindEntity.setBindName(cursor.getString(columnIndex++));
+        bindEntity.setBindIcon(cursor.getString(columnIndex++));
+        bindEntity.setAddressId(cursor.getString(columnIndex++));
+        bindEntity.setCount(cursor.getInt(columnIndex++));
+        bindEntity.setCreateTime(cursor.getLong(columnIndex++));
+        bindEntity.setOrderTime(cursor.getLong(columnIndex++));
+        bindEntity.setInvalidTime(cursor.getLong(columnIndex++));
+        Logger.d(String.format(Locale.getDefault(), "the table %s's column count is %d", TABLE_NAME_COUPONS_BIND, columnIndex));
+        bindEntity.setAddress(this.queryAddress(database, bindEntity.getAddressId()));
+        return bindEntity;
+    }
+
+    @Override
+    public boolean orderBooking(String memberId, String bookingId) throws CodeException {
+        if (TextUtils.isEmpty(memberId)) {
+            throw new CodeException(IDataCode.PARAMETER_UNUSABLE);
+        }
+        if (this.emptyHelper()) {
+            throw new CodeException(IDataCode.DATABASE_UNINITIALIZED);
+        }
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            database.beginTransaction();
+            if (!this.hasMember(database, memberId)) {
+                throw new CodeException(IDataCode.MEMBER_NOFOUND);
+            }
+            List<BookingBindEntity> entities = new ArrayList<>();
+            if(TextUtils.isEmpty(bookingId)) {
+                entities.addAll(this.queryMemberBookings(database, memberId));
+            } else {
+                entities.add(this.queryMemberBooking(database, memberId, bookingId));
+            }
+            if (Util.isEmpty(entities)) {
+                throw new CodeException(IDataCode.BOOKING_NOFOUND);
+            }
+
+            boolean update = false;
+            for (BookingBindEntity entity : entities) {
+                if (entity.isOrdered() || entity.isInvalid()) {
+                    continue;
+                }
+                entity.setOrderTime(System.currentTimeMillis());
+                this.updateMemberBooking(this.BEGIN_TRANSACTION_FALSE, entity);
+                update = true;
+            }
+            if (update) {
+                database.setTransactionSuccessful();
+            } else {
+                throw new CodeException(IDataCode.BOOKING_UNAVAILABLE);
+            }
+            return true;
+        } catch (CodeException e) {
+            throw e;
+        } catch (Exception e) {
+            Logger.d("orderBooking", e);
+            return false;
+        } finally {
+            this.endTransaction(database);
+        }
+    }
+
+    @Override
+    public boolean orderBooking(String bookingBindId) throws CodeException {
+        if (TextUtils.isEmpty(bookingBindId)) {
+            throw new CodeException(IDataCode.PARAMETER_UNUSABLE);
+        }
+        if (this.emptyHelper()) {
+            throw new CodeException(IDataCode.DATABASE_UNINITIALIZED);
+        }
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            database.beginTransaction();
+            BookingBindEntity bindEntity = this.queryMemberBooking(database, bookingBindId);
+            if (bindEntity == null) {
+                throw new CodeException(IDataCode.BOOKING_NOFOUND);
+            }
+            if (bindEntity.isOrdered() || bindEntity.isInvalid()) {
+                throw new CodeException(IDataCode.BOOKING_UNAVAILABLE);
+            }
+            bindEntity.setOrderTime(System.currentTimeMillis());
+            this.updateMemberBooking(this.BEGIN_TRANSACTION_FALSE, bindEntity);
+            database.setTransactionSuccessful();
+            return true;
+        } catch (CodeException e) {
+            throw e;
+        } catch (Exception e) {
+            Logger.d("orderBooking", e);
+            return false;
+        } finally {
+            this.endTransaction(database);
+        }
+    }
+
+    @Override
+    public boolean invalidBooking(String memberId, String bookingId) throws CodeException {
+        if (TextUtils.isEmpty(memberId)) {
+            throw new CodeException(IDataCode.PARAMETER_UNUSABLE);
+        }
+        if (this.emptyHelper()) {
+            throw new CodeException(IDataCode.DATABASE_UNINITIALIZED);
+        }
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            database.beginTransaction();
+            if (!this.hasMember(database, memberId)) {
+                throw new CodeException(IDataCode.MEMBER_NOFOUND);
+            }
+            List<BookingBindEntity> entities = new ArrayList<>();
+            if(TextUtils.isEmpty(bookingId)) {
+                entities.addAll(this.queryMemberBookings(database, memberId));
+            } else {
+                entities.add(this.queryMemberBooking(database, memberId, bookingId));
+            }
+            if (Util.isEmpty(entities)) {
+                throw new CodeException(IDataCode.BOOKING_NOFOUND);
+            }
+
+            boolean update = false;
+            for (BookingBindEntity entity : entities) {
+                if (entity.isOrdered() || entity.isInvalid()) {
+                    continue;
+                }
+                entity.setInvalidTime(System.currentTimeMillis());
+                this.updateMemberBooking(this.BEGIN_TRANSACTION_FALSE, entity);
+                update = true;
+            }
+            if (update) {
+                database.setTransactionSuccessful();
+            } else {
+                throw new CodeException(IDataCode.BOOKING_UNAVAILABLE);
+            }
+            return true;
+        } catch (CodeException e) {
+            throw e;
+        } catch (Exception e) {
+            Logger.d("orderBooking", e);
+            return false;
+        } finally {
+            this.endTransaction(database);
+        }
+    }
+
+    @Override
+    public boolean invalidBooking(String bookingBindId) throws CodeException {
+        if (TextUtils.isEmpty(bookingBindId)) {
+            throw new CodeException(IDataCode.PARAMETER_UNUSABLE);
+        }
+        if (this.emptyHelper()) {
+            throw new CodeException(IDataCode.DATABASE_UNINITIALIZED);
+        }
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            database.beginTransaction();
+            BookingBindEntity bindEntity = this.queryMemberBooking(database, bookingBindId);
+            if (bindEntity == null) {
+                throw new CodeException(IDataCode.BOOKING_NOFOUND);
+            }
+            if (bindEntity.isOrdered() || bindEntity.isInvalid()) {
+                throw new CodeException(IDataCode.BOOKING_UNAVAILABLE);
+            }
+            bindEntity.setInvalidTime(System.currentTimeMillis());
+            this.updateMemberBooking(this.BEGIN_TRANSACTION_FALSE, bindEntity);
+            database.setTransactionSuccessful();
+            return true;
+        } catch (CodeException e) {
+            throw e;
+        } catch (Exception e) {
+            Logger.d("orderBooking", e);
+            return false;
+        } finally {
+            this.endTransaction(database);
+        }
+    }
+
+    @Override
+    public List<BookingBindEntity> getMemberBookings() {
+        return this.getMemberBookings("");
+    }
+
+    @Override
+    public List<BookingBindEntity> getMemberBookings(String memberId) {
+        if (this.emptyHelper()) {
+            return new ArrayList<>();
+        }
+        SQLiteDatabase database = null;
+        try {
+            database = this.helper.open();
+            database.beginTransaction();
+            return this.queryMemberBookings(database, memberId);
+        } catch (Exception e) {
+            Logger.d("getMemberCoupons", e);
+        } finally {
+            this.endTransaction(database);
+        }
+        return new ArrayList<>();
     }
 
     private boolean openDatabase(SQLiteDatabase database) {
@@ -1719,7 +2105,15 @@ public class IDataManagerImpl extends IDataManager implements DatabaseHelper.Upg
     }
 
     private boolean hasMember(SQLiteDatabase database, String memberId) {
-        return this.has(database, TABLE_NAME_MEMBER, "id", memberId);
+        return this.has(database, TABLE_NAME_MEMBER, this.COLUMN_ID, memberId);
+    }
+
+    private boolean hasAddress(SQLiteDatabase database, String addressId) {
+        return this.has(database, TABLE_NAME_ADDRESS, this.COLUMN_ID, addressId);
+    }
+
+    private boolean hasMemberBooking(SQLiteDatabase database, String bindId) {
+        return this.has(database, TABLE_NAME_BOOKING_BIND, this.COLUMN_ID, bindId);
     }
 
     private boolean has(SQLiteDatabase database, String tabName, String column, Object value) {

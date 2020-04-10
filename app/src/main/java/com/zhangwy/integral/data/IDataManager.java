@@ -359,16 +359,16 @@ public abstract class IDataManager {
     /**
      * 下单预订订单
      *
-     * @param memberId  成员ID 不得为空
-     * @param bookingId 预订ID 为空时将设置该成员下所有预订项为下单
+     * @param memberId      成员ID 不得为空
+     * @param bookingBindId 预订ID 为空时将设置该成员下所有预订项为下单
      * @throws CodeException 下单预订时出现异常
      */
-    public abstract boolean orderBooking(String memberId, String bookingId) throws CodeException;
+    public abstract boolean orderBooking(String memberId, String bookingBindId) throws CodeException;
 
     /**
      * 下单预订订单
      *
-     * @param bookingBindId 预订项ID 为空时将设置该成员下所有预订项为下单
+     * @param bookingBindId 预订项ID 为空时执行失败
      * @throws CodeException 下单预订时出现异常
      */
     public abstract boolean orderBooking(String bookingBindId) throws CodeException;
@@ -376,16 +376,16 @@ public abstract class IDataManager {
     /**
      * 作废预订订单
      *
-     * @param memberId  成员ID 不得为空
-     * @param bookingId 预订ID 为空时将设置该成员下所有预订项为下单
+     * @param memberId      成员ID 不得为空
+     * @param bookingBindId 预订ID 为空时将设置该成员下所有预订项为下单
      * @throws CodeException 下单预订时出现异常
      */
-    public abstract boolean invalidBooking(String memberId, String bookingId) throws CodeException;
+    public abstract boolean invalidBooking(String memberId, String bookingBindId) throws CodeException;
 
     /**
      * 作废预订订单
      *
-     * @param bookingBindId 预订项ID 为空时将设置该成员下所有预订项为下单
+     * @param bookingBindId 预订项ID 为空时执行失败
      * @throws CodeException 下单预订时出现异常
      */
     public abstract boolean invalidBooking(String bookingBindId) throws CodeException;

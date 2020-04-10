@@ -13,4 +13,6 @@ public interface IDataCode {
     int DATABASE_HAS_EXPIRY = 104;
     int COUPONS_NOFOUND = 105;
     int COUPONS_UNAVAILABLE = 106;
+    int BOOKING_NOFOUND = 107;
+    int BOOKING_UNAVAILABLE = 108;
 }
