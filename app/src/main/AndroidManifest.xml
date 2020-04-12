@@ -59,6 +59,7 @@
         <activity android:name=".CouponsGrantActivity" android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity android:name=".CouponsConfigActivity" />
         <activity android:name=".CouponsNearOverdueActivity" />
+        <activity android:name=".BookingActivity"/>
 
         <activity android:name=".wxapi.WXEntryActivity" />
         <activity android:name=".wxapi.WXPayEntryActivity" />

@@ -45,7 +45,7 @@ import yixia.lib.core.util.Util;
 import yixia.lib.core.util.WindowUtil;
 
 @SuppressWarnings("unused")
-public class MemberActivity extends BaseActivity implements ICouponsManager.OnCouponsDataListener {
+public class MemberActivity extends BaseActivity implements ICouponsManager.OnCouponsDataListener, IBookingManager.OnBookingDataListener {
 
     private static final int REQUEST_CODE_ADD = 100;
     private static final int REQUEST_CODE_INTEGRAL_LIST = 101;
@@ -101,6 +101,7 @@ public class MemberActivity extends BaseActivity implements ICouponsManager.OnCo
         this.setToolbar();
         this.setMsgClick();
         ICouponsManager.getInstance().register(this);
+        IBookingManager.getInstance().register(this);
     }
 
     private void setToolbar() {
@@ -260,7 +261,7 @@ public class MemberActivity extends BaseActivity implements ICouponsManager.OnCo
                     CouponsGrantActivity.start(this, mmbId);
                     break;
                 case MemberItemEntity.TYPE_BOOKING_HEAD:
-                    //TODO
+                    BookingActivity.startByMember(this, mmbId);
                     break;
             }
         });
@@ -344,26 +345,32 @@ public class MemberActivity extends BaseActivity implements ICouponsManager.OnCo
 
     private void refreshBooking(View root, BookingBindEntity entity) {
         TextView bookingText = root.findViewById(R.id.itemMemberBookingText);
-        TextView bookingDesc = root.findViewById(R.id.itemMemberBookingDesc);
         TextView bookingNumber = root.findViewById(R.id.itemMemberBookingNumber);
         TextView bookingAddress = root.findViewById(R.id.itemMemberBookingAddress);
-        TextView bookingCreateTime = root.findViewById(R.id.itemMemberBookingCreateTime);
-        TextView bookingOrderTime = root.findViewById(R.id.itemMemberBookingOrderTime);
+        TextView bookingTime = root.findViewById(R.id.itemMemberBookingTime);
         TextView bookingOrder = root.findViewById(R.id.itemMemberBookingOrder);
         ImageView mark = root.findViewById(R.id.itemMemberBookingMark);
-        bookingText.setText(entity.getText());
-        bookingDesc.setText(entity.getDesc());
+        String textContent = entity.getText() + "  " + entity.getDesc();
+        bookingText.setText(textContent);
         bookingNumber.setText(getString(R.string.number, entity.getCount()));
         bookingAddress.setText(entity.getAddressText());
-        bookingCreateTime.setText(TimeUtil.dateMilliSecond2String(entity.getCreateTime(), TimeUtil.PATTERN_DAY4Y2));
-        bookingOrderTime.setText(TimeUtil.dateMilliSecond2String(entity.getOrderTime(), TimeUtil.PATTERN_DAY4Y2));
-        bookingOrderTime.setVisibility(entity.getOrderTime() < entity.getCreateTime() ? View.GONE : View.VISIBLE);
-        mark.setVisibility(View.VISIBLE);
-        if (!entity.isOrdered()) {
+        StringBuilder timeBuilder = new StringBuilder(TimeUtil.dateMilliSecond2String(entity.getCreateTime(), TimeUtil.PATTERN_DAY4Y2));
+        if(entity.isInvalid()) {
+            timeBuilder.append("-").append(TimeUtil.dateMilliSecond2String(entity.getInvalidTime(), TimeUtil.PATTERN_DAY4Y2));
+            mark.setVisibility(View.VISIBLE);
+            bookingOrder.setVisibility(View.GONE);
+            mark.setImageResource(R.mipmap.icon_invalid);
+        } else if (entity.isOrdered()) {
+            timeBuilder.append("-").append(TimeUtil.dateMilliSecond2String(entity.getOrderTime(), TimeUtil.PATTERN_DAY4Y2));
+            mark.setVisibility(View.VISIBLE);
+            bookingOrder.setVisibility(View.GONE);
+            mark.setImageResource(R.mipmap.icon_ordered);
+        } else {
             mark.setVisibility(View.GONE);
             bookingOrder.setVisibility(View.VISIBLE);
             bookingOrder.setOnClickListener(v -> IBookingManager.getInstance().order(this, entity));
         }
+        bookingTime.setText(timeBuilder.toString());
     }
 
     private void refreshMore(View root, int viewType) {
@@ -422,6 +429,7 @@ public class MemberActivity extends BaseActivity implements ICouponsManager.OnCo
     protected void onDestroy() {
         super.onDestroy();
         ICouponsManager.getInstance().unRegister(this);
+        IBookingManager.getInstance().unRegister(this);
     }
 
     @Override
@@ -443,5 +451,12 @@ public class MemberActivity extends BaseActivity implements ICouponsManager.OnCo
         WindowUtil.createAlertDialog(this, title, message,
                 getString(R.string.ok), okListener,
                 getString(R.string.cancel), (dialog, which) -> dialog.dismiss()).show();
+    }
+
+    @Override
+    public void onBookingDataChanged(String memberId) {
+        if (TextUtils.equals(memberId, mmbId)) {
+            this.refreshRecycler();
+        }
     }
 }

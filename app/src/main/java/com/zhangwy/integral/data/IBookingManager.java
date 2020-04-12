@@ -205,6 +205,7 @@ public abstract class IBookingManager {
         private void orderImpl(Context context, BookingBindEntity entity) {
             try {
                 if (IDataManager.getInstance().orderBooking(entity.getBind(), entity.getId())) {
+                    entity.setOrderTime(System.currentTimeMillis());
                     this.removeItem(entity, this.unOrderBookings.get(entity.getBind()));
                     this.orderedBookings.put(entity.getBind(), entity);
                     this.notifyObserver(entity.getBind());
@@ -267,6 +268,7 @@ public abstract class IBookingManager {
         private void invalidImpl(Context context, BookingBindEntity entity) {
             try {
                 if (IDataManager.getInstance().invalidBooking(entity.getBind(), entity.getId())) {
+                    entity.setInvalidTime(System.currentTimeMillis());
                     this.removeItem(entity, this.unOrderBookings.get(entity.getBind()));
                     this.invalidBookings.put(entity.getBind(), entity);
                     this.notifyObserver(entity.getBind());

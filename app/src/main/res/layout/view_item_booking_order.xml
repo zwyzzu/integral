@@ -2,118 +2,143 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/padding_4">
+    android:layout_height="wrap_content">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/itemBookingOrderIcon"
-        android:layout_width="@dimen/round_icon_44"
-        android:layout_height="@dimen/round_icon_44"
-        android:layout_marginStart="@dimen/margin_28"
-        android:layout_marginLeft="@dimen/margin_28"
-        app:fadeDuration="0"
-        app:failureImageScaleType="centerInside"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:placeholderImage="@mipmap/icon_avatar"
-        app:placeholderImageScaleType="centerCrop"
-        app:roundAsCircle="true" />
-
-    <TextView
-        android:id="@+id/itemBookingOrderNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_marginStart="@dimen/margin_4"
-        android:layout_marginLeft="@dimen/margin_4"
-        android:gravity="bottom|end"
-        android:text="@string/number"
-        android:textColor="@color/font_color_2C2C2C"
-        android:textSize="@dimen/widget_fontSize_14"
-        app:layout_constraintEnd_toStartOf="@id/itemBookingOrderMark"
-        app:layout_constraintRight_toLeftOf="@id/itemBookingOrderMark"
-        app:layout_constraintTop_toTopOf="@id/itemBookingOrderIcon" />
-
-    <TextView
-        android:id="@+id/itemBookingOrderBookers"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/itemBookingOrderHome"
         android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="@dimen/margin_4"
-        android:layout_marginLeft="@dimen/margin_4"
-        android:layout_marginEnd="@dimen/margin_4"
-        android:layout_marginRight="@dimen/margin_4"
-        android:gravity="start"
-        android:text="@string/booking_order_bookers"
-        android:textColor="@color/font_color_2C2C2C"
-        android:textSize="@dimen/widget_fontSize_14"
-        app:layout_constraintEnd_toStartOf="@id/itemBookingOrderNumber"
-        app:layout_constraintLeft_toRightOf="@id/itemBookingOrderIcon"
-        app:layout_constraintRight_toLeftOf="@id/itemBookingOrderNumber"
-        app:layout_constraintStart_toEndOf="@id/itemBookingOrderIcon"
-        app:layout_constraintTop_toTopOf="@id/itemBookingOrderIcon" />
-
-
-    <TextView
-        android:id="@+id/itemBookingOrderCreated"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_marginStart="@dimen/margin_4"
-        android:layout_marginLeft="@dimen/margin_4"
-        android:text="@string/booking_element_created"
-        android:textColor="@color/font_color_2C2C2C"
-        android:textSize="@dimen/widget_fontSize_14"
-        app:layout_constraintBottom_toBottomOf="@id/itemBookingOrderIcon"
-        app:layout_constraintLeft_toRightOf="@id/itemBookingOrderIcon"
-        app:layout_constraintStart_toEndOf="@id/itemBookingOrderIcon" />
-
-    <TextView
-        android:id="@+id/itemBookingOrderOrdered"
-        android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="@dimen/margin_4"
-        android:layout_marginLeft="@dimen/margin_4"
-        android:gravity="center_vertical|end"
-        android:text="@string/booking_element_ordered"
-        android:textColor="@color/font_color_2C2C2C"
-        android:textSize="@dimen/widget_fontSize_14"
-        app:layout_constraintBottom_toBottomOf="@id/itemBookingOrderCreated"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/itemBookingOrderCreated"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@id/itemBookingOrderCreated" />
-
-    <TextView
-        android:id="@+id/itemBookingOrderOrderButton"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:background="@drawable/background_button_use_coupons"
-        android:gravity="center"
-        android:text="@string/immediate_order"
-        android:textSize="@dimen/widget_fontSize_12"
-        app:layout_constraintBottom_toBottomOf="@id/itemBookingOrderIcon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <ImageView
-        android:id="@+id/itemBookingOrderMark"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:contentDescription="@string/booking_label"
-        android:src="@mipmap/icon_ordered"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/itemBookingOrderAddress"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_4"
-        android:maxLines="3"
-        android:minLines="1"
-        android:text="@string/booking_order_address"
-        android:textSize="@dimen/widget_fontSize_12"
-        app:layout_constraintLeft_toLeftOf="@id/itemBookingOrderIcon"
-        app:layout_constraintStart_toStartOf="@id/itemBookingOrderIcon"
-        app:layout_constraintTop_toBottomOf="@id/itemBookingOrderIcon" />
+        android:background="@color/white"
+        android:padding="@dimen/padding_4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/itemBookingOrderIcon"
+            android:layout_width="@dimen/round_icon_44"
+            android:layout_height="@dimen/round_icon_44"
+            android:layout_marginStart="@dimen/margin_28"
+            android:layout_marginLeft="@dimen/margin_28"
+            app:fadeDuration="0"
+            app:failureImageScaleType="centerInside"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:placeholderImage="@mipmap/icon_avatar"
+            app:placeholderImageScaleType="centerCrop"
+            app:roundAsCircle="true" />
+
+        <TextView
+            android:id="@+id/itemBookingOrderNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginStart="@dimen/margin_4"
+            android:layout_marginLeft="@dimen/margin_4"
+            android:gravity="bottom|end"
+            android:text="@string/number"
+            android:textColor="@color/font_color_2C2C2C"
+            android:textSize="@dimen/widget_fontSize_14"
+            app:layout_constraintEnd_toStartOf="@id/itemBookingOrderMark"
+            app:layout_constraintRight_toLeftOf="@id/itemBookingOrderMark"
+            app:layout_constraintTop_toTopOf="@id/itemBookingOrderIcon" />
+
+        <TextView
+            android:id="@+id/itemBookingOrderBookers"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="@dimen/margin_4"
+            android:layout_marginLeft="@dimen/margin_4"
+            android:layout_marginEnd="@dimen/margin_4"
+            android:layout_marginRight="@dimen/margin_4"
+            android:gravity="start"
+            android:text="@string/booking_order_bookers"
+            android:textColor="@color/font_color_2C2C2C"
+            android:textSize="@dimen/widget_fontSize_14"
+            app:layout_constraintEnd_toStartOf="@id/itemBookingOrderNumber"
+            app:layout_constraintLeft_toRightOf="@id/itemBookingOrderIcon"
+            app:layout_constraintRight_toLeftOf="@id/itemBookingOrderNumber"
+            app:layout_constraintStart_toEndOf="@id/itemBookingOrderIcon"
+            app:layout_constraintTop_toTopOf="@id/itemBookingOrderIcon" />
+
+
+        <TextView
+            android:id="@+id/itemBookingOrderCreated"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginStart="@dimen/margin_4"
+            android:layout_marginLeft="@dimen/margin_4"
+            android:text="@string/booking_element_created"
+            android:textColor="@color/font_color_2C2C2C"
+            android:textSize="@dimen/widget_fontSize_14"
+            app:layout_constraintBottom_toBottomOf="@id/itemBookingOrderIcon"
+            app:layout_constraintLeft_toRightOf="@id/itemBookingOrderIcon"
+            app:layout_constraintStart_toEndOf="@id/itemBookingOrderIcon" />
+
+        <TextView
+            android:id="@+id/itemBookingOrderOrdered"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="@dimen/margin_4"
+            android:layout_marginLeft="@dimen/margin_4"
+            android:gravity="center_vertical|end"
+            android:text="@string/booking_element_ordered"
+            android:textColor="@color/font_color_2C2C2C"
+            android:textSize="@dimen/widget_fontSize_14"
+            app:layout_constraintBottom_toBottomOf="@id/itemBookingOrderCreated"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/itemBookingOrderCreated"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toEndOf="@id/itemBookingOrderCreated" />
+
+        <TextView
+            android:id="@+id/itemBookingOrderOrderButton"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:background="@drawable/background_button_use_coupons"
+            android:gravity="center"
+            android:text="@string/immediate_order"
+            android:textSize="@dimen/widget_fontSize_12"
+            app:layout_constraintBottom_toBottomOf="@id/itemBookingOrderIcon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <ImageView
+            android:id="@+id/itemBookingOrderMark"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/booking_label"
+            android:src="@mipmap/icon_ordered"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/itemBookingOrderAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_4"
+            android:maxLines="3"
+            android:text="@string/booking_order_address"
+            android:textSize="@dimen/widget_fontSize_13"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/itemBookingOrderIcon"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="@id/itemBookingOrderIcon"
+            app:layout_constraintTop_toBottomOf="@id/itemBookingOrderIcon" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/itemBookingOrderHome" />
 </android.support.constraint.ConstraintLayout>

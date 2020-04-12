@@ -6,8 +6,14 @@ import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -99,6 +105,41 @@ public class FragmentBooking extends BaseFragment implements IBookingManager.OnB
         this.recyclerView.setOnItemClickListener((view, viewType, entity, position) -> {
             //TODO 查看预订详情
         });
+        this.setToolbar(root);
+    }
+
+    private void setToolbar(View root) {
+        Toolbar toolbar = root.findViewById(R.id.bookingToolbar);
+        if (getActivity() == null) {
+            return;
+        }
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        this.setHasOptionsMenu(true);
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu_fragment_booking, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.bookingAdd) {
+            BookingActivity.start(getContext());
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        IBookingManager.getInstance().unRegister(this);
     }
 
     private void reloadData() {
@@ -164,6 +205,7 @@ public class FragmentBooking extends BaseFragment implements IBookingManager.OnB
             this.open.setImageResource(entity.isOpen() ? R.mipmap.icon_minus : R.mipmap.icon_plus);
             this.open.setOnClickListener(v -> {
                 entity.open = !entity.isOpen();
+                this.open.setImageResource(entity.isOpen() ? R.mipmap.icon_minus : R.mipmap.icon_plus);
                 if (entity.isOpen()) {
                     recyclerView.addAll(entity.getOrders(), position + 1);
                 } else {
@@ -195,6 +237,7 @@ public class FragmentBooking extends BaseFragment implements IBookingManager.OnB
         private TextView address;
         private ImageView mark;
         private View button;
+
         private OrderViewHolder(View view) {
             super(view);
             this.icon = view.findViewById(R.id.itemBookingOrderIcon);

@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".BookingActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/bookingToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/background_bar"
+        android:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/icon_widget_back"
+        tools:ignore="UnusedAttribute">
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/booking_label" />
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/bookingMemberHead"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/padding_16"
+        android:paddingLeft="@dimen/padding_16"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:text="@string/booking_member"
+        android:textColor="@color/black"
+        android:textSize="@dimen/widget_fontSize_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bookingToolbar" />
+
+    <TextView
+        android:id="@+id/bookingAddressHead"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/padding_16"
+        android:paddingLeft="@dimen/padding_16"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:text="@string/booking_address"
+        android:textColor="@color/black"
+        android:textSize="@dimen/widget_fontSize_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bookingMemberHead" />
+
+    <TextView
+        android:id="@+id/bookingCommodityHead"
+        android:layout_width="0dp"
+        android:layout_height="88dp"
+        android:background="@color/white"
+        android:gravity="start"
+        android:paddingStart="@dimen/padding_16"
+        android:paddingLeft="@dimen/padding_16"
+        android:paddingTop="@dimen/padding_14"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:paddingBottom="@dimen/padding_14"
+        android:text="@string/booking_commodity"
+        android:textColor="@color/black"
+        android:textSize="@dimen/widget_fontSize_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bookingAddressHead" />
+
+    <TextView
+        android:id="@+id/bookingMessageHead"
+        android:layout_width="wrap_content"
+        android:layout_height="84dp"
+        android:background="@color/white"
+        android:gravity="start"
+        android:paddingStart="@dimen/padding_16"
+        android:paddingLeft="@dimen/padding_16"
+        android:paddingTop="@dimen/padding_14"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:paddingBottom="@dimen/padding_14"
+        android:text="@string/booking_message"
+        android:textColor="@color/black"
+        android:textSize="@dimen/widget_fontSize_16"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bookingCommodityHead" />
+
+    <EditText
+        android:id="@+id/bookingMessage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:gravity="start"
+        android:hint="@string/booking_message_hint"
+        android:lines="3"
+        android:paddingStart="0dp"
+        android:paddingLeft="0dp"
+        android:paddingTop="@dimen/padding_14"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:paddingBottom="@dimen/padding_14"
+        android:textSize="@dimen/widget_fontSize_16"
+        app:layout_constraintBottom_toBottomOf="@id/bookingMessageHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/bookingMessageHead"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@id/bookingMessageHead"
+        app:layout_constraintTop_toTopOf="@id/bookingMessageHead"
+        tools:ignore="Autofill,TextFields" />
+
+    <TextView
+        android:id="@+id/bookingMemberText"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingStart="0dp"
+        android:paddingLeft="0dp"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
+        android:text="@string/booking_member"
+        android:textColor="@color/black"
+        android:textSize="@dimen/widget_fontSize_16"
+        app:layout_constraintBottom_toBottomOf="@id/bookingMemberHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/bookingMessage"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@id/bookingMessage"
+        app:layout_constraintTop_toTopOf="@id/bookingMemberHead" />
+
+    <Spinner
+        android:id="@+id/bookingMemberSpinner"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        android:dropDownVerticalOffset="48dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/bookingMemberHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/bookingMessage"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@id/bookingMessage"
+        app:layout_constraintTop_toTopOf="@id/bookingMemberHead" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        android:background="@color/background"
+        app:layout_constraintBottom_toBottomOf="@id/bookingMemberHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Spinner
+        android:id="@+id/bookingAddressSpinner"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        android:dropDownVerticalOffset="48dp"
+        app:layout_constraintBottom_toBottomOf="@id/bookingAddressHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/bookingMessage"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@id/bookingMessage"
+        app:layout_constraintTop_toTopOf="@id/bookingAddressHead" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        android:background="@color/background"
+        app:layout_constraintBottom_toBottomOf="@id/bookingAddressHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Spinner
+        android:id="@+id/bookingCommoditySpinner"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        android:dropDownVerticalOffset="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/bookingMessage"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@id/bookingMessage"
+        app:layout_constraintTop_toTopOf="@id/bookingCommodityHead" />
+
+    <com.yixia.widget.VSVerificationLayout
+        android:id="@+id/bookingCommodityCountHome"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="@dimen/margin_4"
+        android:background="@drawable/background_element_input"
+        app:inputId="@+id/bookingCommodityCount"
+        app:layout_constraintLeft_toLeftOf="@id/bookingMessage"
+        app:layout_constraintStart_toStartOf="@id/bookingMessage"
+        app:layout_constraintTop_toBottomOf="@id/bookingCommoditySpinner">
+
+        <EditText
+            android:id="@+id/bookingCommodityCount"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_4"
+            android:layout_marginBottom="@dimen/margin_4"
+            android:background="@null"
+            android:hint="@string/booking_input_count_hint"
+            android:inputType="numberDecimal"
+            android:lines="1"
+            android:paddingStart="@dimen/padding_4"
+            android:paddingLeft="@dimen/padding_4"
+            android:paddingEnd="@dimen/padding_4"
+            android:paddingRight="@dimen/padding_4"
+            android:singleLine="true"
+            android:textSize="@dimen/widget_fontSize_14"
+            tools:ignore="Autofill" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginStart="126dp"
+            android:layout_marginLeft="126dp"
+            android:layout_marginEnd="@dimen/margin_6"
+            android:layout_marginRight="@dimen/margin_6"
+            android:gravity="center_vertical"
+            android:text="@string/piece"
+            android:textSize="@dimen/widget_fontSize_14" />
+    </com.yixia.widget.VSVerificationLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        android:background="@color/background"
+        app:layout_constraintBottom_toBottomOf="@id/bookingCommodityHead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/bookingEmpty"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_margin="32dp"
+        android:background="@drawable/background_remind"
+        android:gravity="center"
+        android:text="@string/add_integral_empty_element"
+        android:textSize="@dimen/widget_fontSize_18"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>

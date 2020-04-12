@@ -204,7 +204,7 @@
     <string name="error_expiry_unselect">请选择有效期</string>
 
     <string name="booking_order_label">预订下单提醒</string>
-    <string name="booking_label">预订</string>
+    <string name="booking">预订</string>
     <string name="booking_element_delete">确定删除\"%1$s\"预订项吗？\n将同时删除预订信息</string>
     <string name="number">x %d</string>
     <string name="booking_order_bookers">预订者</string>
@@ -220,6 +220,17 @@
     <string name="booking_element_ordered">下单：%1$s</string>
     <string name="booking_element_invalid">作废：%1$s</string>
 
+    <string name="booking_label">预订下单</string>
+    <string name="booking_member">预订者</string>
+    <string name="booking_address">地址</string>
+    <string name="booking_commodity">预订商品</string>
+    <string name="booking_message">备注信息</string>
+    <string name="booking_message_hint">下单备注信息-选填(不填写将使用预订项描述)</string>
+    <string name="booking_input_count_hint">请输入订购件数</string>
+    <string name="piece">件</string>
+
+    <string name="error_unselect">请选择%1$s</string>
+
     <string name="coupons_use_label">优惠券使用提醒</string>
     <string name="coupons_use_owner">拥有者</string>
     <string name="coupons_use_amount">优惠金额</string>
@@ -233,6 +244,11 @@
     <string name="immediate_use">立即使用</string>
     <string name="immediate_order">立即下单</string>
     <string name="immediate_invalid">立即作废</string>
+    <string name="line_1">第一行</string>
+    <string name="line_2">第二行</string>
+    <string name="message_hint_empty_member">请到首页添加客户信息</string>
+    <string name="message_hint_empty_address">请到客户信息页添加收件人信息</string>
+    <string name="message_hint_empty_booking">请到\"首页\-我的\-预订项配置\"添加预订项</string>
 
     <string name="copyright">Copyright©2018-2019二糖网络科技版权所有</string>
 </resources>

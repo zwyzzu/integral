@@ -135,6 +135,9 @@ public class BookingBindEntity extends BaseEntity {
 
     public void setAddress(AddressEntity address) {
         this.address = address;
+        if (address != null) {
+            this.setAddressId(address.getId());
+        }
     }
 
     public String getAddressText() {
