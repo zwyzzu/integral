@@ -6,8 +6,8 @@ import android.os.Parcel;
  * Created by zhangwy on 2020-03-22.
  * Updated by zhangwy on 2020-03-22.
  * Description 预订绑定对象
- *             该对象绑定预订项ID和memberId
- *             预订项ID非严格绑定，删除预订项不影响客户预订显示，但是在预订列表页不可见仅客户界面可见
+ * 该对象绑定预订项ID和memberId
+ * 预订项ID非严格绑定，删除预订项不影响客户预订显示，但是在预订列表页不可见仅客户界面可见
  */
 @SuppressWarnings("unused")
 public class BookingBindEntity extends BaseEntity {
@@ -142,6 +142,13 @@ public class BookingBindEntity extends BaseEntity {
 
     public String getAddressText() {
         return this.address == null ? "" : this.address.address();
+    }
+
+    public String getBookingString() {
+        if (this.getAddress() == null) {
+            return "";
+        }
+        return this.address.address() + "，" + this.address.getConsignee() + "，" + this.address.getPhone() + "，" + this.getCount();
     }
 
     @Override

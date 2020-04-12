@@ -26,7 +26,7 @@ import yixia.lib.core.util.WindowUtil;
 
 /**
  * Created by zhangwy on 2020-03-29.
- * Updated by zhangwy on 2020-03-29.
+ * Updated by zhangwy on 2020-04-12.
  * Description
  */
 @SuppressWarnings({"unused"})
@@ -209,6 +209,11 @@ public abstract class IBookingManager {
                     this.removeItem(entity, this.unOrderBookings.get(entity.getBind()));
                     this.orderedBookings.put(entity.getBind(), entity);
                     this.notifyObserver(entity.getBind());
+                    String text = entity.getBookingString();
+                    if (!TextUtils.isEmpty(text)) {
+                        Util.copy2Clipboard(context, text);
+                        Toast.makeText(context, R.string.member_address_export_over, Toast.LENGTH_LONG).show();
+                    }
                 }
             } catch (CodeException e) {
                 Logger.d("useCoupons", e);
