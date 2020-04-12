@@ -184,6 +184,7 @@
     <string name="error_number_empty">数值不能为空</string>
     <string name="error_number_positive">数值必须为正整数</string>
     <string name="error_has_expiry">有效期已存在</string>
+    <string name="error_booking_empty">订单信息为空</string>
 
     <string name="coupons_near_overdue_label">临期优惠券</string>
 
@@ -228,6 +229,8 @@
     <string name="booking_message_hint">下单备注信息-选填(不填写将使用预订项描述)</string>
     <string name="booking_input_count_hint">请输入订购件数</string>
     <string name="piece">件</string>
+
+    <string name="booking_info_label">订单信息</string>
 
     <string name="error_unselect">请选择%1$s</string>
 

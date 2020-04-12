@@ -103,7 +103,10 @@ public class FragmentBooking extends BaseFragment implements IBookingManager.OnB
 
         this.reloadData();
         this.recyclerView.setOnItemClickListener((view, viewType, entity, position) -> {
-            //TODO 查看预订详情
+            if (viewType == ITEM_TYPE_ORDER) {
+                BookingBindEntity bindEntity = entity.bindEntity;
+                BookingInfoActivity.start(this.getContext(), bindEntity.getBind(), bindEntity.getId());
+            }
         });
         this.setToolbar(root);
     }

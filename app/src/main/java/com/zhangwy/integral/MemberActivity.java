@@ -219,6 +219,12 @@ public class MemberActivity extends BaseActivity implements ICouponsManager.OnCo
                 }
             }
         });
+        this.recyclerView.setOnItemClickListener((view, viewType, entity, position) -> {
+            if (viewType == MemberItemEntity.TYPE_BOOKING) {
+                BookingBindEntity bindEntity = (BookingBindEntity) entity.data;
+                BookingInfoActivity.start(this, this.mmbId, bindEntity.getId());
+            }
+        });
     }
 
     private void refreshRecycler() {
