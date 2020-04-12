@@ -137,12 +137,15 @@
 
     <TextView
         android:id="@+id/couponsUseDescriptionValue"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_8"
         android:layout_marginRight="@dimen/margin_8"
         android:maxLines="3"
         android:textSize="@dimen/widget_fontSize_14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="@dimen/margin_16"
         app:layout_constraintLeft_toLeftOf="@id/couponsUseAmountValue"
         app:layout_constraintStart_toStartOf="@id/couponsUseAmountValue"
         app:layout_constraintBottom_toTopOf="@id/couponsUseUnAgreed"

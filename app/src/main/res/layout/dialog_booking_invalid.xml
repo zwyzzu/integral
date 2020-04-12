@@ -81,10 +81,11 @@
     <TextView
         android:id="@+id/bookingInvalidAddress"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="@dimen/margin_8"
         android:text="@string/booking_invalid_address"
         android:textSize="@dimen/widget_fontSize_14"
+        app:layout_constraintBottom_toBottomOf="@+id/bookingInvalidAddressValue"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/bookingInvalidCreateTime" />
@@ -128,28 +129,33 @@
 
     <TextView
         android:id="@+id/bookingInvalidAddressValue"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_8"
         android:layout_marginRight="@dimen/margin_8"
         android:text="@string/booking_invalid_address"
         android:textSize="@dimen/widget_fontSize_14"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/bookingInvalidCreateTimeValue"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="@id/bookingInvalidCreateTimeValue"
         app:layout_constraintTop_toTopOf="@id/bookingInvalidAddress" />
 
     <TextView
         android:id="@+id/bookingInvalidDescriptionValue"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginEnd="@dimen/margin_8"
         android:layout_marginRight="@dimen/margin_8"
-        android:maxLines="3"
+        android:layout_marginBottom="@dimen/margin_16"
         android:gravity="start|top"
-        android:textSize="@dimen/widget_fontSize_14"
+        android:maxLines="3"
         android:text="@string/description"
+        android:textSize="@dimen/widget_fontSize_14"
         app:layout_constraintBottom_toTopOf="@id/bookingInvalidUnAgreed"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/bookingInvalidCreateTimeValue"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="@id/bookingInvalidCreateTimeValue"
         app:layout_constraintTop_toTopOf="@id/bookingInvalidDescription" />
 </android.support.constraint.ConstraintLayout>
